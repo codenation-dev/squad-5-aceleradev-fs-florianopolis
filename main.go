@@ -1,19 +1,19 @@
 package main
 
 import (
+	"codenation/banco-uati-presencial/aux"
 	"fmt"
 	"strings"
 )
 
 func main() {
-	DownloadSpEmployees() //Not working
+	aux.DownloadSpEmployees() //Not working
 
-
-	files, err := Unzip("Remuneracao.zip", "output-folder")
-    if err != nil {
-        //log.Fatal(err)
-    }
-    fmt.Println("Unzipped:\n" + strings.Join(files, "\n"))
+	files, err := aux.Unzip("Remuneracao.zip", "output-folder")
+	if err != nil {
+		//log.Fatal(err)
+	}
+	fmt.Println("Unzipped:\n" + strings.Join(files, "\n"))
 }
 
 func ParseClientsCSV() {
