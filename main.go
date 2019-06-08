@@ -1,9 +1,10 @@
 package main
 
 import (
-	"codenation/banco-uati-presencial/aux"
 	"fmt"
 	"strings"
+
+	"github.com/codenation.dev/squad-5-aceleradev-fs-florianopolis/aux"
 )
 
 func main() {
@@ -16,6 +17,7 @@ func main() {
 	fmt.Println("Unzipped:\n" + strings.Join(files, "\n"))
 }
 
+//ParseClientsCSV not implemeted
 func ParseClientsCSV() {
 	fmt.Println("Not implemented. Rename if needed")
 }
