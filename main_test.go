@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/codenation.dev/squad-5-aceleradev-fs-florianopolis/aux"
+	"github.com/codenation-dev/squad-5-aceleradev-fs-florianopolis/aux"
 	"github.com/stretchr/testify/assert"
 )
 
