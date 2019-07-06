@@ -24,15 +24,15 @@
 #=========================================
 #React Stuff
 # dependencies
-react-stuff/uatireact/node_modules
-react-stuff/uatireact//.pnp
-react-stuff/uatireact/.pnp.js
+frontend/uatireact/node_modules
+frontend/uatireact/.pnp
+frontend/uatireact/.pnp.js
 
 # testing
-react-stuff/uatireact//coverage
+frontend/uatireact/coverage
 
 # production
-react-stuff/uatireact//build
+frontend/uatireact/build
 
 # misc
 .DS_Store
@@ -48,6 +48,6 @@ yarn-error.log*
 #===================
 #Other
 
-go-stuff/output-folder/remuneracao.txt
-go-stuff/output-folder/
-go-stuff/Remuneracao.zip
+backend/output-folder/remuneracao.txt
+backend/output-folder/
+backend/Remuneracao.zip
