@@ -29,6 +29,8 @@ func getEmployeesFromCSV() error {
 
 	var employees []Employee
 
+	lastEmp := new(Employee)
+
 	reader.Read()
 
 	for {
@@ -44,12 +46,22 @@ func getEmployeesFromCSV() error {
 		name = strings.Replace(name, "'", " ", -1)
 		employee := new(Employee)
 		employee.Name = name
-		salary, err := strconv.ParseFloat(line[3], 64)
+		salaryString := strings.Replace(line[3], ",", ".", -1)
+		salary, err := strconv.ParseFloat(salaryString, 64)
 		if err != nil {
 			salary = 0
 		}
 		employee.Salary = salary
-		employees = append(employees, *employee)
+
+		if employee.Name == lastEmp.Name {
+			if employee.Salary > lastEmp.Salary {
+				lastEmp = employee
+				employees[len(employees)-1].Salary = employee.Salary
+			}
+		} else {
+			employees = append(employees, *employee)
+			lastEmp = employee
+		}
 
 		if len(employees) >= 100000 {
 			routineEmp := employees
