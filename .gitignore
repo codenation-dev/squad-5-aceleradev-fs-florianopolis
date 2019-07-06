@@ -1,2 +1,53 @@
-Remuneracao.zip
-output-folder
+
+# Created by https://www.gitignore.io/api/go
+# Edit at https://www.gitignore.io/?templates=go
+
+### Go ###
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+### Go Patch ###
+/vendor/
+/Godeps/
+
+# End of https://www.gitignore.io/api/go
+#=========================================
+#React Stuff
+# dependencies
+react-stuff/uatireact/node_modules
+react-stuff/uatireact//.pnp
+react-stuff/uatireact/.pnp.js
+
+# testing
+react-stuff/uatireact//coverage
+
+# production
+react-stuff/uatireact//build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#===================
+#Other
+
+go-stuff/output-folder/remuneracao.txt
+go-stuff/output-folder/
+go-stuff/Remuneracao.zip
