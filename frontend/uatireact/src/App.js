@@ -7,14 +7,11 @@ import ImportPage from "./components/ImportPage";
 import Dashboard from "./components/Dashboard";
 import Admin from "./components/Admin";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-const App = () => {
-  const isLogged = () => {
-    return false;
-  };
-
+const App = props => {
   const HomeRoute = () => {
-    if (isLogged()) {
+    if (props.isLogged) {
       return <Redirect to="/dashboard" />;
     }
     return <Redirect to="/login" />;
@@ -35,4 +32,11 @@ const App = () => {
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return { isLogged: state.userReducer.isLogged };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(App);
