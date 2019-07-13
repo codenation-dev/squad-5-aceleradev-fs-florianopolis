@@ -29,9 +29,6 @@ const NavBar = () => {
           </li>
         </ul>
       </nav>
-      <button type="button" onClick={() => {}}>
-        toggle isLogged()
-      </button>
     </header>
   );
 };
