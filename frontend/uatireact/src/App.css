@@ -6,16 +6,15 @@
   animation: App-logo-spin infinite 20s linear;
   height: 7vh;
   pointer-events: none;
-
 }
 
 .App-header {
   background-color: #282c34;
   height: 15vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  /*justify-content: center;*/
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -31,4 +30,21 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  float: left;
+  margin: 2px;
+}
+
+.navbar {
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: yellow;
 }
