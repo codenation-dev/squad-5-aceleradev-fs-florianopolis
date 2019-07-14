@@ -1,13 +1,10 @@
 import React from "react";
 import "./App.css";
-import NavBar from "./components/NavBar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import ImportPage from "./components/ImportPage";
-import Dashboard from "./components/Dashboard";
-import Admin from "./components/Admin";
+// prettier-ignore
+import { SideBar, Login, Register, ImportPage, Dashboard, Admin } from './components'
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import { Grid } from "@material-ui/core/";
 
 const App = props => {
   const HomeRoute = () => {
@@ -19,15 +16,22 @@ const App = props => {
 
   return (
     <div className="App">
-      <NavBar />
-      <Switch>
-        <Route exact path="/" component={HomeRoute} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/import" component={ImportPage} />
-        <Route path="/admin" component={Admin} />
-      </Switch>
+      <SideBar />
+      <Grid container>
+        <Grid item xs={3}>
+          <h1>Hello</h1>
+        </Grid>
+        <Grid item xs={9}>
+          <Switch>
+            <Route exact path="/" component={HomeRoute} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/import" component={ImportPage} />
+            <Route path="/admin" component={Admin} />
+          </Switch>
+        </Grid>
+      </Grid>
     </div>
   );
 };

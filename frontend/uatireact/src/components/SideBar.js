@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as allActions from "../redux/actions";
 
-const NavBar = props => {
+const SideBar = props => {
   const renderLinks = () => {
     if (props.isLogged) {
       return (
@@ -72,4 +72,4 @@ const mapStateToProps = state => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(NavBar);
+)(SideBar);
