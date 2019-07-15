@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 // prettier-ignore
-import { Login, Register, ImportPage, Dashboard, Admin } from './components'
+import { Login, Register, ImportPage, Dashboard, Admin, Notifications } from './components'
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import Layout from "./components/Layout";
@@ -22,6 +22,7 @@ const App = props => {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/notifications" component={Notifications} />
           <Route path="/import" component={ImportPage} />
           <Route path="/admin" component={Admin} />
         </Switch>
