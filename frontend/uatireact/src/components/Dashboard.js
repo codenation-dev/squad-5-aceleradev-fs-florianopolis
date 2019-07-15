@@ -2,9 +2,11 @@ import React from "react";
 
 const clients = [
   {
+    id: 1,
     name: "Cliente 1"
   },
   {
+    id: 2,
     name: "Cliente 2"
   }
 ];
@@ -16,7 +18,7 @@ const Dashboard = () => {
       <h2>Clientes:</h2>
       <ul>
         {clients.map(item => (
-          <li>{item.name}</li>
+          <li key={item.id}>{item.name}</li>
         ))}
       </ul>
     </div>

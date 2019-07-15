@@ -1,13 +1,10 @@
 import React from "react";
 import "./App.css";
-import NavBar from "./components/NavBar";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import ImportPage from "./components/ImportPage";
-import Dashboard from "./components/Dashboard";
-import Admin from "./components/Admin";
+// prettier-ignore
+import { Login, Register, ImportPage, Dashboard, Admin, Notifications } from './components'
 import { Switch, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
+import Layout from "./components/Layout";
 
 const App = props => {
   const HomeRoute = () => {
@@ -19,15 +16,17 @@ const App = props => {
 
   return (
     <div className="App">
-      <NavBar />
-      <Switch>
-        <Route exact path="/" component={HomeRoute} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/import" component={ImportPage} />
-        <Route path="/admin" component={Admin} />
-      </Switch>
+      <Layout>
+        <Switch>
+          <Route exact path="/" component={HomeRoute} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/notifications" component={Notifications} />
+          <Route path="/import" component={ImportPage} />
+          <Route path="/admin" component={Admin} />
+        </Switch>
+      </Layout>
     </div>
   );
 };
