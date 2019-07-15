@@ -1,41 +1,29 @@
 import React from "react";
 import "./App.css";
 // prettier-ignore
-import { Login, Register, ImportPage, Dashboard, Admin, Notifications } from './components'
-import { Switch, Route, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import Layout from "./components/Layout";
+import { Login, Register, ImportPage, Dashboard, Admin, Notifications } from './pages'
+import { Switch, Route } from "react-router-dom";
 
-const App = props => {
-  const HomeRoute = () => {
-    if (props.isLogged) {
-      return <Redirect to="/dashboard" />;
-    }
-    return <Redirect to="/login" />;
-  };
+import Layout from "./pages/Layout";
+import PrivateRoute from "./components/PrivateRoute";
 
+const App = () => {
   return (
     <div className="App">
       <Layout>
         <Switch>
-          <Route exact path="/" component={HomeRoute} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/notifications" component={Notifications} />
-          <Route path="/import" component={ImportPage} />
-          <Route path="/admin" component={Admin} />
+
+          <PrivateRoute exact path="/" component={Dashboard} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+          <PrivateRoute path="/notifications" component={Notifications} />
+          <PrivateRoute path="/import" component={ImportPage} />
+          <PrivateRoute path="/admin" component={Admin} />
         </Switch>
       </Layout>
     </div>
   );
 };
 
-const mapStateToProps = state => {
-  return { isLogged: state.userReducer.isLogged };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(App);
+export default App;
