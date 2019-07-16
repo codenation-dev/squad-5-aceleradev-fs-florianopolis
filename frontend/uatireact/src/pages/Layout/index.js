@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import {
   Divider,
   AppBar,
@@ -101,7 +101,13 @@ function Layout(props) {
       icon: <Build />,
       showLogged: true
     },
-    { name: "Login", path: "/login", icon: <Input />, showLogged: false },
+    {
+      name: "Sair",
+      path: "/login",
+      icon: <Input />,
+      showLogged: true,
+      onClick: () => toggleIsLogged()
+    },
     {
       name: "Register",
       path: "/register",
@@ -110,15 +116,16 @@ function Layout(props) {
     }
   ];
 
-  const renderLinks = (isLogged, menuItems) => {
+  const renderLinks = (isLogged, menuItems, toggleIsLogged) => {
     return menuItems
       .filter(({ showLogged }) => showLogged === isLogged)
-      .map(({ name, path, icon }) => (
+      .map(({ name, path, icon, onClick }) => (
         <MenuItem
           key={name}
           component={Link}
           to={path}
           selected={path === pathname}
+          onClick={onClick}
         >
           <ListItemIcon>{icon}</ListItemIcon>
           <Typography variant="inherit">{name}</Typography>
@@ -132,9 +139,9 @@ function Layout(props) {
         <div className={classes.toolbar} />
       </Hidden>
       <Divider />
-      <button type="button" onClick={() => toggleIsLogged()}>
+      {/* <button type="button" onClick={() => toggleIsLogged()}>
         IsLogged: {isLogged ? "true" : "false"}
-      </button>
+      </button> */}
       <MenuList>{renderLinks(isLogged, menuItems)}</MenuList>
     </div>
   );
@@ -142,61 +149,66 @@ function Layout(props) {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={classes.appBar}
-        style={{ justifyContent: "flex-start" }}
-      >
-        <Toolbar style={{ justifyContent: "flex-start" }}>
-          <IconButton
-            color="inherit"
-            aria-label="Open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            className={classes.menuButton}
+      {isLogged && (
+        <Fragment>
+          <AppBar
+            position="fixed"
+            className={classes.appBar}
+            style={{ justifyContent: "flex-start" }}
           >
-            <MenuIcon />
-          </IconButton>
-          <img src={logo} className="App-logo" alt="logo" />
-          <Typography variant="h6" align="left" style={{ flexGrow: 1 }}>
-            Uati Bank
-          </Typography>
-          <Typography variant="h6" noWrap>
-            {isLogged && "Welcome User"}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <nav className={classes.drawer}>
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Hidden smUp implementation="css">
-          <Drawer
-            container={container}
-            variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            ModalProps={{
-              keepMounted: true // Better open performance on mobile.
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
+            <Toolbar style={{ justifyContent: "flex-start" }}>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                edge="start"
+                onClick={handleDrawerToggle}
+                className={classes.menuButton}
+              >
+                <MenuIcon />
+              </IconButton>
+              <img src={logo} className="App-logo" alt="logo" />
+              <Typography variant="h6" align="left" style={{ flexGrow: 1 }}>
+                Uati Bank
+              </Typography>
+              <Typography variant="h6" noWrap>
+                Welcome User
+              </Typography>
+            </Toolbar>
+          </AppBar>
+
+          <nav className={classes.drawer}>
+            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+            <Hidden smUp implementation="css">
+              <Drawer
+                container={container}
+                variant="temporary"
+                anchor={theme.direction === "rtl" ? "right" : "left"}
+                open={mobileOpen}
+                onClose={handleDrawerToggle}
+                classes={{
+                  paper: classes.drawerPaper
+                }}
+                ModalProps={{
+                  keepMounted: true // Better open performance on mobile.
+                }}
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+            <Hidden xsDown implementation="css">
+              <Drawer
+                classes={{
+                  paper: classes.drawerPaper
+                }}
+                variant="permanent"
+                open
+              >
+                {drawer}
+              </Drawer>
+            </Hidden>
+          </nav>
+        </Fragment>
+      )}
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children}
