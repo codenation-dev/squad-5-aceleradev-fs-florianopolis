@@ -1,64 +1,48 @@
 package main
 
 import (
-	"bufio"
-	"encoding/csv"
+	"flag"
 	"fmt"
-	"io"
 	"log"
-	"os"
-	"strconv"
-	"strings"
+	"net/http"
+	"uati-api/clients"
+	"uati-api/database"
+	"uati-api/middlewares"
+	"uati-api/users"
 
-	"github.com/codenation-dev/squad-5-aceleradev-fs-florianopolis/aux"
+	"github.com/gorilla/mux"
+
+	"github.com/subosito/gotenv"
 )
 
+//Db is the connection to the db
+var db = database.GetDB()
+
+func init() {
+	gotenv.Load()
+}
+
 func main() {
-	aux.DownloadSpEmployees() //Not working
+	setdb := flag.Bool("setdb", false, "download csv and setup db on startup")
+	flag.Parse()
 
-	files, err := aux.Unzip("Remuneracao.zip", "output-folder")
-	if err != nil {
-		//log.Fatal(err)
+	if *setdb {
+		database.SetDB()
+		fmt.Println("DB set, starting server")
 	}
-	fmt.Println("Unzipped:\n" + strings.Join(files, "\n"))
 
-	OpenCSV("remuneracao_demo.txt")
+	router := mux.NewRouter()
+
+	router.HandleFunc("/login", users.Login).Methods("POST")
+	router.HandleFunc("/", home).Methods("get")
+
+	router.HandleFunc("/signup", middlewares.TokenVerifyMiddleware(users.Signup)).Methods("POST")
+	router.HandleFunc("/clients", middlewares.TokenVerifyMiddleware(clients.GetClients)).Methods("GET")
+	router.HandleFunc("/updateSalary", middlewares.TokenVerifyMiddleware(clients.UpdateSalary)).Methods("PUT")
+
+	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
-//ParseClientsCSV not implemeted
-func ParseClientsCSV() {
-	fmt.Println("Not implemented. Rename if needed")
-}
-
-type employee struct {
-	Name string
-	Job  string
-	Wage float64
-}
-
-// OpenCSV opens CSV data and stores it in a variable
-func OpenCSV(path string) {
-	csvFile, _ := os.Open(path)
-	reader := csv.NewReader(bufio.NewReader(csvFile))
-	var people []employee
-	for {
-		reader.Read()
-		line, error := reader.Read()
-		fmt.Println(line)
-
-		if error == io.EOF {
-			break
-		} else if error != nil {
-			log.Fatal(error)
-		}
-
-		wageVar, _ := strconv.ParseFloat(line[3], 64)
-		people = append(people, employee{
-			Name: line[0],
-			Job:  line[1],
-			Wage: wageVar,
-		})
-	}
-	fmt.Println(people)
-	return
+func home(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("DB running at port 5432\nServer running at port 8080"))
 }
