@@ -2,20 +2,22 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { connect } from "react-redux";
 
-const PrivateRoute = ({ component: Component, isLogged, ...rest }) => {
+const PublicRoute = ({
+  component: Component,
+  restricted,
+  isLogged,
+  ...rest
+}) => {
   return (
+    // restricted = false meaning public route
+    // restricted = true meaning restricted route
     <Route
       {...rest}
       render={props =>
-        isLogged ? (
-          <Component {...props} />
+        isLogged && restricted ? (
+          <Redirect to="/dashboard" />
         ) : (
-          <Redirect
-            to={{
-              pathname: "/login",
-              state: { from: props.location }
-            }}
-          />
+          <Component {...props} />
         )
       }
     />
@@ -28,4 +30,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   null
-)(PrivateRoute);
+)(PublicRoute);

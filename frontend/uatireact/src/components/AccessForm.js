@@ -1,35 +1,56 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Component } from "react";
+import { Link } from "react-router-dom";
 import { Input, Button } from "@material-ui/core";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as allActions from "../redux/actions";
 
 const formStyle = {
   ipt: {
     marginTop: "10px"
   },
+  link: {
+    textDecoration: "none !important"
+  },
   btn: {
-    marginTop: "10px"
+    marginTop: "10px",
+    marginRight: "10px"
   }
 };
+class AccessForm extends Component {
+  submitForm = e => {
+    e.preventDefault();
+    this.props.toggleIsLogged(this.props.buttonName);
+  };
 
-const AccessForm = ({ buttonName }) => (
-  <Fragment>
-    <form onSubmit={() => {}}>
-      <Input type="text" fullWidth={true} placeholder="Usuário" />
-      <Input
-        style={formStyle.ipt}
-        type="password"
-        fullWidth={true}
-        placeholder="Senha"
-      />
-      <Button
-        style={formStyle.btn}
-        type="submit"
-        variant="contained"
-        color="primary"
-      >
-        {buttonName}
-      </Button>
-    </form>
-  </Fragment>
-);
+  render() {
+    return (
+      <Fragment>
+        <form onSubmit={e => this.submitForm(e)}>
+          <Input type="text" fullWidth={true} placeholder="Usuário" />
+          <Input
+            style={formStyle.ipt}
+            type="password"
+            fullWidth={true}
+            placeholder="Senha"
+          />
+          <Button
+            style={formStyle.btn}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            {this.props.buttonName}
+          </Button>
+        </form>
+      </Fragment>
+    );
+  }
+}
 
-export default AccessForm;
+const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AccessForm);

@@ -6,20 +6,31 @@ import { Switch, Route } from "react-router-dom";
 
 import Layout from "./pages/Layout";
 import PrivateRoute from "./components/PrivateRoute";
+import PublicRoute from "./components/PublicRoute";
 
 const App = () => {
   return (
     <div className="App">
       <Layout>
         <Switch>
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
+          <PublicRoute
+            restricted={true}
+            exact
+            path="/login"
+            component={Login}
+          />
+          <PublicRoute
+            restricted={true}
+            exact
+            path="/register"
+            component={Register}
+          />
 
           <PrivateRoute exact path="/" component={Dashboard} />
-          <PrivateRoute path="/dashboard" component={Dashboard} />
-          <PrivateRoute path="/notifications" component={Notifications} />
-          <PrivateRoute path="/import" component={ImportPage} />
-          <PrivateRoute path="/admin" component={Admin} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute exact path="/notifications" component={Notifications} />
+          <PrivateRoute exact path="/import" component={ImportPage} />
+          <PrivateRoute exact path="/admin" component={Admin} />
         </Switch>
       </Layout>
     </div>
