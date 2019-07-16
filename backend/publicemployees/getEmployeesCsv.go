@@ -2,12 +2,12 @@ package publicemployees
 
 import (
 	"archive/zip"
-	"bytes"
 	"fmt"
+	"io"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 func DownloadSpEmployees() error {
@@ -43,25 +43,9 @@ func DownloadSpEmployees() error {
 	if err != nil {
 		return err
 	}
+	ioutil.WriteFile("remuneracao.zip", body, 0666)
 
-	reader, err := zip.NewReader(bytes.NewReader(body), int64(len(body)))
-	if err != nil {
-		return err
-	}
-
-	for _, zipFile := range reader.File {
-		fmt.Println("Reading file:", zipFile.Name)
-		unzippedFileBytes, err := readZipFile(zipFile)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		return ioutil.WriteFile("remuneracao.csv", unzippedFileBytes, 0666)
-
-	}
-
-	return nil
+	return unzip("remuneracao.zip", "remuneracao.csv")
 }
 
 func readZipFile(zf *zip.File) ([]byte, error) {
@@ -71,4 +55,43 @@ func readZipFile(zf *zip.File) ([]byte, error) {
 	}
 	defer f.Close()
 	return ioutil.ReadAll(f)
+}
+
+func unzip(src, outputFileName string) error {
+	defer os.Remove(src)
+
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return err
+	}
+	defer r.Close()
+
+	for _, f := range r.File {
+		rc, err := f.Open()
+		if err != nil {
+
+			return err
+		}
+		defer rc.Close()
+
+		path := outputFileName
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(path, f.Mode())
+		} else {
+			f, err := os.OpenFile(
+				path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+
+				return err
+			}
+			defer f.Close()
+
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
 }
