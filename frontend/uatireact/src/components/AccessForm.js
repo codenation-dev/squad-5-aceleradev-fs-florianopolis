@@ -20,7 +20,7 @@ const formStyle = {
 class AccessForm extends Component {
   submitForm = e => {
     e.preventDefault();
-    this.props.toggleIsLogged(this.props.buttonName);
+    this.props.toggleIsLogged();
   };
 
   render() {
@@ -40,7 +40,7 @@ class AccessForm extends Component {
             variant="contained"
             color="primary"
           >
-            {this.props.buttonName}
+            Login
           </Button>
         </form>
       </Fragment>

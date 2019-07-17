@@ -15,7 +15,7 @@ const Login = () => {
       >
         <h1>Login</h1>
         <Grid item lg={12}>
-          <AccessForm buttonName="Login" />
+          <AccessForm />
         </Grid>
       </Grid>
     </div>
