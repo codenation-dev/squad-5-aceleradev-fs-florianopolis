@@ -54,11 +54,20 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth
   },
-  content: {
+  contentDefault: {
     backgroundColor: "#fff",
-    margin: theme.spacing(3)
+    margin: theme.spacing(2)
+  },
+  contentLogin: {
+    height: "100vh"
   },
   main: {
+    backgroundColor: "#ecf0f5",
+    flexGrow: 1,
+    height: "100vh",
+    marginTop: "64px"
+  },
+  login: {
     backgroundColor: "#ecf0f5",
     flexGrow: 1,
     height: "100vh"
@@ -70,15 +79,12 @@ function Layout(props) {
     container,
     children,
     isLogged,
-    toggleIsLogged,
+    logout,
     location: { pathname }
   } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
-  const mainDivClasses = `${classes.content} ${classes.mainDiv}`;
-
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
   }
@@ -113,7 +119,7 @@ function Layout(props) {
       path: "/login",
       icon: <Input />,
       showLogged: true,
-      onClick: () => toggleIsLogged()
+      onClick: () => logout()
     },
     {
       name: "Register",
@@ -123,7 +129,7 @@ function Layout(props) {
     }
   ];
 
-  const renderLinks = (isLogged, menuItems, toggleIsLogged) => {
+  const renderLinks = (isLogged, menuItems) => {
     return menuItems
       .filter(({ showLogged }) => showLogged === isLogged)
       .map(({ name, path, icon, onClick }) => (
@@ -218,7 +224,7 @@ function Layout(props) {
       </Drawer>
     </Hidden>
   );
-  console.log(children);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -236,8 +242,20 @@ function Layout(props) {
           </nav>
         </Fragment>
       )}
-      <main className={classes.main}>
-        <div className={classes.content}>
+      <main
+        className={
+          props.history.location.pathname !== "/login"
+            ? classes.main
+            : classes.login
+        }
+      >
+        <div
+          className={
+            props.history.location.pathname !== "/login"
+              ? classes.contentDefault
+              : classes.contentLogin
+          }
+        >
           <div className={classes.toolbar} />
           {children}
         </div>

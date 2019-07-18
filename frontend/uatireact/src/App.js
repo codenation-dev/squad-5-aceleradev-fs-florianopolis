@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 // prettier-ignore
 import { Login, Register, ImportPage, Dashboard, Admin, Notifications } from './pages'
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 
 import Layout from "./pages/Layout";
 import PrivateRoute from "./components/PrivateRoute";
