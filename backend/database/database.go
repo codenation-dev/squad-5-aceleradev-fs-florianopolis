@@ -43,37 +43,54 @@ func SetDB() {
 		GetDB()
 	}
 	var err error
-	err = publicemployees.DownloadSpEmployees()
-	if err != nil {
-		fmt.Println("Error downloading file")
-		panic(err)
-	}
 
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS publicEmployees (name text PRIMARY KEY , salary float8 DEFAULT 0);")
 	if err != nil {
 		panic(err)
 	}
 
-	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS specials (name text not null UNIQUE ,salary float8 default 0, isClient boolean ,alertSent boolean default false);")
 	if err != nil {
 		panic(err)
 	}
-
-	err = publicemployees.GetEmployeesFromCSV(db)
-	if err != nil {
-		fmt.Println("Error parsing data")
-		panic(err)
-	}
-	fmt.Println("done")
 
 	checkClientsTable()
 
+	go func() {
+		GetPublicEmps()
+		SetSpecials()
+	}()
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique ,password text not null);")
 	if err != nil {
 		panic(err)
 	}
 
 	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
+}
+
+func GetPublicEmps() {
+	// err := publicemployees.DownloadSpEmployees()
+	// if err != nil {
+	// 	fmt.Println("Error downloading file")
+	// 	panic(err)
+	// }
+	_, err := db.Exec("DELETE FROM publicEmployees WHERE true;")
+	if err != nil {
+		panic(err)
+	}
+	err = publicemployees.GetEmployeesFromCSV(db)
+	if err != nil {
+		fmt.Println("Error parsing data")
+		panic(err)
+	}
+	fmt.Println("done")
+}
+
+func SetSpecials() {
+	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name as name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) p EXCEPT (SELECT name , salary, isClient from specials);")
+	if err != nil {
+		panic(err)
+	}
 }
 
 func CreateUser(user models.User) error {
@@ -93,8 +110,7 @@ func CreateUser(user models.User) error {
 }
 
 func checkClientsTable() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, salary float8 default 0);")
-
+	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true);")
 	if err != nil {
 		panic(err)
 	}

@@ -15,12 +15,18 @@ type Error struct {
 }
 
 type Client struct {
-	Name   string  `json:"name"`
-	Salary float64 `json:"salary"`
+	Name string `json:"name"`
 }
 
 //Employee holds an public employee name and salary
 type Employee struct {
 	Name   string
 	Salary float64
+}
+
+type Special struct {
+	Name      string  `json:"name"`
+	Salary    float64 `json:"salary"`
+	IsClient  bool    `json:"isClient"`
+	AlertSent bool    `json:"alertSent"`
 }
