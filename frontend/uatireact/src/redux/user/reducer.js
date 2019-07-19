@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   loading: false,
   isLogged: false,
   success: false,
-  error: false
+  error: false,
+  errorText: ""
 };
 
 function User(state = INITIAL_STATE, action) {
@@ -15,7 +16,8 @@ function User(state = INITIAL_STATE, action) {
       return {
         ...state,
         credentials: action.payload.credentials,
-        loading: true
+        loading: true,
+        text: "carregando.."
       };
     case ActionTypes.SUCCESS_ATTEMPT_LOGIN:
       return {
@@ -25,7 +27,8 @@ function User(state = INITIAL_STATE, action) {
         loading: false,
         isLogged: true,
         success: true,
-        error: false
+        error: false,
+        text: "sucesso"
       };
     case ActionTypes.FAILURE_ATTEMPT_LOGIN:
       return {
@@ -35,7 +38,8 @@ function User(state = INITIAL_STATE, action) {
         loading: false,
         isLogged: false,
         success: false,
-        error: true
+        error: true,
+        text: action.payload.text
       };
     case ActionTypes.REQUEST_LOGOUT:
       return {

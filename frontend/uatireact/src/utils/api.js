@@ -2,14 +2,16 @@ import axios from "axios";
 
 const BASE_URL = "https://www.mocky.io/v2/5185415ba171ea3a00704eed";
 
-class Api {
-  static get(uri = "") {
-    // console.log(`${BASE_URL}${uri}`);
-    return axios.get(`${BASE_URL}${uri}`);
-  }
-  static post(uri, payload) {
-    return axios.post(`${BASE_URL}${uri}`, payload);
-  }
-}
-
-export default Api;
+export const get = (uri = "") => {
+  return axios.get(`${BASE_URL}${uri}`);
+};
+export const post = async payload => {
+  const response = await fetch("/api/login", {
+    method: "POST",
+    body: JSON.stringify({
+      email: payload.credentials.username,
+      password: payload.credentials.password
+    })
+  });
+  return await response.json();
+};

@@ -72,7 +72,7 @@ class AccessForm extends Component {
             placeholder="Senha"
             onChange={this.handleChange}
           />
-          <div style={formStyle.error}>{this.state.msg}</div>
+          <div style={formStyle.error}>{this.props.msg}</div>
           <Button
             style={formStyle.btn}
             type="submit"
@@ -89,7 +89,8 @@ class AccessForm extends Component {
 
 const mapStateToProps = state => ({
   success: state.userReducer.success,
-  error: state.userReducer.error
+  error: state.userReducer.error,
+  msg: state.userReducer.text
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
