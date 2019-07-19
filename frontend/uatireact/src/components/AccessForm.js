@@ -48,11 +48,6 @@ class AccessForm extends Component {
       : this.setState({ msg: "Falha no login" });
   }
 
-  // componentDidUpdate(oldProps) {
-  //   if (oldProps.error != this.props.error) console.log(oldProps); //false
-  //   console.log(this.props); // true
-  // }
-
   render() {
     return (
       <Fragment>
