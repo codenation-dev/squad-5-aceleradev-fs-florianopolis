@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import AccessForm from "../components/AccessForm";
+import AccessForm from "../../components/AccessForm";
 
 const Register = () => {
   return (

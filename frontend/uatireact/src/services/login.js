@@ -1,9 +1,9 @@
 import { post } from "../utils/api";
 
-class CharacterService {
+class ServiceLogin {
   static tryLogin(payload) {
     return post(payload);
   }
 }
 
-export default CharacterService;
+export default ServiceLogin;
