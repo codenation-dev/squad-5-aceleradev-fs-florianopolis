@@ -43,9 +43,7 @@ class AccessForm extends Component {
 
   componentWillReceiveProps(newProps) {
     const { success, history } = newProps;
-    success
-      ? history.push("/dashboard")
-      : this.setState({ msg: "Falha no login" });
+    success ? history.push("/dashboard") : this.setState(this.props.msg);
   }
 
   render() {

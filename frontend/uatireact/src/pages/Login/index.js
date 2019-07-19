@@ -30,9 +30,7 @@ class Login extends Component {
 
   componentWillReceiveProps(newProps) {
     const { success, history } = newProps;
-    success
-      ? history.push("/dashboard")
-      : this.setState({ msg: "Falha no login" });
+    success ? history.push("/dashboard") : console.log("s");
   }
 
   render() {
@@ -62,7 +60,7 @@ class Login extends Component {
               placeholder="Senha"
               onChange={this.handleChange}
             />
-            <Error>{this.state.msg}</Error>
+            <Error>{this.props.msg}</Error>
             <hr />
             <Button type="submit">Login</Button>
           </Form>
@@ -74,7 +72,8 @@ class Login extends Component {
 
 const mapStateToProps = state => ({
   success: state.userReducer.success,
-  error: state.userReducer.error
+  error: state.userReducer.error,
+  msg: state.userReducer.text
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
