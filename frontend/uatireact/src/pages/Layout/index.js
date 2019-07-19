@@ -54,9 +54,23 @@ const useStyles = makeStyles(theme => ({
   drawerPaper: {
     width: drawerWidth
   },
-  content: {
+  contentDefault: {
+    backgroundColor: "#fff",
+    margin: theme.spacing(2)
+  },
+  contentLogin: {
+    height: "100vh"
+  },
+  main: {
+    backgroundColor: "#ecf0f5",
     flexGrow: 1,
-    padding: theme.spacing(3)
+    height: "100vh",
+    marginTop: "64px"
+  },
+  login: {
+    backgroundColor: "#ecf0f5",
+    flexGrow: 1,
+    height: "100vh"
   }
 }));
 
@@ -65,13 +79,12 @@ function Layout(props) {
     container,
     children,
     isLogged,
-    toggleIsLogged,
+    logout,
     location: { pathname }
   } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
   }
@@ -106,7 +119,7 @@ function Layout(props) {
       path: "/login",
       icon: <Input />,
       showLogged: true,
-      onClick: () => toggleIsLogged()
+      onClick: () => logout()
     },
     {
       name: "Register",
@@ -116,7 +129,7 @@ function Layout(props) {
     }
   ];
 
-  const renderLinks = (isLogged, menuItems, toggleIsLogged) => {
+  const renderLinks = (isLogged, menuItems) => {
     return menuItems
       .filter(({ showLogged }) => showLogged === isLogged)
       .map(({ name, path, icon, onClick }) => (
@@ -133,17 +146,83 @@ function Layout(props) {
       ));
   };
 
-  const drawer = (
-    <div style={{ backgroundColor: "#9dd2e7", flexGrow: 1 }}>
+  const sideMenu = (
+    // Criação dos links do sidebar
+    <div style={{ backgroundColor: "#222d32", color: "#b8c7ce", flexGrow: 1 }}>
       <Hidden smDown>
         <div className={classes.toolbar} />
       </Hidden>
       <Divider />
-      {/* <button type="button" onClick={() => toggleIsLogged()}>
-        IsLogged: {isLogged ? "true" : "false"}
-      </button> */}
       <MenuList>{renderLinks(isLogged, menuItems)}</MenuList>
     </div>
+  );
+
+  const navBarTopo = (
+    <AppBar
+      position="fixed"
+      className={classes.appBar}
+      style={{ justifyContent: "flex-start" }}
+    >
+      <Toolbar
+        style={{
+          justifyContent: "flex-start",
+          backgroundColor: "#fff",
+          color: "#333"
+        }}
+      >
+        <IconButton
+          style={{ color: "#b8c7ce" }}
+          color="primary"
+          aria-label="Open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          className={classes.menuButton}
+        >
+          <MenuIcon />
+        </IconButton>
+        <img src={logo} className="App-logo" alt="logo" />
+        <Typography variant="h6" align="left" style={{ flexGrow: 1 }}>
+          Uati Bank
+        </Typography>
+        <Typography variant="h6" noWrap>
+          Welcome User
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  );
+
+  const sideBarMobile = (
+    <Hidden smUp implementation="css">
+      <Drawer
+        container={container}
+        variant="temporary"
+        anchor={theme.direction === "rtl" ? "right" : "left"}
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        classes={{
+          paper: classes.drawerPaper
+        }}
+        ModalProps={{
+          keepMounted: true // Better open performance on mobile.
+        }}
+      >
+        {sideMenu}
+      </Drawer>
+    </Hidden>
+  );
+
+  const sideBarDesktop = (
+    <Hidden xsDown implementation="css">
+      <Drawer
+        classes={{
+          paper: classes.drawerPaper
+        }}
+        variant="permanent"
+        open
+      >
+        {sideMenu}
+      </Drawer>
+    </Hidden>
   );
 
   return (
@@ -151,67 +230,35 @@ function Layout(props) {
       <CssBaseline />
       {isLogged && (
         <Fragment>
-          <AppBar
-            position="fixed"
-            className={classes.appBar}
-            style={{ justifyContent: "flex-start" }}
-          >
-            <Toolbar style={{ justifyContent: "flex-start" }}>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                className={classes.menuButton}
-              >
-                <MenuIcon />
-              </IconButton>
-              <img src={logo} className="App-logo" alt="logo" />
-              <Typography variant="h6" align="left" style={{ flexGrow: 1 }}>
-                Uati Bank
-              </Typography>
-              <Typography variant="h6" noWrap>
-                Welcome User
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          {/* Navbar topo */}
+          {navBarTopo}
 
           <nav className={classes.drawer}>
-            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-            <Hidden smUp implementation="css">
-              <Drawer
-                container={container}
-                variant="temporary"
-                anchor={theme.direction === "rtl" ? "right" : "left"}
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                classes={{
-                  paper: classes.drawerPaper
-                }}
-                ModalProps={{
-                  keepMounted: true // Better open performance on mobile.
-                }}
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-            <Hidden xsDown implementation="css">
-              <Drawer
-                classes={{
-                  paper: classes.drawerPaper
-                }}
-                variant="permanent"
-                open
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
+            {/* SideBar para mobile */}
+            {sideBarMobile}
+
+            {/* SideBar, onde ficam os menus */}
+            {sideBarDesktop}
           </nav>
         </Fragment>
       )}
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {children}
+      <main
+        className={
+          props.history.location.pathname !== "/login"
+            ? classes.main
+            : classes.login
+        }
+      >
+        <div
+          className={
+            props.history.location.pathname !== "/login"
+              ? classes.contentDefault
+              : classes.contentLogin
+          }
+        >
+          <div className={classes.toolbar} />
+          {children}
+        </div>
       </main>
     </div>
   );

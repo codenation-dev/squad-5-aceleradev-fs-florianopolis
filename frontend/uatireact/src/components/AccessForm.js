@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from "react";
-import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Input, Button } from "@material-ui/core";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -15,32 +15,64 @@ const formStyle = {
   btn: {
     marginTop: "10px",
     marginRight: "10px"
+  },
+  error: {
+    fontSize: "12px",
+    color: "red",
+    padding: "10px 0px"
   }
 };
 class AccessForm extends Component {
+  state = {
+    username: "",
+    password: "",
+    msg: ""
+  };
+
+  handleChange = event => {
+    const input = event.target;
+    const value = input.value;
+
+    this.setState({ [input.name]: value });
+  };
+
   submitForm = e => {
     e.preventDefault();
-    this.props.toggleIsLogged(this.props.buttonName);
+    this.props.login(this.state);
   };
+
+  componentWillReceiveProps(newProps) {
+    const { success, history } = newProps;
+    success ? history.push("/dashboard") : this.setState(this.props.msg);
+  }
 
   render() {
     return (
       <Fragment>
         <form onSubmit={e => this.submitForm(e)}>
-          <Input type="text" fullWidth={true} placeholder="Usuário" />
           <Input
+            name="username"
+            type="text"
+            fullWidth={true}
+            placeholder="Usuário"
+            onChange={this.handleChange}
+          />
+          <Input
+            name="password"
             style={formStyle.ipt}
             type="password"
             fullWidth={true}
             placeholder="Senha"
+            onChange={this.handleChange}
           />
+          <div style={formStyle.error}>{this.props.msg}</div>
           <Button
             style={formStyle.btn}
             type="submit"
             variant="contained"
             color="primary"
           >
-            {this.props.buttonName}
+            Login
           </Button>
         </form>
       </Fragment>
@@ -48,9 +80,17 @@ class AccessForm extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  success: state.userReducer.success,
+  error: state.userReducer.error,
+  msg: state.userReducer.text
+});
+
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(AccessForm);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AccessForm)
+);

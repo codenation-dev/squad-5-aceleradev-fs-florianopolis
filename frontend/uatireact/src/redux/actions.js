@@ -1,15 +1,20 @@
-export function toggleIsLogged(nameAction) {
-  let type = "";
+export const ActionTypes = {
+  REQUEST_ATTEMPT_LOGIN: "REQUEST_ATTEMPT_LOGIN",
+  SUCCESS_ATTEMPT_LOGIN: "SUCCESS_ATTEMPT_LOGIN",
+  FAILURE_ATTEMPT_LOGIN: "FAILURE_ATTEMPT_LOGIN",
+  REQUEST_LOGOUT: "REQUEST_LOGOUT"
+};
 
-  if (nameAction === "Register") {
-    type = "REGISTER_USER";
-  } else {
-    type = "TOGGLE_IS_LOGGED";
-  }
-
-  console.log(type);
-
+export function login(credentials) {
   return {
-    type: type
+    type: ActionTypes.REQUEST_ATTEMPT_LOGIN,
+    payload: {
+      credentials
+    }
+  };
+}
+export function logout() {
+  return {
+    type: ActionTypes.REQUEST_LOGOUT
   };
 }

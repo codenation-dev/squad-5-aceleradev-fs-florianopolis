@@ -1,8 +1,8 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import AccessForm from "../components/AccessForm";
+import AccessForm from "../../components/AccessForm";
 
-const Login = () => {
+const Register = () => {
   return (
     <div>
       <Grid
@@ -13,13 +13,13 @@ const Login = () => {
         justify="center"
         style={{ minHeight: "50vh" }}
       >
-        <h1>Login</h1>
+        <h1>Register</h1>
         <Grid item lg={12}>
-          <AccessForm buttonName="Login" />
+          <AccessForm buttonName="Register" />
         </Grid>
       </Grid>
     </div>
   );
 };
 
-export default Login;
+export default Register;
