@@ -26,8 +26,7 @@ function* attemptToLogin(action) {
       payload: { loggedUser }
     });
   } catch (err) {
-    console.log("FAILURE ON ATTEMPTING LOGIN");
-    console.log(err);
+    //console.log("FAILURE ON ATTEMPTING LOGIN");
     yield put({
       type: ActionTypes.FAILURE_ATTEMPT_LOGIN,
       payload: { text: err.message }
