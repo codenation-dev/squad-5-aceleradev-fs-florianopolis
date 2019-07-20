@@ -16,11 +16,12 @@ class Login extends Component {
     msg: ""
   };
 
-  handleChange = event => {
-    const input = event.target;
-    const value = input.value;
-
-    this.setState({ [input.name]: value });
+  //handleChange splitted so it can work with enzyme testing
+  handleUsernameChange = event => {
+    this.setState({ username: event.target.value });
+  };
+  handlePasswordChange = event => {
+    this.setState({ password: event.target.value });
   };
 
   submitForm = e => {
@@ -30,7 +31,7 @@ class Login extends Component {
 
   componentWillReceiveProps(newProps) {
     const { success, history } = newProps;
-    success ? history.push("/dashboard") : console.log("s");
+    success ? history.push("/dashboard") : console.log("Login failed");
   }
 
   render() {
@@ -51,18 +52,20 @@ class Login extends Component {
               type="text"
               // fullWidth={true}
               placeholder="Usuário"
-              onChange={this.handleChange}
+              onChange={this.handleUsernameChange}
             />
             <input
               name="password"
               type="password"
               // fullWidth={true}
               placeholder="Senha"
-              onChange={this.handleChange}
+              onChange={this.handlePasswordChange}
             />
-            <Error>{this.props.msg}</Error>
+            <Error className="loginMsg">{this.props.msg}</Error>
             <hr />
-            <Button type="submit">Login</Button>
+            <Button type="submit" className="loginButton">
+              Login
+            </Button>
           </Form>
         </Grid>
       </div>

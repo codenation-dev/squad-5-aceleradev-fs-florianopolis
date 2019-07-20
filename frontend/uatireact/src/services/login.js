@@ -1,11 +1,13 @@
 import { post } from "../utils/api";
 
 class ServiceLogin {
-  static tryLogin(payload) {
-    const isBackendRunning = false; //change this to test the code without bacakend's endpoints
+  static async tryLogin(payload) {
+    const isBackendRunning = true; //change this to test the code visually without bacakend's endpoints
     if (isBackendRunning) {
-      return post(payload);
+      const response = post(payload);
+      return response;
     } else {
+      //while "yarn test"ing you should use isBackendRunning = true because we have mockups
       if (
         payload.credentials.username === "1" &&
         payload.credentials.password === "1"
