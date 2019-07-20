@@ -11,6 +11,7 @@ import (
 	"uati-api/specials"
 	"uati-api/users"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"github.com/subosito/gotenv"
@@ -43,7 +44,7 @@ func main() {
 	router.HandleFunc("/specials/clients", middlewares.TokenVerifyMiddleware(specials.GetSpecialClients)).Methods("GET")
 	router.HandleFunc("/specials/top", middlewares.TokenVerifyMiddleware(specials.GetTopSpecials)).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS()(router)))
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
