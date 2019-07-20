@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 	"uati-api/clients"
 	"uati-api/database"
 	"uati-api/middlewares"
@@ -26,14 +27,23 @@ func init() {
 }
 
 func main() {
+	ticker := time.NewTicker(24 * time.Hour)
+
 	setdb := flag.Bool("setdb", false, "download csv and setup db on startup")
-
 	flag.Parse()
-
 	if *setdb {
 		database.SetDB()
 		fmt.Println("DB set, starting server")
 	}
+
+	go func() {
+		for _ = range ticker.C {
+			fmt.Println("Starting employees service")
+			database.GetPublicEmps()
+			database.SetSpecials()
+		}
+
+	}()
 
 	router := mux.NewRouter()
 

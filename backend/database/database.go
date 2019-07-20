@@ -56,14 +56,15 @@ func SetDB() {
 
 	checkClientsTable()
 
-	go func() {
-		GetPublicEmps()
-		SetSpecials()
-	}()
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique ,password text not null);")
 	if err != nil {
 		panic(err)
 	}
+
+	go func() {
+		GetPublicEmps()
+		SetSpecials()
+	}()
 
 	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
 }
