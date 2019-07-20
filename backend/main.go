@@ -8,6 +8,7 @@ import (
 	"uati-api/clients"
 	"uati-api/database"
 	"uati-api/middlewares"
+	"uati-api/specials"
 	"uati-api/users"
 
 	"github.com/gorilla/mux"
@@ -39,7 +40,8 @@ func main() {
 
 	router.HandleFunc("/signup", middlewares.TokenVerifyMiddleware(users.Signup)).Methods("POST")
 	router.HandleFunc("/clients", middlewares.TokenVerifyMiddleware(clients.GetClients)).Methods("GET")
-	router.HandleFunc("/updateSalary", middlewares.TokenVerifyMiddleware(clients.UpdateSalary)).Methods("PUT")
+	router.HandleFunc("/specials/clients", middlewares.TokenVerifyMiddleware(specials.GetSpecialClients)).Methods("GET")
+	router.HandleFunc("/specials/top", middlewares.TokenVerifyMiddleware(specials.GetTopSpecials)).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
