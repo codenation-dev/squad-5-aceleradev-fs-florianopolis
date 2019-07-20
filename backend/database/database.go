@@ -69,12 +69,12 @@ func SetDB() {
 }
 
 func GetPublicEmps() {
-	// err := publicemployees.DownloadSpEmployees()
-	// if err != nil {
-	// 	fmt.Println("Error downloading file")
-	// 	panic(err)
-	// }
-	_, err := db.Exec("DELETE FROM publicEmployees WHERE true;")
+	err := publicemployees.DownloadSpEmployees()
+	if err != nil {
+		fmt.Println("Error downloading file")
+		panic(err)
+	}
+	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
 	if err != nil {
 		panic(err)
 	}
