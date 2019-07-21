@@ -1,17 +1,20 @@
-import axios from "axios";
+const BASE_URL = "http://localhost:8080";
 
-const BASE_URL = "https://www.mocky.io/v2/5185415ba171ea3a00704eed";
-
-export const get = (uri = "") => {
-  return axios.get(`${BASE_URL}${uri}`);
-};
-export const post = async payload => {
-  const response = await fetch("http://localhost:8080/login", {
+export const post = async (uri, body) => {
+  const response = await fetch(`${BASE_URL}${uri}`, {
     method: "POST",
-    body: JSON.stringify({
-      email: payload.credentials.username,
-      password: payload.credentials.password
-    })
+    body: JSON.stringify(body)
   });
-  return await response.json();
+  return response.json();
+};
+
+export const get = async (uri, token = "no token") => {
+  const response = await fetch(`${BASE_URL}${uri}`, {
+    method: "GET",
+    headers: {
+      Authorization: `${token}`
+    }
+  });
+  console.log(response);
+  return response.json();
 };

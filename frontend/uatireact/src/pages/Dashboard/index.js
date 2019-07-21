@@ -1,4 +1,5 @@
 import React from "react";
+import { get } from "../../utils/api";
 
 const clients = [
   {
@@ -12,6 +13,8 @@ const clients = [
 ];
 
 const Dashboard = () => {
+  (async () =>
+    console.log(await get("/clients", localStorage.getItem("userToken"))))();
   return (
     <div className="dashboard-div">
       <h1>Welcome to the Dashboard</h1>

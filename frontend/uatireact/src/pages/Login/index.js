@@ -11,14 +11,15 @@ import { Form, Error } from "./styles";
 
 class Login extends Component {
   state = {
-    username: "",
+    email: "",
     password: "",
-    msg: ""
+    msg: "",
+    serverStatus: ""
   };
 
   //handleChange splitted so it can work with enzyme testing
-  handleUsernameChange = event => {
-    this.setState({ username: event.target.value });
+  handleEmailChange = event => {
+    this.setState({ email: event.target.value });
   };
   handlePasswordChange = event => {
     this.setState({ password: event.target.value });
@@ -29,9 +30,24 @@ class Login extends Component {
     this.props.login(this.state);
   };
 
-  componentWillReceiveProps(newProps) {
-    const { success, history } = newProps;
-    success ? history.push("/dashboard") : console.log("Login failed");
+  componentDidMount() {
+    (async () => {
+      try {
+        await fetch("http://localhost:8080/", {
+          method: "GET"
+        });
+        this.setState({ serverStatus: "online" });
+      } catch (err) {
+        console.log(err);
+        this.setState({ serverStatus: "offline" });
+      }
+    })();
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.sucess) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   render() {
@@ -48,11 +64,11 @@ class Login extends Component {
           <Form onSubmit={e => this.submitForm(e)}>
             <h1>Login</h1>
             <input
-              name="username"
+              name="email"
               type="text"
               // fullWidth={true}
-              placeholder="Usuário"
-              onChange={this.handleUsernameChange}
+              placeholder="Email"
+              onChange={this.handleEmailChange}
             />
             <input
               name="password"
@@ -66,6 +82,7 @@ class Login extends Component {
             <Button type="submit" className="loginButton">
               Login
             </Button>
+            Server status: {this.state.serverStatus}
           </Form>
         </Grid>
       </div>
