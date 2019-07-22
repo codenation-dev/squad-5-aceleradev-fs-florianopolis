@@ -17,7 +17,7 @@ export const tryLogin = async payload => {
     ) {
       return { token: "fakeToken" };
     } else {
-      return { message: "fakeLogin failed, change services/login.js" };
+      return { message: "fakeLogin failed" };
     }
   }
 };
