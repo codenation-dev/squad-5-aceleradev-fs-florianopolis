@@ -23,6 +23,7 @@ func GetDB() *sql.DB {
 	if db != nil {
 		return db
 	}
+
 	gotenv.Load()
 
 	connectionString := fmt.Sprintf("host=uati-db user=%s password=%s dbname=%s sslmode=disable",
@@ -61,10 +62,10 @@ func SetDB() {
 		panic(err)
 	}
 
-	go func() {
-		GetPublicEmps()
-		SetSpecials()
-	}()
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS alerts (sent_to text NOT NULL,client boolean DEFAULT false,name text NOT NULL,sent_at TIMESTAMP DEFAULT NOW());")
+	if err != nil {
+		panic(err)
+	}
 
 	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
 }

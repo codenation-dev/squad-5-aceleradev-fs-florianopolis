@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"uati-api/alerts"
 	"uati-api/clients"
 	"uati-api/database"
 	"uati-api/middlewares"
@@ -33,6 +34,11 @@ func main() {
 	flag.Parse()
 	if *setdb {
 		database.SetDB()
+		go func() {
+			database.GetPublicEmps()
+			database.SetSpecials()
+			alerts.SendAlerts()
+		}()
 		fmt.Println("DB set, starting server")
 	}
 
@@ -41,6 +47,7 @@ func main() {
 			fmt.Println("Starting employees service")
 			database.GetPublicEmps()
 			database.SetSpecials()
+			alerts.SendAlerts()
 		}
 
 	}()
@@ -55,6 +62,7 @@ func main() {
 	router.HandleFunc("/api/clients/upload", middlewares.TokenVerifyMiddleware(clients.UploadClients)).Methods("POST")
 	router.HandleFunc("/api/specials/clients", middlewares.TokenVerifyMiddleware(specials.GetSpecialClients)).Methods("GET")
 	router.HandleFunc("/api/specials/top", middlewares.TokenVerifyMiddleware(specials.GetTopSpecials)).Methods("GET")
+	router.HandleFunc("/api/alerts", middlewares.TokenVerifyMiddleware(alerts.GetAlerts)).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS()(router)))
 }
