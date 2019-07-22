@@ -8,13 +8,14 @@ import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
 
 import { Form, Error } from "./styles";
+import { isServerUp } from "../../services/server";
 
 class Login extends Component {
   state = {
     email: "",
     password: "",
     msg: "",
-    serverStatus: ""
+    serverStatus: "checking..."
   };
 
   //handleChange splitted so it can work with enzyme testing
@@ -31,17 +32,12 @@ class Login extends Component {
   };
 
   componentDidMount() {
-    (async () => {
-      try {
-        await fetch("http://localhost:8080/", {
-          method: "GET"
-        });
-        this.setState({ serverStatus: "online" });
-      } catch (err) {
-        console.log(err);
-        this.setState({ serverStatus: "offline" });
-      }
-    })();
+    const asyncFunc = async () => {
+      const status = (await isServerUp()) ? "online" : "offline";
+      this.setState({ serverStatus: status });
+    };
+
+    asyncFunc();
   }
 
   componentWillUpdate(nextProps) {

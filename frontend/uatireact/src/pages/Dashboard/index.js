@@ -13,8 +13,7 @@ const clients = [
 ];
 
 const Dashboard = () => {
-  (async () =>
-    console.log(await get("/clients", localStorage.getItem("userToken"))))();
+  (async () => console.log(await get("/clients")))();
   return (
     <div className="dashboard-div">
       <h1>Welcome to the Dashboard</h1>

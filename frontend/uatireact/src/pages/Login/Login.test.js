@@ -11,13 +11,13 @@ import Adapter from "enzyme-adapter-react-16";
 
 import Login from ".";
 import Layout from "../Layout";
-import { post } from "../../utils/api";
+import { tryLogin } from "../../services/login";
 
 configure({ adapter: new Adapter() });
 
-jest.mock("../../utils/api", () => ({
-  post: jest.fn((path, { email, password }) => {
-    if (email === "1" && password === "1") {
+jest.mock("../../services/login", () => ({
+  tryLogin: jest.fn(({ credentials }) => {
+    if (credentials.email === "1" && credentials.password === "1") {
       return { token: "Token via mock" };
     } else {
       return { message: "Login error via mockup" };
@@ -49,7 +49,7 @@ describe("Login", () => {
       .find('input[name="password"]')
       .simulate("change", { target: { value: "1" } });
     wrapper.find("form").simulate("submit");
-    expect(post).toHaveReturnedWith(
+    expect(tryLogin).toHaveReturnedWith(
       expect.objectContaining({
         token: expect.any(String)
       })
@@ -66,7 +66,7 @@ describe("Login", () => {
       .find('input[name="password"]')
       .simulate("change", { target: { value: "credentials" } });
     wrapper.find("form").simulate("submit");
-    expect(post).toHaveReturnedWith(
+    expect(tryLogin).toHaveReturnedWith(
       expect.objectContaining({
         message: expect.any(String)
       })
