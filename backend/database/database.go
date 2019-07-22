@@ -61,10 +61,10 @@ func SetDB() {
 		panic(err)
 	}
 
-	go func() {
-		GetPublicEmps()
-		SetSpecials()
-	}()
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS alerts (sent_to text NOT NULL,client boolean DEFAULT false,name text NOT NULL,sent_at TIMESTAMP DEFAULT NOW());")
+	if err != nil {
+		panic(err)
+	}
 
 	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
 }
@@ -92,7 +92,7 @@ func SetSpecials() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient FROM clients c WHERE specials.name=c.name;")
+	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c,specials s WHERE specials.name=c.name AND s.isClient IS NOT TRUE")
 	if err != nil {
 		panic(err)
 	}
