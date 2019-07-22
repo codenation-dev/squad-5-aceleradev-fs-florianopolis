@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://localhost:8080/api";
 
 export const post = async (uri, body) => {
   const response = await fetch(`${BASE_URL}${uri}`, {
@@ -21,7 +21,7 @@ export const get = async uri => {
 export const authGet = async uri => {
   const response = await fetch(`${BASE_URL}${uri}`, {
     method: "GET",
-    headers: { Authorization: localStorage.getItem("userToken") }
+    headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` }
   });
   console.log(response);
   return response.json();
