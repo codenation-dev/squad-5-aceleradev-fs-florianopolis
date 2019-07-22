@@ -1,29 +1,29 @@
 import { ActionTypes } from "../actions";
 
 const INITIAL_STATE = {
-  userList: [],
+  notificationList: [],
   loading: false,
   error: false
 };
 
-function User(state = INITIAL_STATE, action) {
+function Notification(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.REQUEST_ATTEMPT_LOGIN:
+    case ActionTypes.REQUEST_ATTEMPT_NOTIFICATION:
       return {
         ...state,
         loading: true
       };
-    case ActionTypes.SUCCESS_ATTEMPT_LOGIN:
+    case ActionTypes.SUCCESS_ATTEMPT_NOTIFICATION:
       return {
         ...state,
-        userList: action.payload.userList,
+        notificationList: action.payload.notificationList,
         loading: false,
         error: false
       };
-    case ActionTypes.FAILURE_ATTEMPT_LOGIN:
+    case ActionTypes.FAILURE_ATTEMPT_NOTIFICATION:
       return {
         ...state,
-        userList: [],
+        notificationList: [],
         loading: false,
         error: true
       };
@@ -32,4 +32,4 @@ function User(state = INITIAL_STATE, action) {
   }
 }
 
-export default User;
+export default Notification;

@@ -15,7 +15,6 @@ import {
 import {
   Menu as MenuIcon,
   Input,
-  AssignmentInd,
   Build,
   Web,
   CloudUpload,
@@ -50,8 +49,9 @@ const useStyles = makeStyles(theme => ({
       display: "none"
     }
   },
-  toolbar: theme.mixins.toolbar,
+  // toolbar: theme.mixins.toolbar,
   drawerPaper: {
+    marginTop: "64px",
     width: drawerWidth
   },
   contentDefault: {
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
   main: {
     backgroundColor: "#ecf0f5",
     flexGrow: 1,
-    height: "100vh",
+    height: "calc(100vh - 64px)",
     marginTop: "64px"
   },
   login: {
@@ -79,9 +79,12 @@ function Layout(props) {
     container,
     children,
     isLogged,
+    username,
     logout,
     location: { pathname }
   } = props;
+
+  const defaultColor = "#b8c7ce";
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -93,39 +96,33 @@ function Layout(props) {
     {
       name: "Dashboard",
       path: "/dashboard",
-      icon: <Web />,
+      icon: <Web style={{ color: defaultColor }} />,
       showLogged: true
     },
     {
-      name: "Import Clients",
+      name: "Importar Clientes",
       path: "/import",
-      icon: <CloudUpload />,
+      icon: <CloudUpload style={{ color: defaultColor }} />,
       showLogged: true
     },
     {
-      name: "Notifications",
+      name: "Notificações",
       path: "/notifications",
-      icon: <NotificationImportant />,
+      icon: <NotificationImportant style={{ color: defaultColor }} />,
       showLogged: true
     },
     {
-      name: "Administration",
+      name: "Administração",
       path: "/admin",
-      icon: <Build />,
+      icon: <Build style={{ color: defaultColor }} />,
       showLogged: true
     },
     {
       name: "Sair",
       path: "/login",
-      icon: <Input />,
+      icon: <Input style={{ color: defaultColor }} />,
       showLogged: true,
       onClick: () => logout()
-    },
-    {
-      name: "Register",
-      path: "/register",
-      icon: <AssignmentInd />,
-      showLogged: false
     }
   ];
 
@@ -148,7 +145,9 @@ function Layout(props) {
 
   const sideMenu = (
     // Criação dos links do sidebar
-    <div style={{ backgroundColor: "#222d32", color: "#b8c7ce", flexGrow: 1 }}>
+    <div
+      style={{ backgroundColor: "#222d32", color: defaultColor, flexGrow: 1 }}
+    >
       <Hidden smDown>
         <div className={classes.toolbar} />
       </Hidden>
@@ -170,8 +169,9 @@ function Layout(props) {
           color: "#333"
         }}
       >
+        {/* icone para abrir o menu mobile */}
         <IconButton
-          style={{ color: "#b8c7ce" }}
+          style={{ color: defaultColor }}
           color="primary"
           aria-label="Open drawer"
           edge="start"
@@ -185,7 +185,7 @@ function Layout(props) {
           Uati Bank
         </Typography>
         <Typography variant="h6" noWrap>
-          Welcome User
+          Olá {username}
         </Typography>
       </Toolbar>
     </AppBar>
@@ -256,7 +256,6 @@ function Layout(props) {
               : classes.contentLogin
           }
         >
-          <div className={classes.toolbar} />
           {children}
         </div>
       </main>
@@ -265,7 +264,10 @@ function Layout(props) {
 }
 
 const mapStateToProps = state => ({
-  isLogged: state.userReducer.isLogged
+  isLogged: state.loginReducer.isLogged,
+  username: state.loginReducer.loggedUser
+    ? state.loginReducer.loggedUser.username
+    : ""
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

@@ -2,9 +2,9 @@ import { post } from "../utils/api";
 
 class ServiceLogin {
   static tryLogin(payload) {
-    const isBackendRunning = false; //change this to test the code without bacakend's endpoints
+    const isBackendRunning = true; //change this to test the code without bacakend's endpoints
     if (isBackendRunning) {
-      return post(payload);
+      return post("login", payload);
     } else {
       if (
         payload.credentials.username === "1" &&

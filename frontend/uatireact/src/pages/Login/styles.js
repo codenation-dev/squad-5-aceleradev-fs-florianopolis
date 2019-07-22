@@ -1,33 +1,5 @@
 import styled from "styled-components";
 
-//   loginBg: {
-//     backgroundColor: "#fff",
-//     padding: "60px 20px",
-//     border: "1px solid #ccc"
-//   },
-//   ipt: {
-//     marginTop: "10px"
-//   },
-//   link: {
-//     textDecoration: "none !important"
-//   },
-//   btn: {
-//     marginTop: "10px",
-//     marginRight: "10px"
-//   },
-//   error: {
-//     fontSize: "12px",
-//     color: "red",
-//     padding: "10px 0px"
-//   }
-
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
-
 export const Error = styled.div`
   font-size: 12px;
   color: #ff3333;

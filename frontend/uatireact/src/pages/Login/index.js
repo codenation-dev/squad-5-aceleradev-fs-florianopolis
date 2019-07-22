@@ -30,7 +30,9 @@ class Login extends Component {
 
   componentWillReceiveProps(newProps) {
     const { success, history } = newProps;
-    success ? history.push("/dashboard") : console.log("s");
+    if (success) {
+      history.push("/dashboard");
+    }
   }
 
   render() {
@@ -71,9 +73,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  success: state.userReducer.success,
-  error: state.userReducer.error,
-  msg: state.userReducer.text
+  success: state.loginReducer.success,
+  error: state.loginReducer.error,
+  msg: state.loginReducer.text
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

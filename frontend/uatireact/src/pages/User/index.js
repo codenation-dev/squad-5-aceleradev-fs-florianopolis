@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
 import { localizationSettings } from "../../helpers/tableSettings";
 
-class Notifications extends Component {
+class User extends Component {
   state = {
     columns: [
       { title: "Email", field: "email" },
@@ -28,7 +28,7 @@ class Notifications extends Component {
   render() {
     return (
       <MaterialTable
-        title="Notificações do sistema"
+        title="Usuários do sistema"
         columns={this.state.columns}
         data={this.state.data}
         editable={{
@@ -77,4 +77,4 @@ const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
 export default connect(
   null,
   mapDispatchToProps
-)(Notifications);
+)(User);

@@ -7,7 +7,7 @@ const PrivateRoute = ({ component: Component, isLogged, ...rest }) => {
     <Route
       {...rest}
       render={props =>
-        localStorage.getItem("userToken") && isLogged ? (
+        isLogged ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -23,7 +23,7 @@ const PrivateRoute = ({ component: Component, isLogged, ...rest }) => {
 };
 
 const mapStateToProps = state => ({
-  isLogged: state.userReducer.isLogged
+  isLogged: state.loginReducer.isLogged
 });
 export default connect(
   mapStateToProps,
