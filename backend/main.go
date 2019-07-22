@@ -10,6 +10,7 @@ import (
 	"uati-api/middlewares"
 	"uati-api/specials"
 	"uati-api/users"
+	"uati-api/utils"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -37,7 +38,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/login", users.Login).Methods("POST")
-	router.HandleFunc("/", home).Methods("get")
+	router.HandleFunc("/", home).Methods("GET")
 
 	router.HandleFunc("/signup", middlewares.TokenVerifyMiddleware(users.Signup)).Methods("POST")
 	router.HandleFunc("/clients", middlewares.TokenVerifyMiddleware(clients.GetClients)).Methods("GET")
@@ -48,5 +49,5 @@ func main() {
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("DB running at port 5432\nServer running at port 8080"))
+	utils.ResponseJSON(w, "DB running at port 5432\nServer running at port 8080")
 }

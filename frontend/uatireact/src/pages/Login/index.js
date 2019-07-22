@@ -8,17 +8,19 @@ import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
 
 import { Form, Error } from "./styles";
+import { isServerUp } from "../../services/server";
 
 class Login extends Component {
   state = {
-    username: "",
+    email: "",
     password: "",
-    msg: ""
+    msg: "",
+    serverStatus: "checking..."
   };
 
   //handleChange splitted so it can work with enzyme testing
-  handleUsernameChange = event => {
-    this.setState({ username: event.target.value });
+  handleEmailChange = event => {
+    this.setState({ email: event.target.value });
   };
   handlePasswordChange = event => {
     this.setState({ password: event.target.value });
@@ -29,9 +31,19 @@ class Login extends Component {
     this.props.login(this.state);
   };
 
-  componentWillReceiveProps(newProps) {
-    const { success, history } = newProps;
-    success ? history.push("/dashboard") : console.log("Login failed");
+  componentDidMount() {
+    const asyncFunc = async () => {
+      const status = (await isServerUp()) ? "online" : "offline";
+      this.setState({ serverStatus: status });
+    };
+
+    asyncFunc();
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.sucess) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   render() {
@@ -48,11 +60,11 @@ class Login extends Component {
           <Form onSubmit={e => this.submitForm(e)}>
             <h1>Login</h1>
             <input
-              name="username"
+              name="email"
               type="text"
               // fullWidth={true}
-              placeholder="Usuário"
-              onChange={this.handleUsernameChange}
+              placeholder="Email"
+              onChange={this.handleEmailChange}
             />
             <input
               name="password"
@@ -66,6 +78,7 @@ class Login extends Component {
             <Button type="submit" className="loginButton">
               Login
             </Button>
+            Server status: {this.state.serverStatus}
           </Form>
         </Grid>
       </div>
