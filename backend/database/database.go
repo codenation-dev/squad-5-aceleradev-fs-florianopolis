@@ -56,14 +56,15 @@ func SetDB() {
 
 	checkClientsTable()
 
-	go func() {
-		GetPublicEmps()
-		SetSpecials()
-	}()
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique ,password text not null);")
 	if err != nil {
 		panic(err)
 	}
+
+	go func() {
+		GetPublicEmps()
+		SetSpecials()
+	}()
 
 	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
 }
@@ -87,10 +88,15 @@ func GetPublicEmps() {
 }
 
 func SetSpecials() {
-	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name as name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) p EXCEPT (SELECT name , salary, isClient from specials);")
+	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name AS name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) s WHERE NOT EXISTS(SELECT  name FROM specials WHERE name = s.name);")
 	if err != nil {
 		panic(err)
 	}
+	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient FROM clients c WHERE specials.name=c.name;")
+	if err != nil {
+		panic(err)
+	}
+
 }
 
 func CreateUser(user models.User) error {
@@ -116,7 +122,7 @@ func checkClientsTable() {
 	}
 
 	if !tablePopulated() {
-		populateTable()
+		RepopulateTable()
 	}
 
 }
@@ -136,9 +142,12 @@ func tablePopulated() bool {
 	return true
 }
 
-func populateTable() {
+func RepopulateTable() {
 	statementValues := []string{}
-
+	_, err := db.Exec("DELETE FROM clients WHERE TRUE;")
+	if err != nil {
+		panic(err)
+	}
 	csvFile, err := os.Open("clientes.csv")
 	reader := csv.NewReader(csvFile)
 	if err != nil {

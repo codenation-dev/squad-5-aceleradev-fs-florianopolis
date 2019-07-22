@@ -18,6 +18,10 @@ type Client struct {
 	Name string `json:"name"`
 }
 
+type ClientsResponse struct {
+	Clients []Client `json:"clients`
+}
+
 //Employee holds an public employee name and salary
 type Employee struct {
 	Name   string
@@ -29,4 +33,12 @@ type Special struct {
 	Salary    float64 `json:"salary"`
 	IsClient  bool    `json:"isClient"`
 	AlertSent bool    `json:"alertSent"`
+}
+
+type SpecialsResponse struct {
+	Specials []Special `json:"specials"`
+}
+
+type SuccessResponse struct {
+	Message string `json:"message"`
 }
