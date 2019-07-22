@@ -1,5 +1,5 @@
 import React from "react";
-import { get } from "../../utils/api";
+import { authGet } from "../../utils/api";
 
 const clients = [
   {
@@ -13,7 +13,7 @@ const clients = [
 ];
 
 const Dashboard = () => {
-  (async () => console.log(await get("/clients")))();
+  (async () => console.log(await authGet("/clients")))();
   return (
     <div className="dashboard-div">
       <h1>Welcome to the Dashboard</h1>

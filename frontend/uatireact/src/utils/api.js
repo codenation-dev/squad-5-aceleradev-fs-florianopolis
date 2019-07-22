@@ -10,8 +10,18 @@ export const post = async (uri, body) => {
 
 export const get = async uri => {
   const response = await fetch(`${BASE_URL}${uri}`, {
+    method: "GET"
+  });
+  console.log(response);
+  return response.json();
+};
+
+//This autGet gets denied by cors while the above works,
+//but it doesn't send the auth token, so it gets denied as well
+export const authGet = async uri => {
+  const response = await fetch(`${BASE_URL}${uri}`, {
     method: "GET",
-    headers: { Authorization: localStorage.getItem("token") }
+    headers: { Authorization: localStorage.getItem("userToken") }
   });
   console.log(response);
   return response.json();

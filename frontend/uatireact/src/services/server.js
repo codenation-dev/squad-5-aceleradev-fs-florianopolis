@@ -1,8 +1,8 @@
+import { get } from "../utils/api";
+
 export const isServerUp = async () => {
   try {
-    await fetch("http://localhost:8080/", {
-      method: "GET"
-    });
+    await get("/");
     return true;
   } catch (err) {
     console.log(err);
