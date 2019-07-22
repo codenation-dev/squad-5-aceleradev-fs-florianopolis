@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"uati-api/alerts"
 	"uati-api/database"
 	"uati-api/models"
 	"uati-api/utils"
@@ -59,6 +60,7 @@ func UploadClients(w http.ResponseWriter, req *http.Request) {
 	go func() {
 		database.RepopulateTable()
 		database.SetSpecials()
+		alerts.SendAlerts()
 	}()
 
 	response := models.SuccessResponse{"Clients uploaded"}

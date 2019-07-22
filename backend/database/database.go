@@ -23,7 +23,6 @@ func GetDB() *sql.DB {
 	if db != nil {
 		return db
 	}
-
 	gotenv.Load()
 
 	connectionString := fmt.Sprintf("host=uati-db user=%s password=%s dbname=%s sslmode=disable",
@@ -93,7 +92,7 @@ func SetSpecials() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient FROM clients c WHERE specials.name=c.name;")
+	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c,specials s WHERE specials.name=c.name AND s.isClient IS NOT TRUE")
 	if err != nil {
 		panic(err)
 	}

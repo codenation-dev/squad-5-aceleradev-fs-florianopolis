@@ -11,7 +11,7 @@ import (
 var db = database.GetDB()
 
 func GetTopSpecials(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("SELECT * FROM specials WHERE alertsent=false ORDER BY salary DESC limit 20;")
+	rows, err := db.Query("SELECT * FROM specials ORDER BY salary DESC limit 20;")
 	if err != nil {
 		log.Fatal(err)
 	}

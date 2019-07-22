@@ -135,7 +135,7 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 
 func newSpecialsCount() (int, error) {
 	var count int
-	row := db.QueryRow("SELECT count(name) FROM specials WHERE alertSent=false;")
+	row := db.QueryRow("SELECT count(name) FROM specials WHERE alertSent=false AND isclient IS NOT TRUE;")
 	err := row.Scan(&count)
 	if err != nil {
 		return 0, err
