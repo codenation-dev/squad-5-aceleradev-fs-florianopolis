@@ -47,15 +47,6 @@ func main() {
 
 	router := mux.NewRouter()
 
-<<<<<<< HEAD
-	router.HandleFunc("/login", users.Login).Methods("POST")
-	router.HandleFunc("/", home).Methods("GET")
-
-	router.HandleFunc("/signup", middlewares.TokenVerifyMiddleware(users.Signup)).Methods("POST")
-	router.HandleFunc("/clients", middlewares.TokenVerifyMiddleware(clients.GetClients)).Methods("GET")
-	router.HandleFunc("/specials/clients", middlewares.TokenVerifyMiddleware(specials.GetSpecialClients)).Methods("GET")
-	router.HandleFunc("/specials/top", middlewares.TokenVerifyMiddleware(specials.GetTopSpecials)).Methods("GET")
-=======
 	router.HandleFunc("/api/login", users.Login).Methods("POST")
 	router.HandleFunc("/api/", home).Methods("get")
 
@@ -64,7 +55,6 @@ func main() {
 	router.HandleFunc("/api/clients/upload", middlewares.TokenVerifyMiddleware(clients.UploadClients)).Methods("POST")
 	router.HandleFunc("/api/specials/clients", middlewares.TokenVerifyMiddleware(specials.GetSpecialClients)).Methods("GET")
 	router.HandleFunc("/api/specials/top", middlewares.TokenVerifyMiddleware(specials.GetTopSpecials)).Methods("GET")
->>>>>>> fixed specials and clients response and added upload clients csv endpoints
 
 	log.Fatal(http.ListenAndServe(":8080", handlers.CORS()(router)))
 }
