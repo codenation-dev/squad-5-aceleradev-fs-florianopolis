@@ -58,6 +58,7 @@ func main() {
 	router.HandleFunc("/api/", home).Methods("GET")
 
 	router.HandleFunc("/api/signup", middlewares.TokenVerifyMiddleware(users.Signup)).Methods("POST")
+	router.HandleFunc("/api/users", middlewares.TokenVerifyMiddleware(users.GetUsers)).Methods("GET")
 	router.HandleFunc("/api/clients", middlewares.TokenVerifyMiddleware(clients.GetClients)).Methods("GET")
 	router.HandleFunc("/api/clients/upload", middlewares.TokenVerifyMiddleware(clients.UploadClients)).Methods("POST")
 	router.HandleFunc("/api/specials/clients", middlewares.TokenVerifyMiddleware(specials.GetSpecialClients)).Methods("GET")

@@ -21,7 +21,11 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	user := new(models.User)
 
 	json.NewDecoder(r.Body).Decode(user)
-
+	if user.Name == "" {
+		error.Message = "Name is missing"
+		utils.RespondWithError(w, http.StatusBadRequest, error)
+		return
+	}
 	if user.Email == "" {
 		error.Message = "Email is missing"
 		utils.RespondWithError(w, http.StatusBadRequest, error)
@@ -33,14 +37,14 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := database.CreateUser(*user)
+	id, err := database.CreateUser(*user)
 
 	if err != nil {
 		error.Message = "Server Error"
 		utils.RespondWithError(w, http.StatusInternalServerError, error)
 		return
 	}
-
+	user.ID = id
 	user.Password = ""
 
 	w.Header().Set("Content-Type", "application/json")
@@ -114,4 +118,28 @@ func GenerateToken(user *models.User) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func GetUsers(w http.ResponseWriter, r *http.Request) {
+	rows, err := db.Query("Select id,name,email FROM users;")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	users := new(models.UsersResponse)
+
+	for rows.Next() {
+		u := new(models.User)
+
+		rows.Scan(&u.ID, &u.Name, &u.Email)
+
+		users.Users = append(users.Users, *u)
+	}
+	response, err := json.Marshal(users)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w.Write(response)
 }
