@@ -1,7 +1,5 @@
 package models
 
-import "time"
-
 type User struct {
 	ID       int    `json:"id"`
 	Email    string `json:"email"`
@@ -46,10 +44,10 @@ type SuccessResponse struct {
 }
 
 type Alert struct {
-	SentTo   string    `json:"sentTo"`
-	IsClient bool      `json:"isClientEmail"`
-	About    string    `json:"name"`
-	SentAt   time.Time `json:"sentAt"`
+	SentTo   string `json:"sentTo"`
+	IsClient bool   `json:"isClientEmail"`
+	About    string `json:"name"`
+	SentAt   string `json:"sentAt"`
 }
 
 type AlertsResponse struct {

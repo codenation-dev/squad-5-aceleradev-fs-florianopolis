@@ -24,8 +24,8 @@ func GetDB() *sql.DB {
 		return db
 	}
 	gotenv.Load()
-
-	connectionString := fmt.Sprintf("host=uati-db user=%s password=%s dbname=%s sslmode=disable",
+	//host=uati-db
+	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("PG_USER"), os.Getenv("PG_PASS"), os.Getenv("PG_DB"))
 
 	db, err = sql.Open("postgres", connectionString)
@@ -70,12 +70,12 @@ func SetDB() {
 }
 
 func GetPublicEmps() {
-	err := publicemployees.DownloadSpEmployees()
-	if err != nil {
-		fmt.Println("Error downloading file")
-		panic(err)
-	}
-	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
+	// err := publicemployees.DownloadSpEmployees()
+	// if err != nil {
+	// 	fmt.Println("Error downloading file")
+	// 	panic(err)
+	// }
+	_, err := db.Exec("DELETE FROM publicEmployees WHERE true;")
 	if err != nil {
 		panic(err)
 	}
@@ -92,7 +92,7 @@ func SetSpecials() {
 	if err != nil {
 		panic(err)
 	}
-	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c,specials s WHERE specials.name=c.name AND s.isClient IS NOT TRUE")
+	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c WHERE specials.name=c.name AND specials.isClient IS NOT TRUE;")
 	if err != nil {
 		panic(err)
 	}

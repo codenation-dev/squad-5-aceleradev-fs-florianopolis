@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 	"sync"
-	"time"
 	"uati-api/database"
 	"uati-api/models"
 )
@@ -203,7 +202,7 @@ func getUsersEmails() ([]string, error) {
 }
 
 func GetAlerts(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("Select * FROM alerts ORDER BY sent_at DESC;")
+	rows, err := db.Query("Select sent_to,client,name, TO_CHAR(sent_at,'dd/mm/yyyy')as sent_at FROM alerts ORDER BY sent_at DESC;")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -213,17 +212,10 @@ func GetAlerts(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		a := new(models.Alert)
-		var dateString string
 
-		rows.Scan(&a.SentTo, &a.IsClient, &a.About, &dateString)
+		rows.Scan(&a.SentTo, &a.IsClient, &a.About, &a.SentAt)
 
-		// layout := "2006-01-02T15:04:05.000Z"
-		date, err := time.Parse(time.RFC3339, dateString)
-		a.SentAt = date
-		if err == nil {
-			alerts.Alerts = append(alerts.Alerts, *a)
-		}
-
+		alerts.Alerts = append(alerts.Alerts, *a)
 	}
 	response, err := json.Marshal(alerts)
 	if err != nil {
