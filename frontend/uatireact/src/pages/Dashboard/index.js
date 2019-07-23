@@ -1,4 +1,5 @@
 import React from "react";
+import BarChartClientes from "../../components/charts/chartClientes";
 
 const clients = [
   {
@@ -21,6 +22,8 @@ const Dashboard = () => {
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
+
+      <BarChartClientes />
     </div>
   );
 };

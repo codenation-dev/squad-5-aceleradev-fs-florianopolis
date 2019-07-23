@@ -2,7 +2,7 @@ import { post } from "../utils/api";
 
 class ServiceLogin {
   static async tryLogin(payload) {
-    const isBackendRunning = true; //change this to test the code visually without bacakend's endpoints
+    const isBackendRunning = false; //change this to test the code visually without bacakend's endpoints
     if (isBackendRunning) {
       const response = post(payload);
       return response;
