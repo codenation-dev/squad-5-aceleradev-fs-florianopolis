@@ -70,6 +70,7 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 		var queryString string
 
 		emailValues := []string{}
+
 		for _, email := range emails {
 
 			value := fmt.Sprintf("('%s',TRUE,'%s')", email, client.Name)
@@ -77,11 +78,15 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 			emailValues = append(emailValues, value)
 
 		}
+
+		//email.Send(emails, "cliente se tornou um funcionario publico", client.Name+" "+strconv.FormatFloat(client.Salary, 'f', -1, 64))
+
 		stringValues := strings.Join(emailValues[:], ",\n")
 		queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, client, name) VALUES  %s;", stringValues)
+
 		_, err := db.Exec(queryString)
 		if err != nil {
-			panic(err)
+			log.Fatalln(err)
 		}
 
 		queryString = fmt.Sprintf("UPDATE specials SET  alertsent=true WHERE name='%s';",
@@ -89,7 +94,7 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 
 		_, err = db.Exec(queryString)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 	}
@@ -118,6 +123,8 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 		emailValues = append(emailValues, value)
 
 	}
+
+	//email.Send(emails, "novos funcionarios publicos de interesse", specialsNames)
 
 	stringValues := strings.Join(emailValues[:], ",\n")
 	queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, name) VALUES  %s;", stringValues)

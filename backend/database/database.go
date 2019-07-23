@@ -66,7 +66,8 @@ func SetDB() {
 		panic(err)
 	}
 
-	CreateUser(models.User{Email: "admin@admin.com", Name: "admin", Password: "1234"})
+	CreateUser(models.User{Email: "josevicentekoerich@gmail.com", Name: "admin", Password: "1234"})
+	CreateUser(models.User{Email: "squad5codenation@gmail.com", Name: "admin", Password: "1234"})
 }
 
 func GetPublicEmps() {
