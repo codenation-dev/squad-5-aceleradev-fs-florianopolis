@@ -242,16 +242,10 @@ function Layout(props) {
           </nav>
         </Fragment>
       )}
-      <main
-        className={
-          props.history.location.pathname !== "/login"
-            ? classes.main
-            : classes.login
-        }
-      >
+      <main className={pathname !== "/login" ? classes.main : classes.login}>
         <div
           className={
-            props.history.location.pathname !== "/login"
+            pathname !== "/login"
               ? classes.contentDefault
               : classes.contentLogin
           }

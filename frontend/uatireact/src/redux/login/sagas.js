@@ -17,13 +17,16 @@ function* attemptToLogin(action) {
 
     const loggedUser = {
       username: obj.email,
-      password: obj.password,
       token: response.token
     };
 
     loggedUser.token !== ""
       ? localStorage.setItem("userToken", loggedUser.token)
       : localStorage.setItem("userToken", "");
+
+    loggedUser.username !== ""
+      ? localStorage.setItem("userEmail", loggedUser.username)
+      : localStorage.setItem("userEmail", "");
 
     yield put({
       type: ActionTypes.SUCCESS_ATTEMPT_LOGIN,

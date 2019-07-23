@@ -14,11 +14,18 @@ export const ActionTypes = {
   FAILURE_ATTEMPT_NOTIFICATION: "FAILURE_ATTEMPT_NOTIFICATION"
 };
 
-export function getUsers(credentials) {
+export function getUsers() {
   return {
     type: ActionTypes.REQUEST_ATTEMPT_USER
   };
 }
+
+export function getNotifications() {
+  return {
+    type: ActionTypes.REQUEST_ATTEMPT_NOTIFICATION
+  };
+}
+
 export function login(credentials) {
   return {
     type: ActionTypes.REQUEST_ATTEMPT_LOGIN,

@@ -5,14 +5,11 @@ import { ActionTypes } from "../actions";
 
 function* getNotificationList(action) {
   try {
-    const response = yield call(
-      ServiceNotification.getNotifications,
-      action.payload
-    );
-    console.log(response);
+    const response = yield call(ServiceNotification.getNotifications);
+
     yield put({
       type: ActionTypes.SUCCESS_ATTEMPT_NOTIFICATION,
-      payload: {}
+      payload: { notificationList: response.alerts }
     });
   } catch (err) {
     console.log("FAILURE ON ATTEMPTING NOTIFICATIONS");
