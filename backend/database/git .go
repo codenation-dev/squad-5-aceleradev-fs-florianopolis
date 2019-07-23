@@ -66,17 +66,16 @@ func SetDB() {
 		panic(err)
 	}
 
-	CreateUser(models.User{Email: "josevicentekoerich@gmail.com", Name: "admin", Password: "1234"})
 	CreateUser(models.User{Email: "squad5codenation@gmail.com", Name: "admin", Password: "1234"})
 }
 
 func GetPublicEmps() {
-	// err := publicemployees.DownloadSpEmployees()
-	// if err != nil {
-	// 	fmt.Println("Error downloading file")
-	// 	panic(err)
-	// }
-	_, err := db.Exec("DELETE FROM publicEmployees WHERE true;")
+	err := publicemployees.DownloadSpEmployees()
+	if err != nil {
+		fmt.Println("Error downloading file")
+		panic(err)
+	}
+	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
 	if err != nil {
 		panic(err)
 	}
