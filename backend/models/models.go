@@ -1,11 +1,14 @@
 package models
 
-import "time"
-
 type User struct {
 	ID       int    `json:"id"`
+	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	Password string `json:"password,omitempty"`
+}
+
+type UsersResponse struct {
+	Users []User `json:"users"`
 }
 
 type JWT struct {
@@ -46,10 +49,10 @@ type SuccessResponse struct {
 }
 
 type Alert struct {
-	SentTo   string    `json:"sentTo"`
-	IsClient bool      `json:"isClientEmail"`
-	About    string    `json:"name"`
-	SentAt   time.Time `json:"sentAt"`
+	SentTo   string `json:"sentTo"`
+	IsClient bool   `json:"isClientEmail"`
+	About    string `json:"name"`
+	SentAt   string `json:"sentAt"`
 }
 
 type AlertsResponse struct {

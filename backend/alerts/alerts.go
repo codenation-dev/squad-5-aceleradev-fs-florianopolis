@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"strings"
 	"sync"
-	"time"
 	"uati-api/database"
 	"uati-api/models"
 )
@@ -71,6 +70,7 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 		var queryString string
 
 		emailValues := []string{}
+
 		for _, email := range emails {
 
 			value := fmt.Sprintf("('%s',TRUE,'%s')", email, client.Name)
@@ -78,11 +78,15 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 			emailValues = append(emailValues, value)
 
 		}
+
+		//email.Send(emails, "cliente se tornou um funcionario publico", client.Name+" "+strconv.FormatFloat(client.Salary, 'f', -1, 64))
+
 		stringValues := strings.Join(emailValues[:], ",\n")
 		queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, client, name) VALUES  %s;", stringValues)
+
 		_, err := db.Exec(queryString)
 		if err != nil {
-			panic(err)
+			log.Fatalln(err)
 		}
 
 		queryString = fmt.Sprintf("UPDATE specials SET  alertsent=true WHERE name='%s';",
@@ -90,7 +94,7 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 
 		_, err = db.Exec(queryString)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 
 	}
@@ -119,6 +123,8 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 		emailValues = append(emailValues, value)
 
 	}
+
+	//email.Send(emails, "novos funcionarios publicos de interesse", specialsNames)
 
 	stringValues := strings.Join(emailValues[:], ",\n")
 	queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, name) VALUES  %s;", stringValues)
@@ -203,7 +209,7 @@ func getUsersEmails() ([]string, error) {
 }
 
 func GetAlerts(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("Select * FROM alerts ORDER BY sent_at DESC;")
+	rows, err := db.Query("Select sent_to,client,name, TO_CHAR(sent_at,'dd/mm/yyyy')as sent_at FROM alerts ORDER BY sent_at DESC;")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -213,17 +219,10 @@ func GetAlerts(w http.ResponseWriter, r *http.Request) {
 
 	for rows.Next() {
 		a := new(models.Alert)
-		var dateString string
 
-		rows.Scan(&a.SentTo, &a.IsClient, &a.About, &dateString)
+		rows.Scan(&a.SentTo, &a.IsClient, &a.About, &a.SentAt)
 
-		// layout := "2006-01-02T15:04:05.000Z"
-		date, err := time.Parse(time.RFC3339, dateString)
-		a.SentAt = date
-		if err == nil {
-			alerts.Alerts = append(alerts.Alerts, *a)
-		}
-
+		alerts.Alerts = append(alerts.Alerts, *a)
 	}
 	response, err := json.Marshal(alerts)
 	if err != nil {
