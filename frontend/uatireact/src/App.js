@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 // prettier-ignore
-import { Login, ImportPage, Dashboard, Admin, Notifications, User } from './pages'
+import { Login, ImportPage, Dashboard, Admin, Notifications, User, routes} from './pages'
 import { Switch } from "react-router-dom";
 
 import Layout from "./pages/Layout";
@@ -19,13 +19,6 @@ const App = () => {
             path="/login"
             component={Login}
           />
-          {/* <PublicRoute
-            restricted={true}
-            exact
-            path="/register"
-            component={Register}
-          /> */}
-
           <PrivateRoute exact path="/" component={Dashboard} />
           <PrivateRoute exact path="/dashboard" component={Dashboard} />
           <PrivateRoute exact path="/notifications" component={Notifications} />

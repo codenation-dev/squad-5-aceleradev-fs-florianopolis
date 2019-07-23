@@ -15,40 +15,139 @@ class Notifications extends Component {
     alerts: [
       {
         sentTo: "teste@teste.com",
-        count: 15,
         clients: [
           {
-            name: "CICERO HARADA,DENIS EMANUEL DE ARAUJO",
+            name: "CICERO HARADA,DENIS EMANUEL DE ARAUJO1",
             salary: 15000,
             read: true
           },
           {
-            name: "ALEXANDRE LIAZI",
+            name: "ALEXANDRE LIAZI2",
             salary: 22000,
             read: false
           },
           {
-            name: "NELSON MASSAKASU NASHIRO",
+            name: "NELSON MASSAKASU NASHIRO3",
             salary: 17000,
             read: true
           },
           {
-            name: "MARIO KIYOCHI NAKASHIMA",
+            name: "MARIO KIYOCHI NAKASHIMA4",
             salary: 16000,
             read: false
           },
           {
-            name: "ROSELY SATIKO SAKUNO",
+            name: "ROSELY SATIKO SAKUNO5",
             salary: 13000,
             read: true
           },
           {
-            name: "ARMANDO DE OLIVEIRA PIMENTEL",
+            name: "ARMANDO DE OLIVEIRA PIMENTEL6",
             salary: 10000,
             read: false
           },
           {
-            name: "CARLOS ALBERTO DE OLIVEIRA",
+            name: "ALEXANDRE LIAZI7",
+            salary: 22000,
+            read: false
+          },
+          {
+            name: "NELSON MASSAKASU NASHIRO8",
+            salary: 17000,
+            read: true
+          },
+          {
+            name: "MARIO KIYOCHI NAKASHIMA9",
+            salary: 16000,
+            read: false
+          },
+          {
+            name: "ROSELY SATIKO SAKUN10O",
+            salary: 13000,
+            read: true
+          },
+          {
+            name: "ARMANDO DE OLIVEIRA PIMENTEL11",
+            salary: 10000,
+            read: false
+          },
+          {
+            name: "ALEXANDRE LIAZI12",
+            salary: 22000,
+            read: false
+          },
+          {
+            name: "NELSON MASSAKASU NASHIRO13",
+            salary: 17000,
+            read: true
+          },
+          {
+            name: "MARIO KIYOCHI NAKASHIMA14",
+            salary: 16000,
+            read: false
+          },
+          {
+            name: "ROSELY SATIKO SAKUNO15",
+            salary: 13000,
+            read: true
+          },
+          {
+            name: "ARMANDO DE OLIVEIRA PIMENTEL16",
+            salary: 10000,
+            read: false
+          },
+          {
+            name: "ALEXANDRE LIAZI17",
+            salary: 22000,
+            read: false
+          },
+          {
+            name: "NELSON MASSAKASU NASHIRO18",
+            salary: 17000,
+            read: true
+          },
+          {
+            name: "MARIO KIYOCHI NAKASHIMA19",
+            salary: 16000,
+            read: false
+          },
+          {
+            name: "ROSELY SATIKO SAKUNO20",
+            salary: 13000,
+            read: true
+          },
+          {
+            name: "ARMANDO DE OLIVEIRA PIMENTEL21",
+            salary: 10000,
+            read: false
+          },
+          {
+            name: "ALEXANDRE LIAZI22",
+            salary: 22000,
+            read: false
+          },
+          {
+            name: "NELSON MASSAKASU NASHIRO23",
+            salary: 17000,
+            read: true
+          },
+          {
+            name: "MARIO KIYOCHI NAKASHIMA24",
+            salary: 16000,
+            read: false
+          },
+          {
+            name: "ROSELY SATIKO SAKUNO25",
+            salary: 13000,
+            read: true
+          },
+          {
+            name: "ARMANDO DE OLIVEIRA PIMENTEL26",
+            salary: 10000,
+            read: false
+          },
+          {
+            name: "CARLOS ALBERTO DE OLIVEIRA27",
             salary: 12000,
             read: false
           }
@@ -57,7 +156,6 @@ class Notifications extends Component {
       },
       {
         sentTo: "admin@admin.com",
-        count: 22,
         clients: [
           {
             name: "CICERO HARADA",
@@ -122,8 +220,8 @@ class Notifications extends Component {
               id="panel1a-header"
             >
               <Typography>
-                Existem {item.count} clientes em potencial na atualização de{" "}
-                {item.sentAt}
+                Existem {item.clients.length} clientes em potencial na
+                atualização de {item.sentAt}
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetailsStyled>

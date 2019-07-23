@@ -13,7 +13,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import { Input } from "@material-ui/core";
+import { Input, Button } from "@material-ui/core";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -72,7 +72,9 @@ function EnhancedTableHead(props) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "Select all desserts" }}
+            inputProps={{
+              "aria-label": "Selecionar todos os possíveis clientes"
+            }}
           />
         </TableCell>
         {headRows.map(row => (
@@ -128,6 +130,11 @@ const useToolbarStyles = makeStyles(theme => ({
   },
   title: {
     flex: "0 0 auto"
+  },
+  btnRead: {
+    backgroundColor: "#fff",
+    border: "1px solid #ecf0f5",
+    marginLeft: "15px"
   }
 }));
 
@@ -145,6 +152,9 @@ const EnhancedTableToolbar = props => {
         {numSelected > 0 ? (
           <Typography color="inherit" variant="subtitle1">
             {numSelected} notificações selecionadas
+            <Button className={classes.btnRead}>
+              <small>Marcar como lido</small>
+            </Button>
           </Typography>
         ) : (
           <Typography variant="h6" id="tableTitle">
@@ -192,7 +202,9 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
   const [orderBy, setOrderBy] = React.useState("name");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(rows.length);
+  const [rowsPerPage, setRowsPerPage] = React.useState(
+    rows.length > 15 ? 15 : rows.length
+  );
 
   function handleRequestSort(event, property) {
     const isDesc = orderBy === property && order === "desc";
@@ -202,7 +214,7 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
 
   function handleSelectAllClick(event) {
     if (event.target.checked) {
-      const newSelecteds = rows.map(n => n.name);
+      const newSelecteds = rows.filter(row => !row.read).map(n => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -243,11 +255,27 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
   }
 
   const isSelected = name => selected.indexOf(name) !== -1;
-
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
   function handleCliente(e) {
-    let rowsFiltered = dados.filter(
-      row => row.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >= 0
-    );
+    let arrFilter = e.target.value.split(",");
+
+    let filteredArr = arrFilter.map((row, index) => {
+      return dados.filter(
+        row2 =>
+          row2.name.toLowerCase().indexOf(row.toLowerCase()) >= 0 ||
+          row2.salary >= row
+      );
+    });
+
+    let rowsFiltered = filteredArr.flat().filter(onlyUnique);
+
+    // let rowsFiltered = dados.filter(
+    //   row =>
+    //     row.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >= 0 ||
+    //     row.salary >= e.target.value
+    // );
     setRows(rowsFiltered);
   }
   const emptyRows =
@@ -273,7 +301,7 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={rows.filter(row => !row.read).length}
             />
             <TableBody>
               {stableSort(rows, getSorting(order, orderBy))
