@@ -1,4 +1,5 @@
 import React from "react";
+import ChartsPanel from "../../components/charts/chartsPanel";
 import { authGet } from "../../utils/api";
 
 const clients = [
@@ -23,6 +24,8 @@ const Dashboard = () => {
           <li key={item.id}>{item.name}</li>
         ))}
       </ul>
+
+      <ChartsPanel />
     </div>
   );
 };
