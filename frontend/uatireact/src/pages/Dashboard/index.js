@@ -1,5 +1,5 @@
 import React from "react";
-import BarChartClientes from "../../components/charts/chartClientes";
+import ChartsPanel from "../../components/charts/chartsPanel";
 
 const clients = [
   {
@@ -23,7 +23,7 @@ const Dashboard = () => {
         ))}
       </ul>
 
-      <BarChartClientes />
+      <ChartsPanel />
     </div>
   );
 };
