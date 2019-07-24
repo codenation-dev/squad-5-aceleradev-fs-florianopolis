@@ -12,7 +12,6 @@ import (
 	"uati-api/middlewares"
 	"uati-api/specials"
 	"uati-api/users"
-	"uati-api/utils"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -55,8 +54,6 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/login", users.Login).Methods("POST")
-	router.HandleFunc("/api/", home).Methods("GET")
-
 	router.HandleFunc("/api/signup", middlewares.TokenVerifyMiddleware(users.Signup)).Methods("POST")
 	router.HandleFunc("/api/users", middlewares.TokenVerifyMiddleware(users.GetUsers)).Methods("GET")
 	router.HandleFunc("/api/clients", middlewares.TokenVerifyMiddleware(clients.GetClients)).Methods("GET")
@@ -69,9 +66,8 @@ func main() {
 	originsOk := handlers.AllowedOrigins([]string{"*"})
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST"})
 
-	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(router)))
-}
+	sh := http.StripPrefix("/api/", http.FileServer(http.Dir("./swaggerui/")))
+	router.PathPrefix("/api/").Handler(sh)
 
-func home(w http.ResponseWriter, r *http.Request) {
-	utils.ResponseJSON(w, "DB running at port 5432\nServer running at port 8080")
+	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(router)))
 }
