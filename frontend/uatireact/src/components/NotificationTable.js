@@ -53,11 +53,8 @@ const headRows = [
 
 function EnhancedTableHead(props) {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort
   } = props;
   const createSortHandler = property => event => {
@@ -67,16 +64,6 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "Selecionar todos os possíveis clientes"
-            }}
-          />
-        </TableCell>
         {headRows.map(row => (
           <TableCell
             key={row.id}
@@ -311,9 +298,6 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <TableRow
-                      style={{
-                        backgroundColor: row.read ? "rgba(0, 0, 0, 0.07)" : ""
-                      }}
                       hover
                       onClick={event => handleClick(event, row.name, row.read)}
                       role="checkbox"
@@ -322,18 +306,7 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
                       key={row.name}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          disabled={row.read}
-                          checked={isItemSelected}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </TableCell>
-
                       <TableCell
-                        style={{
-                          color: row.read ? "rgba(0, 0, 0, 0.26)" : ""
-                        }}
                         component="th"
                         id={labelId}
                         scope="row"
@@ -342,9 +315,6 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
                         {row.name}
                       </TableCell>
                       <TableCell
-                        style={{
-                          color: row.read ? "rgba(0, 0, 0, 0.26)" : ""
-                        }}
                         align="middle"
                       >
                         {row.salary}

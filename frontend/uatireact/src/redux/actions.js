@@ -9,6 +9,10 @@ export const ActionTypes = {
   SUCCESS_ATTEMPT_USER: "SUCCESS_ATTEMPT_USER",
   FAILURE_ATTEMPT_USER: "FAILURE_ATTEMPT_USER",
 
+  REQUEST_SIGN_USER: "REQUEST_SIGN_USER",
+  SUCCESS_SIGN_USER: "REQUEST_SIGN_USER",
+  FAILURE_SIGN_USER: "REQUEST_SIGN_USER",
+
   REQUEST_ATTEMPT_NOTIFICATION: "REQUEST_ATTEMPT_NOTIFICATION",
   SUCCESS_ATTEMPT_NOTIFICATION: "SUCCESS_ATTEMPT_NOTIFICATION",
   FAILURE_ATTEMPT_NOTIFICATION: "FAILURE_ATTEMPT_NOTIFICATION"
@@ -34,6 +38,18 @@ export function login(credentials) {
     }
   };
 }
+
+
+export function cadastraUser(credentials) {
+  return {
+    type: ActionTypes.REQUEST_SIGN_USER,
+    payload: {
+      credentials
+    }
+  };
+}
+
+
 
 export function logout() {
   return {

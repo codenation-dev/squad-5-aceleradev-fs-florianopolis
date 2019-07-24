@@ -8,17 +8,13 @@ import { localizationSettings } from "../../helpers/tableSettings";
 class User extends Component {
   state = {
     columns: [
+      { title: "Nome", field: "name" },
       { title: "Email", field: "email" },
       {
-        title: "Super Usuário",
-        field: "superUser",
-        lookup: { 0: "Não", 1: "Sim" }
+        title: "Senha",
+        field: "password"
       }
     ],
-    data: [
-      { email: "admin@admin.com", superUser: 1 },
-      { email: "xuerei@teste.com", superUser: 0 }
-    ]
   };
 
   componentDidMount() {
@@ -30,14 +26,15 @@ class User extends Component {
       <MaterialTable
         title="Usuários do sistema"
         columns={this.state.columns}
-        data={this.state.data}
+        data={this.props.userList}
         editable={{
           onRowAdd: newData =>
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
-                const data = [...this.state.data];
+                const data = [...this.props.userList];
                 data.push(newData);
+                this.props.cadastraUser(newData);
                 this.setState({ ...this.state, data });
               }, 600);
             }),
@@ -45,7 +42,7 @@ class User extends Component {
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
-                const data = [...this.state.data];
+                const data = [...this.props.userList];
                 data[data.indexOf(oldData)] = newData;
                 this.setState({ ...this.state, data });
               }, 600);
@@ -54,7 +51,7 @@ class User extends Component {
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
-                const data = [...this.state.data];
+                const data = [...this.props.userList];
                 data.splice(data.indexOf(oldData), 1);
                 this.setState({ ...this.state, data });
               }, 600);
@@ -66,15 +63,13 @@ class User extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   success: state.loginReducer.success,
-//   error: state.loginReducer.error,
-//   msg: state.loginReducer.text
-// });
+const mapStateToProps = state => ({
+  userList: state.userReducer.userList
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(User);

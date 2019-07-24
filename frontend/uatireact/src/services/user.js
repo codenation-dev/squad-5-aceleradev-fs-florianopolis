@@ -1,7 +1,10 @@
-import { get } from "../utils/api";
+import { get, post } from "../utils/api";
 class ServiceUser {
   static getUsers() {
-    return get("alerts");
+    return get("users");
+  }
+  static signUser(credentials) {
+    return post("signup", credentials, true);
   }
 }
 

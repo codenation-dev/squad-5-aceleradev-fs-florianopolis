@@ -203,11 +203,12 @@ class Notifications extends Component {
     ]
   };
 
-  // componentDidMount() {
-  //   this.props.getNotifications();
-  // }
+  componentDidMount() {
+    this.props.getNotifications();
+  }
 
   render() {
+    console.log(this.props.notificationList);
     return (
       <div style={{ padding: "15px" }}>
         <h1>Notificações</h1>
