@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -101,6 +102,6 @@ func checkEmployees(employees []models.Employee, db *sql.DB) {
 	// fmt.Println(sqlStatement)
 	_, err := db.Exec(sqlStatement)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 }
