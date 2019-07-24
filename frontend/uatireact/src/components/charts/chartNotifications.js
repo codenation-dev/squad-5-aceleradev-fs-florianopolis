@@ -30,7 +30,7 @@ class ChartNotifications extends Component {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="quantity" stackId="a" fill="#8884d8" />
+        <Bar dataKey="quantity" name="Quantidade de Notificações" stackId="a" fill="#8884d8" />
       </BarChart>
     )
   }

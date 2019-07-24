@@ -13,7 +13,8 @@ function Charts(state = INITIAL_STATE, action) {
         ...state,
         successful: true,
         clientsRelation: action.payload.clientsRelation,
-        notificationsSentPerDay: action.payload.notificationsSentPerDay
+        notificationsSentPerDay: action.payload.notificationsSentPerDay,
+        newClientsPerDay: action.payload.newClientsPerDay
       };
     default:
       return state;

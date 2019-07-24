@@ -48,6 +48,36 @@ class ServiceCharts {
       }
     ];
   }
+
+  static async loadNewClientsPerDay() {
+    return [
+      {
+        name: "19/07",
+        current: 20,
+        newClients: 2
+      },
+      {
+        name: "20/07",
+        current: 22,
+        newClients: 0
+      },
+      {
+        name: "21/07",
+        current: 22,
+        newClients: 1
+      },
+      {
+        name: "22/07",
+        current: 23,
+        newClients: 2
+      },
+      {
+        name: "23/07",
+        current: 25,
+        newClients: 3
+      }
+    ];
+  }
 }
 
 export default ServiceCharts;

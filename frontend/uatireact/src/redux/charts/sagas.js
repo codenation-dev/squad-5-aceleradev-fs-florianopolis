@@ -5,14 +5,17 @@ import { ActionTypes } from "../actions";
 
 function* loadCharts(action) {
     try {
+        console.log('chegou');
         const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
         const notificationsSentPerDay = yield call(ServiceCharts.loadNotificationsSentPerDay);
+        const newClientsPerDay = yield call(ServiceCharts.loadNewClientsPerDay);
 
         yield put({
             type: ActionTypes.SUCCESS_LOAD_CHARTS,
             payload: {
                 clientsRelation,
-                notificationsSentPerDay
+                notificationsSentPerDay,
+                newClientsPerDay
             }
         });
     } catch (err) {
