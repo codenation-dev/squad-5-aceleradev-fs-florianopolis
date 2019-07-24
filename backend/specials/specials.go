@@ -1,7 +1,6 @@
 package specials
 
 import (
-	"bytes"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -12,32 +11,27 @@ import (
 var db = database.GetDB()
 
 func GetTopSpecials(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("SELECT * FROM specials WHERE alertsent=false ORDER BY salary DESC limit 20;")
+	rows, err := db.Query("SELECT * FROM specials ORDER BY salary DESC limit 20;")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-	specials := []models.Special{}
+	specials := new(models.SpecialsResponse)
 
 	for rows.Next() {
 		s := new(models.Special)
 
 		rows.Scan(&s.Name, &s.Salary, &s.IsClient, &s.AlertSent)
 
-		specials = append(specials, *s)
+		specials.Specials = append(specials.Specials, *s)
+	}
+	response, err := json.Marshal(specials)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var specialsJSON [][]byte
-	for _, special := range specials {
-		client, err := json.MarshalIndent(special, "", "	")
-		if err != nil {
-			log.Fatal(err)
-		}
-		specialsJSON = append(specialsJSON, client)
-	}
-
-	w.Write(bytes.Join(specialsJSON, []byte(",\n")))
+	w.Write(response)
 }
 
 func GetSpecialClients(w http.ResponseWriter, r *http.Request) {
@@ -47,24 +41,19 @@ func GetSpecialClients(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	clients := []models.Special{}
+	clients := new(models.SpecialsResponse)
 
 	for rows.Next() {
-		c := new(models.Special)
+		s := new(models.Special)
 
-		rows.Scan(&c.Name, &c.Salary, &c.IsClient, &c.AlertSent)
+		rows.Scan(&s.Name, &s.Salary, &s.IsClient, &s.AlertSent)
 
-		clients = append(clients, *c)
+		clients.Specials = append(clients.Specials, *s)
+	}
+	response, err := json.Marshal(clients)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var clientsJSON [][]byte
-	for _, client := range clients {
-		client, err := json.MarshalIndent(client, "", "	")
-		if err != nil {
-			log.Fatal(err)
-		}
-		clientsJSON = append(clientsJSON, client)
-	}
-
-	w.Write(bytes.Join(clientsJSON, []byte(",\n")))
+	w.Write(response)
 }

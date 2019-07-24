@@ -6,7 +6,19 @@ export const ActionTypes = {
   REQUEST_LOAD_CHARTS: "REQUEST_LOAD_CHARTS",
   FAILURE_LOAD_CHARTS: "FAILURE_LOAD_CHARTS",
   SUCCESS_LOAD_CHARTS: "SUCCESS_LOAD_CHARTS",
+  REQUEST_SUBMIT_FILE: "REQUEST_SUBMIT_FILE",
+  SUCCESS_SUBMIT_FILE: "SUCCESS_SUBMIT_FILE",
+  FAILURE_SUBMIT_FILE: "FAILURE_SUBMIT_FILE"
 };
+
+export function uploadClients(file) {
+  return {
+    type: ActionTypes.REQUEST_SUBMIT_FILE,
+    payload: {
+      file
+    }
+  };
+}
 
 export function login(credentials) {
   return {

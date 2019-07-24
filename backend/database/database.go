@@ -56,25 +56,26 @@ func SetDB() {
 
 	checkClientsTable()
 
-	go func() {
-		GetPublicEmps()
-		SetSpecials()
-	}()
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique ,password text not null);")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique,name text not null ,password text not null);")
 	if err != nil {
 		panic(err)
 	}
 
-	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS alerts (sent_to text NOT NULL,client boolean DEFAULT false,name text NOT NULL,sent_at TIMESTAMP DEFAULT NOW());")
+	if err != nil {
+		panic(err)
+	}
+
+	CreateUser(models.User{Email: "squad5codenation@gmail.com", Name: "admin", Password: "1234"})
 }
 
 func GetPublicEmps() {
-	// err := publicemployees.DownloadSpEmployees()
-	// if err != nil {
-	// 	fmt.Println("Error downloading file")
-	// 	panic(err)
-	// }
-	_, err := db.Exec("DELETE FROM publicEmployees WHERE true;")
+	err := publicemployees.DownloadSpEmployees()
+	if err != nil {
+		fmt.Println("Error downloading file")
+		panic(err)
+	}
+	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
 	if err != nil {
 		panic(err)
 	}
@@ -87,26 +88,31 @@ func GetPublicEmps() {
 }
 
 func SetSpecials() {
-	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name as name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) p EXCEPT (SELECT name , salary, isClient from specials);")
+	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name AS name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) s WHERE NOT EXISTS(SELECT  name FROM specials WHERE name = s.name);")
 	if err != nil {
 		panic(err)
 	}
+	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c WHERE specials.name=c.name AND specials.isClient IS NOT TRUE;")
+	if err != nil {
+		panic(err)
+	}
+
 }
 
-func CreateUser(user models.User) error {
+func CreateUser(user models.User) (int, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	user.Password = string(hash)
 
-	stmt := "INSERT INTO users (email, password) VALUES ($1,$2) RETURNING id"
+	stmt := "INSERT INTO users (email,name, password) VALUES ($1,$2,$3) RETURNING id"
 
-	db.QueryRow(stmt, user.Email, user.Password).Scan(&user.ID)
+	db.QueryRow(stmt, user.Email, user.Name, user.Password).Scan(&user.ID)
 
-	return nil
+	return user.ID, nil
 }
 
 func checkClientsTable() {
@@ -116,7 +122,7 @@ func checkClientsTable() {
 	}
 
 	if !tablePopulated() {
-		populateTable()
+		RepopulateTable()
 	}
 
 }
@@ -136,9 +142,12 @@ func tablePopulated() bool {
 	return true
 }
 
-func populateTable() {
+func RepopulateTable() {
 	statementValues := []string{}
-
+	_, err := db.Exec("DELETE FROM clients WHERE TRUE;")
+	if err != nil {
+		panic(err)
+	}
 	csvFile, err := os.Open("clientes.csv")
 	reader := csv.NewReader(csvFile)
 	if err != nil {

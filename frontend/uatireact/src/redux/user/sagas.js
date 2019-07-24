@@ -1,18 +1,17 @@
 import { put, all, call, takeLatest } from "redux-saga/effects";
-import ServiceLogin from "../../services/login";
+import { tryLogin } from "../../services/login";
 
 import { ActionTypes } from "../actions";
 
 function* attemptToLogin(action) {
   try {
-    const response = yield call(ServiceLogin.tryLogin, action.payload);
-
+    const response = yield call(tryLogin, action.payload);
     if (!response["token"]) {
       throw new Error(response.message);
     }
 
     const loggedUser = {
-      username: action.payload.credentials.username,
+      email: action.payload.credentials.email,
       password: action.payload.credentials.password,
       token: response.token
     };
