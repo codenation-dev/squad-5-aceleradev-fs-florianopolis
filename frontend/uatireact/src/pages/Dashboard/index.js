@@ -1,6 +1,6 @@
 import React from "react";
 
-import ChartsPanel from "../../components/charts/chartsPanel";
+import ChartsPanel from "../../components/charts/ChartsPanel";
 import { authGet } from "../../utils/api";
 import Card from "../../components/dashboard/Card";
 import ClientsPanel from "../../components/dashboard/ClientsPanel";

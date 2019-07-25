@@ -21,6 +21,8 @@
 
 .card-icon {
     font-size: 40px;
+    width:50px;
+    align-items: center;
 }
 
 hr {
