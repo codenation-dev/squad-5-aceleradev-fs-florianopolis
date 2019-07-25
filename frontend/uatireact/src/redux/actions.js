@@ -38,9 +38,12 @@ export function loadCharts() {
   }
 }
 
-export function loadClients() {
+export function loadClients(query, pageNumber) {
   return {
-    type: ActionTypes.REQUEST_LOAD_CLIENTS
+    type: ActionTypes.REQUEST_LOAD_CLIENTS,
+    payload: {
+      query, pageNumber
+    }
   }
 }
 

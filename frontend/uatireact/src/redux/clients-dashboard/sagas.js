@@ -7,8 +7,8 @@ function* loadClients(action) {
   try {
     const response = yield call(
       ServicesClients.loadClientsDashboard,
-      action.pageNumber,
-      action.query
+      action.payload.pageNumber,
+      action.payload.query
     );
 
     yield put({
