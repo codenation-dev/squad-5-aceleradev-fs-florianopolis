@@ -226,7 +226,7 @@ function Layout(props) {
   );
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{height: '100%'}} >
       <CssBaseline />
       {isLogged && (
         <Fragment>
