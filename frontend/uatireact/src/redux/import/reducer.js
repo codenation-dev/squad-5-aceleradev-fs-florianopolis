@@ -1,30 +1,33 @@
 import { ActionTypes } from "../actions";
-
 const INITIAL_STATE = {
-  notificationList: [],
+  file: "",
   loading: false,
+  success: false,
   error: false
 };
 
-function Notification(state = INITIAL_STATE, action) {
+function Import(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.NOTIFICATION.REQUEST:
+    case ActionTypes.IMPORT.REQUEST:
       return {
         ...state,
+        file: action.payload.file,
         loading: true
       };
-    case ActionTypes.NOTIFICATION.SUCCESS:
+    case ActionTypes.IMPORT.SUCCESS:
       return {
         ...state,
-        notificationList: action.payload.notificationList,
+        file: "",
         loading: false,
+        success: true,
         error: false
       };
-    case ActionTypes.NOTIFICATION.FAILURE:
+    case ActionTypes.IMPORT.FAILURE:
       return {
         ...state,
-        notificationList: [],
+        file: "",
         loading: false,
+        success: false,
         error: true
       };
     default:
@@ -32,4 +35,4 @@ function Notification(state = INITIAL_STATE, action) {
   }
 }
 
-export default Notification;
+export default Import;

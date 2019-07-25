@@ -45,16 +45,19 @@ const headRows = [
   {
     id: "name",
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: "Nome"
-  },
-  { id: "salary", numeric: false, disablePadding: false, label: "Salário" }
+  }
+  // { id: "salary", numeric: false, disablePadding: false, label: "Salário" }
 ];
 
 function EnhancedTableHead(props) {
   const {
+    onSelectAllClick,
     order,
     orderBy,
+    numSelected,
+    rowCount,
     onRequestSort
   } = props;
   const createSortHandler = property => event => {
@@ -64,11 +67,22 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
+        {/* <TableCell padding="checkbox">
+          <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              "aria-label": "Selecionar todos os possíveis clientes"
+            }}
+          />
+        </TableCell> */}
         {headRows.map(row => (
           <TableCell
             key={row.id}
             align={row.numeric ? "right" : "left"}
-            padding={row.disablePadding ? "none" : "default"}
+            // padding={row.disablePadding ? "none" : "default"}
+            padding="default"
             sortDirection={orderBy === row.id ? order : false}
           >
             <TableSortLabel
@@ -209,27 +223,25 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
   }
 
   function handleClick(event, name, read) {
-    if (!read) {
-      const selectedIndex = selected.indexOf(name);
-      let newSelected = [];
-
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selected, name);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selected.slice(1));
-      } else if (selectedIndex === selected.length - 1) {
-        newSelected = newSelected.concat(selected.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1)
-        );
-      }
-
-      setSelected(newSelected);
-    } else {
-      return;
-    }
+    // if (!read) {
+    //   const selectedIndex = selected.indexOf(name);
+    //   let newSelected = [];
+    //   if (selectedIndex === -1) {
+    //     newSelected = newSelected.concat(selected, name);
+    //   } else if (selectedIndex === 0) {
+    //     newSelected = newSelected.concat(selected.slice(1));
+    //   } else if (selectedIndex === selected.length - 1) {
+    //     newSelected = newSelected.concat(selected.slice(0, -1));
+    //   } else if (selectedIndex > 0) {
+    //     newSelected = newSelected.concat(
+    //       selected.slice(0, selectedIndex),
+    //       selected.slice(selectedIndex + 1)
+    //     );
+    //   }
+    //   setSelected(newSelected);
+    // } else {
+    //   return;
+    // }
   }
 
   function handleChangePage(event, newPage) {
@@ -242,27 +254,22 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
   }
 
   const isSelected = name => selected.indexOf(name) !== -1;
+
   function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
   }
+
   function handleCliente(e) {
     let arrFilter = e.target.value.split(",");
 
     let filteredArr = arrFilter.map((row, index) => {
       return dados.filter(
-        row2 =>
-          row2.name.toLowerCase().indexOf(row.toLowerCase()) >= 0 ||
-          row2.salary >= row
+        row2 => row2.name.toLowerCase().indexOf(row.toLowerCase()) >= 0
+        //  || row2.salary >= row
       );
     });
 
     let rowsFiltered = filteredArr.flat().filter(onlyUnique);
-
-    // let rowsFiltered = dados.filter(
-    //   row =>
-    //     row.name.toLowerCase().indexOf(e.target.value.toLowerCase()) >= 0 ||
-    //     row.salary >= e.target.value
-    // );
     setRows(rowsFiltered);
   }
   const emptyRows =
@@ -298,6 +305,9 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <TableRow
+                      // style={{
+                      //   backgroundColor: row.read ? "rgba(0, 0, 0, 0.07)" : ""
+                      // }}
                       hover
                       onClick={event => handleClick(event, row.name, row.read)}
                       role="checkbox"
@@ -306,19 +316,33 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
                       key={row.name}
                       selected={isItemSelected}
                     >
+                      {/* <TableCell padding="checkbox">
+                        <Checkbox
+                          disabled={row.read}
+                          checked={isItemSelected}
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </TableCell> */}
+
                       <TableCell
+                        // style={{
+                        //   color: row.read ? "rgba(0, 0, 0, 0.26)" : ""
+                        // }}
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
+                        padding="default"
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell
+                      {/* <TableCell
+                        // style={{
+                        //   color: row.read ? "rgba(0, 0, 0, 0.26)" : ""
+                        // }}
                         align="middle"
                       >
                         {row.salary}
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}

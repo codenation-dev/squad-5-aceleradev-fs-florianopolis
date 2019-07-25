@@ -3,30 +3,26 @@ import ServiceNotification from "../../services/notification";
 
 import { ActionTypes } from "../actions";
 
-function* getNotificationList(action) {
+function* getNotificationList() {
   try {
     const response = yield call(ServiceNotification.getNotifications);
     console.log(response);
     yield put({
-      type: ActionTypes.SUCCESS_ATTEMPT_NOTIFICATION,
+      type: ActionTypes.NOTIFICATION.SUCCESS,
       payload: { notificationList: response.alerts }
     });
   } catch (err) {
     console.log("FAILURE ON ATTEMPTING NOTIFICATIONS");
     console.log(err);
     yield put({
-      type: ActionTypes.FAILURE_ATTEMPT_NOTIFICATION,
+      type: ActionTypes.NOTIFICATION.FAILURE,
       payload: { text: err.message }
     });
   }
 }
 
 function* watchAddTodo() {
-  yield takeLatest(
-    ActionTypes.REQUEST_ATTEMPT_NOTIFICATION,
-    getNotificationList
-  );
-  // yield takeLatest('REQUEST_CHARACTER_DETAIL', getCharactersDetail);
+  yield takeLatest(ActionTypes.NOTIFICATION.REQUEST, getNotificationList);
 }
 
 export default function* notificationRoot() {

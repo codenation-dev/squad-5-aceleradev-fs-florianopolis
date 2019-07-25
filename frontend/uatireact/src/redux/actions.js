@@ -1,58 +1,65 @@
+const TYPES = ["REQUEST", "SUCCESS", "FAILURE", "CANCEL", "RESET"];
+
+const createActionTypes = base => {
+  const ref = {};
+
+  TYPES.forEach(type => {
+    ref[type] = `${type}_${base}`;
+  });
+
+  return ref;
+};
+
 export const ActionTypes = {
-  REQUEST_ATTEMPT_LOGIN: "REQUEST_ATTEMPT_LOGIN",
-  SUCCESS_ATTEMPT_LOGIN: "SUCCESS_ATTEMPT_LOGIN",
-  FAILURE_ATTEMPT_LOGIN: "FAILURE_ATTEMPT_LOGIN",
-
-  REQUEST_LOGOUT: "REQUEST_LOGOUT",
-
-  REQUEST_ATTEMPT_USER: "REQUEST_ATTEMPT_USER",
-  SUCCESS_ATTEMPT_USER: "SUCCESS_ATTEMPT_USER",
-  FAILURE_ATTEMPT_USER: "FAILURE_ATTEMPT_USER",
-
-  REQUEST_SIGN_USER: "REQUEST_SIGN_USER",
-  SUCCESS_SIGN_USER: "REQUEST_SIGN_USER",
-  FAILURE_SIGN_USER: "REQUEST_SIGN_USER",
-
-  REQUEST_ATTEMPT_NOTIFICATION: "REQUEST_ATTEMPT_NOTIFICATION",
-  SUCCESS_ATTEMPT_NOTIFICATION: "SUCCESS_ATTEMPT_NOTIFICATION",
-  FAILURE_ATTEMPT_NOTIFICATION: "FAILURE_ATTEMPT_NOTIFICATION"
+  LOGIN: createActionTypes("ATTEMPT_LOGIN"),
+  LOGOUT: createActionTypes("LOGOUT"),
+  USER: createActionTypes("ATTEMPT_USER"),
+  SIGN: createActionTypes("SIGN_USER"),
+  NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
+  IMPORT: createActionTypes("ATTEMPT_NOTIFICATION")
 };
 
 export function getUsers() {
   return {
-    type: ActionTypes.REQUEST_ATTEMPT_USER
+    type: ActionTypes.USER.REQUEST
   };
 }
 
 export function getNotifications() {
   return {
-    type: ActionTypes.REQUEST_ATTEMPT_NOTIFICATION
+    type: ActionTypes.NOTIFICATION.REQUEST
   };
 }
 
 export function login(credentials) {
   return {
-    type: ActionTypes.REQUEST_ATTEMPT_LOGIN,
+    type: ActionTypes.LOGIN.REQUEST,
     payload: {
       credentials
     }
   };
 }
 
+export function importClients(file) {
+  return {
+    type: ActionTypes.IMPORT.REQUEST,
+    payload: {
+      file
+    }
+  };
+}
 
 export function cadastraUser(credentials) {
   return {
-    type: ActionTypes.REQUEST_SIGN_USER,
+    type: ActionTypes.SIGN.REQUEST,
     payload: {
       credentials
     }
   };
 }
 
-
-
 export function logout() {
   return {
-    type: ActionTypes.REQUEST_LOGOUT
+    type: ActionTypes.LOGOUT.REQUEST
   };
 }

@@ -29,22 +29,21 @@ function* attemptToLogin(action) {
       : localStorage.setItem("userEmail", "");
 
     yield put({
-      type: ActionTypes.SUCCESS_ATTEMPT_LOGIN,
+      type: ActionTypes.LOGIN.SUCCESS,
       payload: { loggedUser }
     });
   } catch (err) {
     console.log("FAILURE ON ATTEMPTING LOGIN");
     console.log(err);
     yield put({
-      type: ActionTypes.FAILURE_ATTEMPT_LOGIN,
+      type: ActionTypes.LOGIN.FAILURE,
       payload: { text: err.message }
     });
   }
 }
 
 function* watchAddTodo() {
-  yield takeLatest(ActionTypes.REQUEST_ATTEMPT_LOGIN, attemptToLogin);
-  // yield takeLatest('REQUEST_CHARACTER_DETAIL', getCharactersDetail);
+  yield takeLatest(ActionTypes.LOGIN.REQUEST, attemptToLogin);
 }
 
 export default function* userRoot() {

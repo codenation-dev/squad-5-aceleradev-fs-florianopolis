@@ -1,6 +1,9 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 import { Form, NomeFile } from "./styles";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import * as allActions from "../../redux/actions";
 
 class ImportPage extends React.Component {
   constructor(props) {
@@ -15,9 +18,7 @@ class ImportPage extends React.Component {
   }
   onFormSubmit(e) {
     e.preventDefault(); // Stop form submit
-    // this.fileUpload(this.state.file).then((response)=>{
-    // console.log(response.data);
-    // })
+    this.props.importClients(this.state.file);
   }
   onChange(e) {
     this.setState({
@@ -25,20 +26,10 @@ class ImportPage extends React.Component {
       nomeFile: e.target.files[0].name
     });
   }
-  fileUpload(file) {
-    // const url = "http://example.com/file-upload";
-    // const formData = new FormData();
-    // formData.append("file", file);
-    // const config = {
-    //   headers: {
-    //     "content-type": "multipart/form-data"
-    //   }
-    // };
-  }
 
   render() {
     return (
-      <Form onSubmit={this.onFormSubmit}>
+      <Form onSubmit={e => this.onFormSubmit(e)}>
         <h1>File Upload</h1>
         {/* <Input type="file" onChange={this.onChange} />
         <Button type="submit">Upload</Button> */}
@@ -51,9 +42,20 @@ class ImportPage extends React.Component {
             style={{ display: "none" }}
           />
         </Button>
+
+        <button type="submit">Enviar</button>
       </Form>
     );
   }
 }
 
-export default ImportPage;
+// const mapStateToProps = state => ({
+//   notificationList: state.notificationReducer.notificationList
+// });
+
+const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(ImportPage);

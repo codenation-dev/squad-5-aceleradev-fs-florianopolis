@@ -86,7 +86,7 @@ func GetEmployeesFromCSV(db *sql.DB) error {
 func checkEmployees(employees []models.Employee, db *sql.DB) {
 
 	statementValues := []string{}
-
+	fmt.Println(employees)
 	for _, emp := range employees {
 
 		value := fmt.Sprintf("('%s', %f)", emp.Name, emp.Salary)
@@ -98,7 +98,7 @@ func checkEmployees(employees []models.Employee, db *sql.DB) {
 	stringValues := strings.Join(statementValues[:], ",\n")
 
 	sqlStatement := fmt.Sprintf("INSERT INTO publicemployees (name, salary) VALUES %s;", stringValues)
-	// fmt.Println(sqlStatement)
+	fmt.Println(sqlStatement)
 	_, err := db.Exec(sqlStatement)
 	if err != nil {
 		panic(err)

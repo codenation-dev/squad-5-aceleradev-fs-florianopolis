@@ -5,41 +5,44 @@ import { ActionTypes } from "../actions";
 
 function* signUser(action) {
   try {
-    const response = yield call(ServiceUser.signUser, action.payload.credentials);
+    const response = yield call(
+      ServiceUser.signUser,
+      action.payload.credentials
+    );
     console.log(response);
     yield put({
-      type: ActionTypes.SUCCESS_SIGN_USER
+      type: ActionTypes.SIGN.SUCCESS
     });
   } catch (err) {
     console.log("FAILURE ON sign USERS");
     console.log(err);
     yield put({
-      type: ActionTypes.FAILURE_SIGN_USER,
+      type: ActionTypes.SIGN.FAILURE,
       payload: { text: err.message }
     });
   }
-    }
+}
 function* getUserList(action) {
   try {
     const response = yield call(ServiceUser.getUsers, action.payload);
     console.log(response);
     yield put({
-      type: ActionTypes.SUCCESS_ATTEMPT_USER,
-      payload: {userList: response.users}
+      type: ActionTypes.USER.SUCCESS,
+      payload: { userList: response.users }
     });
   } catch (err) {
     console.log("FAILURE ON ATTEMPTING USERS");
     console.log(err);
     yield put({
-      type: ActionTypes.FAILURE_ATTEMPT_USER,
+      type: ActionTypes.USER.FAILURE,
       payload: { text: err.message }
     });
   }
 }
 
 function* watchAddTodo() {
-  yield takeLatest(ActionTypes.REQUEST_ATTEMPT_USER, getUserList);
-  yield takeLatest(ActionTypes.REQUEST_SIGN_USER, signUser);
+  yield takeLatest(ActionTypes.USER.REQUEST, getUserList);
+  yield takeLatest(ActionTypes.SIGN.REQUEST, signUser);
   // yield takeLatest('REQUEST_CHARACTER_DETAIL', getCharactersDetail);
 }
 

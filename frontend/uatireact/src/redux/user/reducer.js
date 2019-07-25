@@ -9,19 +9,19 @@ const INITIAL_STATE = {
 
 function User(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.REQUEST_ATTEMPT_USER:
+    case ActionTypes.USER.REQUEST:
       return {
         ...state,
         loading: true
       };
-    case ActionTypes.SUCCESS_ATTEMPT_USER:
+    case ActionTypes.USER.SUCCESS:
       return {
         ...state,
         userList: action.payload.userList,
         loading: false,
         error: false
       };
-    case ActionTypes.FAILURE_ATTEMPT_USER:
+    case ActionTypes.USER.FAILURE:
       return {
         ...state,
         userList: [],
@@ -29,18 +29,18 @@ function User(state = INITIAL_STATE, action) {
         error: true
       };
 
-    case ActionTypes.REQUEST_SIGN_USER:
+    case ActionTypes.SIGN.REQUEST:
       return {
         ...state,
         credentials: action.payload.credentials,
         loading: true
       };
-    case ActionTypes.SUCCESS_SIGN_USER:
+    case ActionTypes.SIGN.SUCCESS:
       return {
         ...state,
         success: true
       };
-    case ActionTypes.FAILURE_SIGN_USER:
+    case ActionTypes.SIGN.FAILURE:
       return {
         ...state,
         loading: false,

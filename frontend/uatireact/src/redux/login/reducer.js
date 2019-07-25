@@ -20,14 +20,14 @@ const INITIAL_STATE = {
 
 function Login(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.REQUEST_ATTEMPT_LOGIN:
+    case ActionTypes.LOGIN.REQUEST:
       return {
         ...state,
         credentials: action.payload.credentials,
         loading: true,
         text: "carregando.."
       };
-    case ActionTypes.SUCCESS_ATTEMPT_LOGIN:
+    case ActionTypes.LOGIN.SUCCESS:
       return {
         ...state,
         loggedUser: action.payload.loggedUser,
@@ -38,7 +38,7 @@ function Login(state = INITIAL_STATE, action) {
         error: false,
         text: "sucesso"
       };
-    case ActionTypes.FAILURE_ATTEMPT_LOGIN:
+    case ActionTypes.LOGIN.FAILURE:
       return {
         ...state,
         loggedUser: [],
@@ -49,7 +49,7 @@ function Login(state = INITIAL_STATE, action) {
         error: true,
         text: action.payload.text
       };
-    case ActionTypes.REQUEST_LOGOUT:
+    case ActionTypes.LOGOUT.REQUEST:
       localStorage.removeItem("userToken");
       return {
         ...state,
