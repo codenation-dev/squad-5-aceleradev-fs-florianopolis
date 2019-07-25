@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"uati-api/database"
+	"uati-api/email"
 	"uati-api/models"
 )
 
@@ -79,7 +81,7 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 
 		}
 
-		//email.Send(emails, "cliente se tornou um funcionario publico", client.Name+" "+strconv.FormatFloat(client.Salary, 'f', -1, 64))
+		email.Send(emails, "Um de seus clientes se tornou um funcionario publico", getClientsMessage(client))
 
 		stringValues := strings.Join(emailValues[:], ",\n")
 		queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, client, name) VALUES  %s;", stringValues)
@@ -124,7 +126,7 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 
 	}
 
-	//email.Send(emails, "novos funcionarios publicos de interesse", specialsNames)
+	email.Send(emails, "novos funcionarios publicos de interesse", getSpecialsMessage(total, specialsNames))
 
 	stringValues := strings.Join(emailValues[:], ",\n")
 	queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, name) VALUES  %s;", stringValues)
@@ -230,4 +232,18 @@ func GetAlerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(response)
+}
+
+func getClientsMessage(client models.Special) string {
+	return fmt.Sprintf("Seu Cliente, %s,se tornou um funcionario publico, com um salario de R$ %s", client.Name, strconv.FormatFloat(client.Salary, 'f', -1, 64))
+}
+
+func getSpecialsMessage(total int, names string) string {
+	message := fmt.Sprintf("Encotramos um total de %d possiveis pessoas de interesse, entre elas:\n", total)
+	namesSlice := strings.Split(names, ",")
+	for _, name := range namesSlice {
+		message += fmt.Sprintln("%s\n", name)
+	}
+
+	return message
 }
