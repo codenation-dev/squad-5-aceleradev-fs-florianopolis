@@ -27,6 +27,8 @@ const Dashboard = () => {
       <Card title="Gráficos">
         <ChartsPanel />
       </Card>
+
+      <div>&nbsp;</div>
     </div>
   );
 };

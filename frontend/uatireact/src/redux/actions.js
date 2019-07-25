@@ -8,7 +8,10 @@ export const ActionTypes = {
   SUCCESS_LOAD_CHARTS: "SUCCESS_LOAD_CHARTS",
   REQUEST_SUBMIT_FILE: "REQUEST_SUBMIT_FILE",
   SUCCESS_SUBMIT_FILE: "SUCCESS_SUBMIT_FILE",
-  FAILURE_SUBMIT_FILE: "FAILURE_SUBMIT_FILE"
+  FAILURE_SUBMIT_FILE: "FAILURE_SUBMIT_FILE",
+  REQUEST_LOAD_CLIENTS: "REQUEST_LOAD_CLIENTS",
+  FAILURE_LOAD_CLIENTS: "FAILURE_LOAD_CLIENTS",
+  SUCCESS_LOAD_CLIENTS: "SUCCESS_LOAD_CLIENTS"
 };
 
 export function uploadClients(file) {
@@ -32,6 +35,12 @@ export function login(credentials) {
 export function loadCharts() {
   return {
     type: ActionTypes.REQUEST_LOAD_CHARTS
+  }
+}
+
+export function loadClients() {
+  return {
+    type: ActionTypes.REQUEST_LOAD_CLIENTS
   }
 }
 

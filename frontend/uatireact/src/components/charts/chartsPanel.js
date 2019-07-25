@@ -4,9 +4,9 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { loadCharts } from "../../redux/actions";
 
-import BarChartClients from "./chartClientes";
-import ChartNotifications from "./chartNotifications";
-import ChartNewClients from "./chartNewClientsPerDay"
+import BarChartClients from "./ChartClientes";
+import ChartNotifications from "./ChartNotifications";
+import ChartNewClients from "./ChartNewClientsPerDay"
 
 class ChartsPanel extends Component {
   componentDidMount() {
