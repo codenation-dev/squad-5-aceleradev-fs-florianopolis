@@ -1,71 +1,68 @@
 package clients
 
 import (
-	"bytes"
 	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
+	"os"
+	"uati-api/alerts"
 	"uati-api/database"
 	"uati-api/models"
+	"uati-api/utils"
 )
 
 var db = database.GetDB()
 
 func GetClients(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("Select * FROM clients;")
+	rows, err := db.Query("Select name FROM clients;")
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer rows.Close()
 
-	clients := []models.Client{}
+	clients := new(models.ClientsResponse)
 
 	for rows.Next() {
 		c := new(models.Client)
 
-		rows.Scan(&c.Name, &c.Salary)
+		rows.Scan(&c.Name)
 
-		clients = append(clients, *c)
+		clients.Clients = append(clients.Clients, *c)
+	}
+	response, err := json.Marshal(clients)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var clientsJSON [][]byte
-	for _, client := range clients {
-		client, err := json.MarshalIndent(client, "", "	")
-		if err != nil {
-			log.Fatal(err)
-		}
-		clientsJSON = append(clientsJSON, client)
-	}
-
-	w.Write(bytes.Join(clientsJSON, []byte(",\n")))
+	w.Write(response)
 }
 
-func UpdateSalary(w http.ResponseWriter, r *http.Request) {
-
-	body, _ := ioutil.ReadAll(r.Body)
-	client := new(models.Client)
-	json.Unmarshal(body, client)
-
-	statement := fmt.Sprintf("UPDATE clients SET salary = %f WHERE name = '%s';", client.Salary, client.Name)
-	result, err := db.Exec(statement)
-
-	// err := row.Scan(&client.Name, &client.Salary)
+func UploadClients(w http.ResponseWriter, req *http.Request) {
+	var error models.Error
+	file, _, err := req.FormFile("clients")
 	if err != nil {
-		fmt.Println(err)
-	}
-
-	affected, _ := result.RowsAffected()
-	if affected == 0 {
-		w.Write([]byte(fmt.Sprintf("client %s not found", client.Name)))
+		error.Message = "File not found"
+		utils.RespondWithError(w, http.StatusBadRequest, error)
 		return
 	}
+	defer file.Close()
 
-	// clientJSON, err := json.MarshalIndent(client, "", "	")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
+	f, err := os.OpenFile("./clientes.csv", os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		error.Message = "Error writing file"
+		utils.RespondWithError(w, http.StatusInternalServerError, error)
+		return
+	}
+	defer f.Close()
+	io.Copy(f, file)
 
-	w.Write(body)
+	go func() {
+		database.RepopulateTable()
+		database.SetSpecials()
+		alerts.SendAlerts()
+	}()
+
+	response := models.SuccessResponse{"Clients uploaded"}
+	utils.ResponseJSON(w, response)
 }

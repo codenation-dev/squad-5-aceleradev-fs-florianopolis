@@ -43,64 +43,89 @@ func SetDB() {
 		GetDB()
 	}
 	var err error
-	err = publicemployees.DownloadSpEmployees()
-	if err != nil {
-		fmt.Println("Error downloading file")
-		panic(err)
-	}
 
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS publicEmployees (name text PRIMARY KEY , salary float8 DEFAULT 0);")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS specials (name text not null UNIQUE ,salary float8 default 0, isClient boolean ,alertSent boolean default false);")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
-
-	err = publicemployees.GetEmployeesFromCSV(db)
-	if err != nil {
-		fmt.Println("Error parsing data")
-		panic(err)
-	}
-	fmt.Println("done")
 
 	checkClientsTable()
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique ,password text not null);")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique,name text not null ,password text not null);")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 
-	CreateUser(models.User{Email: "admin@admin.com", Password: "1234"})
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS alerts (sent_to text NOT NULL,client boolean DEFAULT false,name text NOT NULL,sent_at TIMESTAMP DEFAULT NOW());")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	CreateUser(models.User{Email: "squad5codenation@gmail.com", Name: "admin", Password: "1234"})
 }
 
-func CreateUser(user models.User) error {
+func GetPublicEmps() {
+	err := publicemployees.DownloadSpEmployees()
+	if err != nil {
+		log.Println("Error downloading employees, stoping employees update", err)
+		return
+	}
+	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
+	if err != nil {
+		log.Println(err)
+	}
+	err = publicemployees.GetEmployeesFromCSV(db)
+	if err != nil {
+		log.Println("Error downloading employees, stoping employees update", err)
+		return
+	}
+	fmt.Println("done")
+}
+
+func SetSpecials() {
+	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name AS name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) s WHERE NOT EXISTS(SELECT  name FROM specials WHERE name = s.name);")
+	if err != nil {
+		log.Println("Error updating specials.", err)
+		return
+	}
+	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c WHERE specials.name=c.name AND specials.isClient IS NOT TRUE;")
+	if err != nil {
+		log.Println("Error updating specials.", err)
+		return
+	}
+
+}
+
+func CreateUser(user models.User) (int, error) {
 	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
 
 	if err != nil {
-		return err
+		return 0, err
 	}
 
 	user.Password = string(hash)
 
-	stmt := "INSERT INTO users (email, password) VALUES ($1,$2) RETURNING id"
+	stmt := "INSERT INTO users (email,name, password) VALUES ($1,$2,$3) RETURNING id"
 
-	db.QueryRow(stmt, user.Email, user.Password).Scan(&user.ID)
+	db.QueryRow(stmt, user.Email, user.Name, user.Password).Scan(&user.ID)
 
-	return nil
+	return user.ID, nil
 }
 
 func checkClientsTable() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, salary float8 default 0);")
-
+	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true);")
 	if err != nil {
-		panic(err)
+		log.Println(err)
+		return
 	}
 
 	if !tablePopulated() {
-		populateTable()
+		RepopulateTable()
 	}
 
 }
@@ -120,13 +145,18 @@ func tablePopulated() bool {
 	return true
 }
 
-func populateTable() {
+func RepopulateTable() {
 	statementValues := []string{}
-
+	_, err := db.Exec("DELETE FROM clients WHERE TRUE;")
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	csvFile, err := os.Open("clientes.csv")
 	reader := csv.NewReader(csvFile)
 	if err != nil {
-		panic(err)
+		log.Println("Error reading clients csv.", err)
+		return
 	}
 	defer csvFile.Close()
 
@@ -136,7 +166,8 @@ func populateTable() {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			panic(err)
+			log.Println("Error reading clients csv.", err)
+			return
 		}
 		value := fmt.Sprintf("('%s')", line[0])
 
@@ -149,6 +180,6 @@ func populateTable() {
 
 	_, err = db.Exec(sqlStatement)
 	if err != nil {
-		panic(err)
+		log.Println(err)
 	}
 }
