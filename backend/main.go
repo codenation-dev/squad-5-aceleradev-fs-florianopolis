@@ -27,14 +27,14 @@ func init() {
 }
 
 func main() {
-	ticker := time.NewTicker(24 * time.Hour)
+	ticker := time.NewTicker(12 * time.Hour)
 
 	setdb := flag.Bool("setdb", false, "download csv and setup db on startup")
 	flag.Parse()
 	if *setdb {
 		database.SetDB()
 		go func() {
-			database.GetPublicEmps()
+			// database.GetPublicEmps()
 			database.SetSpecials()
 			alerts.SendAlerts()
 		}()
