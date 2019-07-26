@@ -22,6 +22,7 @@ func SendAlerts() {
 	var emails []string
 
 	var wg sync.WaitGroup
+	fmt.Println("Geting alerts information.")
 
 	wg.Add(4)
 	go func() {
@@ -62,6 +63,8 @@ func SendAlerts() {
 
 	wg.Wait()
 
+	fmt.Println("Sendig alerts...")
+
 	go sendClientsEmails(specialClients, emails)
 	go sendNonClientsEmails(newSpecials, nonClientSpecials, emails)
 
@@ -81,12 +84,16 @@ func sendClientsEmails(clients []models.Special, emails []string) {
 
 		}
 
-		email.Send(emails, "Um de seus clientes se tornou um funcionario publico", getClientsMessage(client))
+		err := email.Send(emails, "Um de seus clientes se tornou um funcionario publico", getClientsMessage(client))
 
+		if err != nil {
+			fmt.Println("Error sendign clients email", err)
+			return
+		}
 		stringValues := strings.Join(emailValues[:], ",\n")
 		queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, client, name) VALUES  %s;", stringValues)
 
-		_, err := db.Exec(queryString)
+		_, err = db.Exec(queryString)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -126,12 +133,18 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 
 	}
 
-	email.Send(emails, "novos funcionarios publicos de interesse", getSpecialsMessage(total, specialsNames))
+	fmt.Println("outside email emp")
+	err := email.Send(emails, "novos funcionarios publicos de interesse", getSpecialsMessage(total, specialsNames))
+
+	if err != nil {
+		fmt.Println("Error sendign employees email", err)
+		return
+	}
 
 	stringValues := strings.Join(emailValues[:], ",\n")
 	queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, name) VALUES  %s;", stringValues)
 
-	_, err := db.Exec(queryString)
+	_, err = db.Exec(queryString)
 	if err != nil {
 		log.Println(err)
 	}
