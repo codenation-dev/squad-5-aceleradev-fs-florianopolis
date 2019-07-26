@@ -79,7 +79,7 @@ function Layout(props) {
     container,
     children,
     isLogged,
-    username,
+    name,
     logout,
     location: { pathname }
   } = props;
@@ -185,7 +185,7 @@ function Layout(props) {
           Uati Bank
         </Typography>
         <Typography variant="h6" noWrap>
-          Olá {username}
+          Olá {name}
         </Typography>
       </Toolbar>
     </AppBar>
@@ -259,8 +259,8 @@ function Layout(props) {
 
 const mapStateToProps = state => ({
   isLogged: state.loginReducer.isLogged,
-  username: state.loginReducer.loggedUser
-    ? state.loginReducer.loggedUser.username
+  name: state.loginReducer.loggedUser
+    ? state.loginReducer.loggedUser.name
     : ""
 });
 

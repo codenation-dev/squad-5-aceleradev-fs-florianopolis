@@ -16,7 +16,8 @@ export const ActionTypes = {
   USER: createActionTypes("ATTEMPT_USER"),
   SIGN: createActionTypes("SIGN_USER"),
   NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
-  IMPORT: createActionTypes("ATTEMPT_NOTIFICATION")
+  IMPORT: createActionTypes("IMPORT"),
+  SELECT: createActionTypes("SELECT")
 };
 
 export function getUsers() {
@@ -46,6 +47,19 @@ export function importClients(file) {
     payload: {
       file
     }
+  };
+}
+export function selectFile(file) {
+  return {
+    type: ActionTypes.SELECT.REQUEST,
+    payload: {
+      file
+    }
+  };
+}
+export function resetFile(file) {
+  return {
+    type: ActionTypes.SELECT.RESET
   };
 }
 

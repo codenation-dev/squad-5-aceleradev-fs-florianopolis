@@ -10,15 +10,13 @@ export const get = async (uri = "") => {
       Authorization: "Bearer " + localStorage.getItem("userToken")
     })
   }
-  console.log(data);
   const response = await fetch(BASE_URL + uri, data);
-  console.log(response);
   return await response.json();
 };
 
 export const post = async (uri = "", obj, auth = false) => {
   let data = "";
-
+  
   if(auth){
     data = {
       method: "POST",
@@ -34,8 +32,7 @@ export const post = async (uri = "", obj, auth = false) => {
       body: obj
     }
   }
-  console.log("Post");
-  console.log(data);
+  
   const response = await fetch(BASE_URL + uri, data);
   return await response.json();
 };

@@ -4,58 +4,90 @@ import { Form, NomeFile } from "./styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
+import DragAndDrop from '../../components/DragAndDrop';
 
 class ImportPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       file: null,
-      nomeFile: "Nenhum arquivo selecionado "
+      nomeFile: ""
     };
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.onChange = this.onChange.bind(this);
-    this.fileUpload = this.fileUpload.bind(this);
   }
-  onFormSubmit(e) {
-    e.preventDefault(); // Stop form submit
+  onFormSubmit() {
+    // e.preventDefault(); // Stop form submit
     this.props.importClients(this.state.file);
   }
+
+  limpaFile(){
+    this.setState({file: null, nomeFile: ""});
+    this.props.resetFile();
+  }
   onChange(e) {
-    this.setState({
-      file: e.target.files[0],
-      nomeFile: e.target.files[0].name
-    });
+    if(e.target.files[0]){
+      this.setState({
+        file: e.target.files[0],
+        nomeFile: e.target.files[0].name
+      });
+      this.props.selectFile(e.target.files[0]);
+    }
   }
 
-  render() {
-    return (
-      <Form onSubmit={e => this.onFormSubmit(e)}>
-        <h1>File Upload</h1>
-        {/* <Input type="file" onChange={this.onChange} />
-        <Button type="submit">Upload</Button> */}
-        <NomeFile>{this.state.nomeFile}</NomeFile>
-        <Button variant="contained" component="label">
-          Upload File
-          <input
-            type="file"
-            onChange={this.onChange}
-            style={{ display: "none" }}
-          />
-        </Button>
+  handleDrop = (files) => {
+    if(files[0]){
+      this.setState({
+        file: files[0],
+        nomeFile: files[0].name
+      });
+    }
+  }
 
-        <button type="submit">Enviar</button>
+  componentWillReceiveProps(newProps) {
+    const { success } = newProps;
+    if (success) {
+      this.setState({nomeFile: "", file: null});
+    }
+  }
+  
+  SubmitButton = React.forwardRef((props, ref) => <button {...props} ref={ref}  type='submit' />);
+  render() {
+    
+    return (
+      <Form>
+        <h1>File Upload</h1>
+        <h1>Arquivo enviado com sucesso</h1>
+        <div>
+          <DragAndDrop handleDrop={this.handleDrop}>
+            <div style={{height: 300, width: 650}}>
+                <NomeFile>{this.state.nomeFile}</NomeFile>
+            </div>
+          </DragAndDrop>        
+        </div>
+        <div>
+            <small>ou selecione por aqui </small>
+          <Button  color="primary" variant="contained" component="label">
+            Upload File
+            <input
+              type="file"
+              onChange={e => this.onChange(e)}
+              style={{ display: "none" }}
+            />
+          </Button>
+          <Button disabled={this.state.nomeFile === ""} style={{marginLeft: "15px"}} onClick={() => { if (window.confirm('Tem certeza que deseja fazer o upload desta planilha?')) this.onFormSubmit() } } variant="contained" >Enviar</Button>          
+          <Button style={{marginLeft: "15px"}} color="secondary" onClick={() => this.limpaFile()} variant="contained" >Limpar</Button>
+        </div>
       </Form>
     );
   }
 }
 
-// const mapStateToProps = state => ({
-//   notificationList: state.notificationReducer.notificationList
-// });
+const mapStateToProps = state => ({
+  success: state.importReducer.success
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ImportPage);

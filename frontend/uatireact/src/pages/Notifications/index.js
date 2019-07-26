@@ -5,7 +5,7 @@ import * as allActions from "../../redux/actions";
 
 import { EnhancedTable } from "../../components/NotificationTable";
 
-import { ExpansionPanelStyled, ExpansionPanelDetailsStyled } from "./styles";
+import { ExpansionPanelStyled, ExpansionPanelDetailsStyled, FakeExpand } from "./styles";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -30,31 +30,32 @@ class Notifications extends Component {
             };
           });
           return (
-            // {this.state.alerts.map((item, index) => (
-            <ExpansionPanelStyled key={index}>
-              <ExpansionPanelSummary
-                expandIcon={item.isClientEmail ? "" : <ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>
-                  {item.isClientEmail
-                    ? `O cliente ${
-                        data[0].name
-                      } se tornou um funcionário publico`
-                    : `Existem ${
-                        splitName.length
-                      } clientes em potencial na atualização de ${item.sentAt}`}
-                </Typography>
-              </ExpansionPanelSummary>
-              {!item.isClientEmail && (
-                <ExpansionPanelDetailsStyled>
-                  <div style={{ width: "100%" }}>
-                    <EnhancedTable dataAtualizacao={item.sentAt} dados={data} />
-                  </div>
-                </ExpansionPanelDetailsStyled>
-              )}
-            </ExpansionPanelStyled>
+            <React.Fragment>
+              {item.isClientEmail &&
+                <FakeExpand>
+                  <Typography>O cliente {data[0].name} se tornou um funcionário publico</Typography>
+                </FakeExpand>
+              }
+
+              {!item.isClientEmail &&
+              <ExpansionPanelStyled key={index}>
+                <ExpansionPanelSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography>
+                    Existem {splitName.length} clientes em potencial na atualização de {item.sentAt}
+                  </Typography>
+                </ExpansionPanelSummary>
+                  <ExpansionPanelDetailsStyled>
+                    <div style={{ width: "100%" }}>
+                      <EnhancedTable dataAtualizacao={item.sentAt} dados={data} />
+                    </div>
+                  </ExpansionPanelDetailsStyled>
+                </ExpansionPanelStyled>
+              }
+            </React.Fragment>
           );
         })}
       </div>

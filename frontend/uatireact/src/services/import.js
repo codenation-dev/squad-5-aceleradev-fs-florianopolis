@@ -1,7 +1,7 @@
 import { post } from "../utils/api";
 class ServiceImport {
-  static tryImport() {
-    return post("clients/upload");
+  static tryImport(obj) {
+    return post("clients/upload", obj, true);
   }
 }
 

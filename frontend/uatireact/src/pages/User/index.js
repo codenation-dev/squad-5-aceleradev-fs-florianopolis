@@ -15,6 +15,7 @@ class User extends Component {
         field: "password"
       }
     ],
+    data: []
   };
 
   componentDidMount() {
@@ -26,37 +27,40 @@ class User extends Component {
       <MaterialTable
         title="Usuários do sistema"
         columns={this.state.columns}
-        data={this.props.userList}
+        data={this.state.data.length > 0 ? this.state.data : this.props.userList}
         editable={{
           onRowAdd: newData =>
             new Promise(resolve => {
               setTimeout(() => {
                 resolve();
-                const data = [...this.props.userList];
-                data.push(newData);
                 this.props.cadastraUser(newData);
+                const data = [...this.props.userList];
+                delete newData.password;
+                data.push(newData);
                 this.setState({ ...this.state, data });
               }, 600);
             }),
-          onRowUpdate: (newData, oldData) =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                const data = [...this.props.userList];
-                data[data.indexOf(oldData)] = newData;
-                this.setState({ ...this.state, data });
-              }, 600);
-            }),
-          onRowDelete: oldData =>
-            new Promise(resolve => {
-              setTimeout(() => {
-                resolve();
-                const data = [...this.props.userList];
-                data.splice(data.indexOf(oldData), 1);
-                this.setState({ ...this.state, data });
-              }, 600);
-            })
+          // onRowUpdate: (newData, oldData) =>
+          //   new Promise(resolve => {
+          //     setTimeout(() => {
+          //       resolve();
+          //       const data = [...this.props.userList];
+          //       data[data.indexOf(oldData)] = newData;
+          //       this.setState({ ...this.state, data });
+          //     }, 600);
+          //   }),
+          // onRowDelete: oldData =>
+          //   new Promise(resolve => {
+          //     setTimeout(() => {
+          //       resolve();
+          //       const data = [...this.props.userList];
+          //       data.splice(data.indexOf(oldData), 1);
+          //       this.setState({ ...this.state, data });
+          //     }, 600);
+          //   })
         }}
+        
+        options={{pageSize: 15}}
         localization={localizationSettings}
       />
     );

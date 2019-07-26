@@ -14,19 +14,22 @@ function* attemptToLogin(action) {
     if (!response["token"]) {
       throw new Error(response.message);
     }
-
+    
     const loggedUser = {
-      username: obj.email,
+      // name: obj.name,
+      name: action.payload.credentials.username,
+      username: action.payload.credentials.username,
       token: response.token
     };
-
+    
     loggedUser.token !== ""
-      ? localStorage.setItem("userToken", loggedUser.token)
-      : localStorage.setItem("userToken", "");
-
-    loggedUser.username !== ""
-      ? localStorage.setItem("userEmail", loggedUser.username)
-      : localStorage.setItem("userEmail", "");
+    ? localStorage.setItem("userToken", loggedUser.token)
+    : localStorage.setItem("userToken", "");
+    
+    loggedUser.name !== ""
+    ? localStorage.setItem("userName", loggedUser.name)
+    : localStorage.setItem("userName", "");
+    console.log(loggedUser);
 
     yield put({
       type: ActionTypes.LOGIN.SUCCESS,

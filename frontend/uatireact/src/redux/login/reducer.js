@@ -4,8 +4,8 @@ import { isLogged } from "../../helpers/auth";
 const INITIAL_STATE = {
   credentials: [],
   loggedUser: {
-    email: localStorage.getItem("userEmail")
-      ? localStorage.getItem("userEmail")
+    name: localStorage.getItem("userName")
+      ? localStorage.getItem("userName")
       : "",
     token: localStorage.getItem("userToken")
       ? localStorage.getItem("userToken")

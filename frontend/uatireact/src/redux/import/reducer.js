@@ -1,9 +1,11 @@
 import { ActionTypes } from "../actions";
 const INITIAL_STATE = {
   file: "",
+  fileSelected: "",
   loading: false,
   success: false,
-  error: false
+  error: false,
+  resetFile: false
 };
 
 function Import(state = INITIAL_STATE, action) {
@@ -29,6 +31,17 @@ function Import(state = INITIAL_STATE, action) {
         loading: false,
         success: false,
         error: true
+      };
+    case ActionTypes.SELECT.REQUEST:
+      return {
+        ...state,
+        fileSelected: action.payload.file
+      };
+    case ActionTypes.SELECT.RESET:
+      return {
+        ...state,
+        fileSelected: "",
+        resetFile: true
       };
     default:
       return state;

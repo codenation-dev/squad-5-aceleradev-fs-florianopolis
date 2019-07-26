@@ -4,6 +4,7 @@ class ServiceUser {
     return get("users");
   }
   static signUser(credentials) {
+    credentials = JSON.stringify(credentials);
     return post("signup", credentials, true);
   }
 }
