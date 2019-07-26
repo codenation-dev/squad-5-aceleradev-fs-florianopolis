@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { Form, NomeFile } from "./styles";
+import { Form, NomeFile, SuccessWarn } from "./styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
@@ -11,43 +11,48 @@ class ImportPage extends React.Component {
     super(props);
     this.state = {
       file: null,
-      nomeFile: ""
+      nomeFile: "",
+      success: false
     };
+    this.input = React.createRef();
   }
   onFormSubmit() {
-    // e.preventDefault(); // Stop form submit
     this.props.importClients(this.state.file);
+    this.input.current.value = "";
+    this.props.resetFile();
   }
 
   limpaFile(){
     this.setState({file: null, nomeFile: ""});
+    this.input.current.value = "";
     this.props.resetFile();
   }
   onChange(e) {
-    if(e.target.files[0]){
-      this.setState({
-        file: e.target.files[0],
-        nomeFile: e.target.files[0].name
-      });
-      this.props.selectFile(e.target.files[0]);
-    }
+    this.handleFile(e.target.files[0]);
   }
 
-  handleDrop = (files) => {
-    if(files[0]){
+  handleDrop = (file) => {
+    this.handleFile(file[0]);
+  }
+
+  handleFile = (file) =>{
+    this.setState({success: false});
+    if(file){
       this.setState({
-        file: files[0],
-        nomeFile: files[0].name
+        file: file,
+        nomeFile: file.name
       });
+      this.props.selectFile(file)
     }
   }
 
   componentWillReceiveProps(newProps) {
     const { success } = newProps;
     if (success) {
-      this.setState({nomeFile: "", file: null});
+      this.setState({nomeFile: "", file: null, success});
     }
   }
+
   
   SubmitButton = React.forwardRef((props, ref) => <button {...props} ref={ref}  type='submit' />);
   render() {
@@ -55,7 +60,7 @@ class ImportPage extends React.Component {
     return (
       <Form>
         <h1>File Upload</h1>
-        <h1>Arquivo enviado com sucesso</h1>
+        {this.state.success && <SuccessWarn>Arquivo enviado com sucesso</SuccessWarn>}
         <div>
           <DragAndDrop handleDrop={this.handleDrop}>
             <div style={{height: 300, width: 650}}>
@@ -68,6 +73,7 @@ class ImportPage extends React.Component {
           <Button  color="primary" variant="contained" component="label">
             Upload File
             <input
+              ref={this.input}
               type="file"
               onChange={e => this.onChange(e)}
               style={{ display: "none" }}

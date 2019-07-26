@@ -32,7 +32,6 @@ export const post = async (uri = "", obj, auth = false) => {
       body: obj
     }
   }
-  
   const response = await fetch(BASE_URL + uri, data);
   return await response.json();
 };

@@ -59,6 +59,7 @@ class DragAndDrop extends Component {
     if (fileSelected) {
         this.dragCounter = 1;
     }
+    
     if(resetFile){
         this.dragCounter = 0;
     }
@@ -106,7 +107,8 @@ class DragAndDrop extends Component {
 }
 
 const mapStateToProps = state => ({
-    fileSelected: state.importReducer.fileSelected
+    fileSelected: state.importReducer.fileSelected,
+    resetFile: state.importReducer.resetFile
 });
   
 export default connect(

@@ -14,33 +14,49 @@ function Import(state = INITIAL_STATE, action) {
       return {
         ...state,
         file: action.payload.file,
-        loading: true
+        fileSelected: "",
+        loading: true,
+        success: true,
+        error: false,
+        resetFile: false
       };
     case ActionTypes.IMPORT.SUCCESS:
       return {
         ...state,
         file: "",
+        fileSelected: "",
         loading: false,
         success: true,
-        error: false
+        error: false,
+        resetFile: false
       };
     case ActionTypes.IMPORT.FAILURE:
       return {
         ...state,
         file: "",
+        fileSelected: action.payload.file,
         loading: false,
         success: false,
-        error: true
+        error: true,
       };
-    case ActionTypes.SELECT.REQUEST:
+    case ActionTypes.FILE.REQUEST:
       return {
         ...state,
-        fileSelected: action.payload.file
+        file: "",
+        fileSelected: action.payload.file,
+        loading: false,
+        success: false,
+        error: false,
+        resetFile: false
       };
-    case ActionTypes.SELECT.RESET:
+    case ActionTypes.FILE.RESET:
       return {
         ...state,
+        file: "",
         fileSelected: "",
+        loading: false,
+        success: false,
+        error: false,
         resetFile: true
       };
     default:

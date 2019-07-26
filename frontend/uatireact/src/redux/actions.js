@@ -17,7 +17,7 @@ export const ActionTypes = {
   SIGN: createActionTypes("SIGN_USER"),
   NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
   IMPORT: createActionTypes("IMPORT"),
-  SELECT: createActionTypes("SELECT")
+  FILE: createActionTypes("FILE")
 };
 
 export function getUsers() {
@@ -50,8 +50,9 @@ export function importClients(file) {
   };
 }
 export function selectFile(file) {
+  
   return {
-    type: ActionTypes.SELECT.REQUEST,
+    type: ActionTypes.FILE.REQUEST,
     payload: {
       file
     }
@@ -59,7 +60,7 @@ export function selectFile(file) {
 }
 export function resetFile(file) {
   return {
-    type: ActionTypes.SELECT.RESET
+    type: ActionTypes.FILE.RESET
   };
 }
 
