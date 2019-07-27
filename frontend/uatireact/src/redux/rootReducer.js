@@ -1,8 +1,16 @@
+import loginReducer from "./login/reducer";
 import userReducer from "./user/reducer";
-import clientsReducer from "./clients/reducer";
-import { combineReducers } from "redux";
+import notificationReducer from "./notification/reducer";
+import importReducer from "./import/reducer";
 import chartReducer from './charts/reducer'
+import { combineReducers } from "redux";
 
-const rootReducers = combineReducers({ userReducer, chartReducer, clientsReducer });
+const rootReducers = combineReducers({
+  userReducer,
+  loginReducer,
+  notificationReducer,
+  importReducer,
+  chartReducer
+});
 
 export default rootReducers;

@@ -1,38 +1,18 @@
 import styled from "styled-components";
 
-//   loginBg: {
-//     backgroundColor: "#fff",
-//     padding: "60px 20px",
-//     border: "1px solid #ccc"
-//   },
-//   ipt: {
-//     marginTop: "10px"
-//   },
-//   link: {
-//     textDecoration: "none !important"
-//   },
-//   btn: {
-//     marginTop: "10px",
-//     marginRight: "10px"
-//   },
-//   error: {
-//     fontSize: "12px",
-//     color: "red",
-//     padding: "10px 0px"
-//   }
-
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
-
 export const Error = styled.div`
   font-size: 12px;
   color: #ff3333;
   width: 100%;
   text-align: left;
+`;
+
+export const Status = styled.span`
+  display: inline-block;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin: 0px 0px -3px 5px;
 `;
 
 export const Form = styled.form`
@@ -43,18 +23,6 @@ export const Form = styled.form`
   flex-direction: column;
   align-items: center;
   border: 1px solid #ccc;
-  img {
-    width: 100px;
-    margin: 10px 0 40px;
-  }
-  p {
-    color: #ff3333;
-    margin-bottom: 15px;
-    border: 1px solid #ff3333;
-    padding: 10px;
-    width: 100%;
-    text-align: center;
-  }
   input {
     flex: 1;
 

@@ -2,8 +2,8 @@ import { get } from "../utils/api";
 
 export const isServerUp = async () => {
   try {
-    await get("/");
-    return true;
+    const response = await get("");
+    return response.ok;
   } catch (err) {
     console.log(err);
     return false;
