@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
 import DragAndDrop from '../../components/DragAndDrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 class ImportPage extends React.Component {
   constructor(props) {
@@ -66,7 +67,6 @@ class ImportPage extends React.Component {
       this.setState({nomeFile: "", file: null, success});
     }
   }
-
   
   SubmitButton = React.forwardRef((props, ref) => <button {...props} ref={ref}  type='submit' />);
   render() {
@@ -76,34 +76,44 @@ class ImportPage extends React.Component {
         <h1>File Upload</h1>
         {this.state.error && <ErrorWarn>O arquivo selecionado não é um CSV</ErrorWarn>}
         {this.state.success && <SuccessWarn>Arquivo enviado com sucesso</SuccessWarn>}
-        <div>
-          <DragAndDrop handleDrop={this.handleDrop}>
-            <div style={{height: 300, width: 650}}>
-                <NomeFile>{this.state.nomeFile}</NomeFile>
+        {this.props.loading ? (
+          <div style={{padding: "25vh"}}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <React.Fragment>
+            <div>
+              <DragAndDrop handleDrop={this.handleDrop}>
+                <div style={{height: 300, width: 650}}>
+                    <NomeFile>{this.state.nomeFile}</NomeFile>
+                </div>
+              </DragAndDrop>        
             </div>
-          </DragAndDrop>        
-        </div>
-        <div>
-            <small>ou selecione por aqui </small>
-          <Button  color="primary" variant="contained" component="label">
-            Upload File
-            <input
-              ref={this.input}
-              type="file"
-              onChange={e => this.onChange(e)}
-              style={{ display: "none" }}
-            />
-          </Button>
-          <Button disabled={this.state.nomeFile === ""} style={{marginLeft: "15px"}} onClick={() => { if (window.confirm('Tem certeza que deseja fazer o upload desta planilha?')) this.onFormSubmit() } } variant="contained" >Enviar</Button>          
-          <Button style={{marginLeft: "15px"}} color="secondary" onClick={() => this.limpaFile()} variant="contained" >Limpar</Button>
-        </div>
+            <div>
+                <small>ou selecione por aqui </small>
+              <Button  color="primary" variant="contained" component="label">
+                Upload File
+                <input
+                  ref={this.input}
+                  type="file"
+                  onChange={e => this.onChange(e)}
+                  style={{ display: "none" }}
+                />
+              </Button>
+              <Button disabled={this.state.nomeFile === ""} style={{marginLeft: "15px"}} onClick={() => { if (window.confirm('Tem certeza que deseja fazer o upload desta planilha?')) this.onFormSubmit() } } variant="contained" >Enviar</Button>          
+              <Button style={{marginLeft: "15px"}} color="secondary" onClick={() => this.limpaFile()} variant="contained" >Limpar</Button>
+            </div>
+          </React.Fragment>
+        )}
       </Form>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  success: state.importReducer.success
+  success: state.importReducer.success,
+  loading: state.importReducer.loading
+
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
