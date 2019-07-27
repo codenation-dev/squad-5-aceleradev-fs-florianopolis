@@ -3,6 +3,7 @@ import { ActionTypes } from "../actions";
 const INITIAL_STATE = {
   notificationList: [],
   loading: false,
+  success: false,
   error: false
 };
 
@@ -18,7 +19,7 @@ function Notification(state = INITIAL_STATE, action) {
         ...state,
         notificationList: action.payload.notificationList,
         loading: false,
-        error: false
+        success: true
       };
     case ActionTypes.NOTIFICATION.FAILURE:
       return {

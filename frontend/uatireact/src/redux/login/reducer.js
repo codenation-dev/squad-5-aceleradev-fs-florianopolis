@@ -25,7 +25,7 @@ function Login(state = INITIAL_STATE, action) {
         ...state,
         credentials: action.payload.credentials,
         loading: true,
-        text: "carregando.."
+        text: "Carregando.."
       };
     case ActionTypes.LOGIN.SUCCESS:
       return {
@@ -35,8 +35,7 @@ function Login(state = INITIAL_STATE, action) {
         loading: false,
         isLogged: true,
         success: true,
-        error: false,
-        text: "sucesso"
+        text: "Sucesso"
       };
     case ActionTypes.LOGIN.FAILURE:
       return {
@@ -45,7 +44,6 @@ function Login(state = INITIAL_STATE, action) {
         credentials: [],
         loading: false,
         isLogged: false,
-        success: false,
         error: true,
         text: action.payload.text
       };

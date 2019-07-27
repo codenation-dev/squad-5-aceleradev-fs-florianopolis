@@ -7,6 +7,14 @@ export const Error = styled.div`
   text-align: left;
 `;
 
+export const Status = styled.span`
+  display: inline-block;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  margin: 0px 0px -3px 5px;
+`;
+
 export const Form = styled.form`
   width: 400px;
   background: #fff;

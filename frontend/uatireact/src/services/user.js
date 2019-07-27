@@ -1,7 +1,7 @@
 import { get, post } from "../utils/api";
 class ServiceUser {
   static getUsers() {
-    return get("users");
+    return get("users", true);
   }
   static signUser(credentials) {
     credentials = JSON.stringify(credentials);

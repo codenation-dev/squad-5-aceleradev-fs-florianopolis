@@ -3,7 +3,6 @@ import Admin from "./Admin";
 import Dashboard from "./Dashboard";
 import ImportPage from "./ImportPage";
 import Login from "./Login";
-import Register from "./Register";
 import Notifications from "./Notifications";
 
 export const routes = {
@@ -27,14 +26,10 @@ export const routes = {
     path: "/login",
     component: Login
   },
-  register: {
-    path: "/register",
-    component: Register
-  },
   notifications: {
     path: "/notifications",
     component: Notifications
   }
 };
 
-export { User, Admin, Dashboard, ImportPage, Login, Register, Notifications };
+export { User, Admin, Dashboard, ImportPage, Login, Notifications };

@@ -18,3 +18,10 @@ export const SuccessWarn = styled.h3`
   border-radius: 5px;
   color: #fff;
 `;
+
+export const ErrorWarn = styled.h3`
+  background: #ff3333;
+  padding: 9px;
+  border-radius: 5px;
+  color: #fff;
+`;

@@ -16,8 +16,26 @@ export const ExpansionPanelDetailsStyled = styled(ExpansionPanelDetails)`
   margin: 0px 15px;
   padding: 0px !important;
 `;
+
 export const ClienteName = styled.div`
   border-bottom: 1px solid #ecf0f5;
+`;
+
+export const UlStyled = styled.ul`
+  list-style: none;
+  li{
+    display: inline-block;
+    display: inline-block;
+    border: 1px solid #DDD;
+    margin: 3px;
+    padding: 2px 9px;
+    border-radius: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    :hover{
+      background: #DDD;
+    }
+  }
 `;
 
 export const FakeExpand = styled.div`

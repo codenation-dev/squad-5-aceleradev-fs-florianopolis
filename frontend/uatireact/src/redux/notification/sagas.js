@@ -6,7 +6,7 @@ import { ActionTypes } from "../actions";
 function* getNotificationList() {
   try {
     const response = yield call(ServiceNotification.getNotifications);
-    console.log(response);
+    
     yield put({
       type: ActionTypes.NOTIFICATION.SUCCESS,
       payload: { notificationList: response.alerts }

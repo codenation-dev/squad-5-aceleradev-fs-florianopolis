@@ -5,24 +5,78 @@ import * as allActions from "../../redux/actions";
 
 import { EnhancedTable } from "../../components/NotificationTable";
 
-import { ExpansionPanelStyled, ExpansionPanelDetailsStyled, FakeExpand } from "./styles";
+import { ExpansionPanelStyled, ExpansionPanelDetailsStyled, FakeExpand, UlStyled } from "./styles";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 class Notifications extends Component {
+  constructor (){
+    super();
+    this.state ={
+      currentPage: 1,
+      alertsPerPage: 10,
+      notificationList: [],
+      totalLength: 0
+    }
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick(number) {
+    console.log(number);
+    this.paginationFunct(number, this.props.notificationList);
+  }
+  
   componentDidMount() {
-    this.props.getNotifications();
+    const asyncFunc = async () => {
+      await this.props.getNotifications();
+    };
+    asyncFunc();
     // let names = this.props.notificationList.name.split(",");
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.paginationFunct(1, nextProps.notificationList);
+  }
+
+
+  paginationFunct(currentPage, data){
+    const { alertsPerPage } = this.state;
+    const indexOfLastTodo = currentPage * alertsPerPage;
+    const indexOfFirstTodo = indexOfLastTodo - alertsPerPage;
+    const notificationList = data.slice(indexOfFirstTodo, indexOfLastTodo);
+    console.log(notificationList);
+    this.setState({notificationList, totalLength: data.length});
+  }
+
+  mountPageBlocks(){
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(this.state.totalLength / this.state.alertsPerPage); i++) {
+      pageNumbers.push(i);
+    }
+    const renderPageNumbers = pageNumbers.map(number => {
+      return (
+        <li
+          key={number}
+          onClick={() => this.handleClick(number)}
+        >
+          {number}
+        </li>
+      );
+    });
+
+    return renderPageNumbers;
   }
 
   render() {
     // let names = this.props.notificationList.name.split(",");
     // console.log(names);
+    
+
     return (
       <div style={{ padding: "15px" }}>
         <h1>Notificações</h1>
-        {this.props.notificationList.map((item, index) => {
+        {this.state.notificationList.map((item, index) => {
           let splitName = item.name.split(",");
           let data = splitName.map(name => {
             return {
@@ -30,7 +84,7 @@ class Notifications extends Component {
             };
           });
           return (
-            <React.Fragment>
+            <React.Fragment key={index}>
               {item.isClientEmail &&
                 <FakeExpand>
                   <Typography>O cliente {data[0].name} se tornou um funcionário publico</Typography>
@@ -38,7 +92,7 @@ class Notifications extends Component {
               }
 
               {!item.isClientEmail &&
-              <ExpansionPanelStyled key={index}>
+              <ExpansionPanelStyled>
                 <ExpansionPanelSummary
                   expandIcon={<ExpandMoreIcon />}
                   aria-controls="panel1a-content"
@@ -55,9 +109,13 @@ class Notifications extends Component {
                   </ExpansionPanelDetailsStyled>
                 </ExpansionPanelStyled>
               }
+              
             </React.Fragment>
           );
         })}
+        <UlStyled id="page-numbers">
+            {this.mountPageBlocks()}
+        </UlStyled>
       </div>
     );
   }

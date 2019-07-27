@@ -7,20 +7,25 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
 
-import { Form, Error } from "./styles";
+import { Form, Error, Status } from "./styles";
+import { isServerUp } from "../../services/server";
+
 
 class Login extends Component {
   state = {
-    username: "",
+    email: "",
     password: "",
-    msg: ""
+    msg: "",
+    serverStatus: "Checando conexao...",
+    bgStatus: ""
   };
 
-  handleChange = event => {
-    const input = event.target;
-    const value = input.value;
-
-    this.setState({ [input.name]: value });
+  //handleChange splitted so it can work with enzyme testing
+  handleEmailChange = event => {
+    this.setState({ email: event.target.value });
+  };
+  handlePasswordChange = event => {
+    this.setState({ password: event.target.value });
   };
 
   submitForm = e => {
@@ -28,10 +33,19 @@ class Login extends Component {
     this.props.login(this.state);
   };
 
-  componentWillReceiveProps(newProps) {
-    const { success, history } = newProps;
-    if (success) {
-      history.push("/dashboard");
+  componentDidMount() {
+    const asyncFunc = async () => {
+      const serverStatus = (await isServerUp()) ? "online" : "offline";
+      const bgStatus = (serverStatus === "online") ? "#517043" : "#ff3333";
+      this.setState({ serverStatus, bgStatus });
+    };
+
+    asyncFunc();
+  }
+
+  componentWillUpdate(nextProps) {
+    if (nextProps.sucess) {
+      this.props.history.push("/dashboard");
     }
   }
 
@@ -49,22 +63,23 @@ class Login extends Component {
           <Form onSubmit={e => this.submitForm(e)}>
             <h1>Login</h1>
             <input
-              name="username"
+              name="email"
               type="text"
-              // fullWidth={true}
-              placeholder="Usuário"
-              onChange={this.handleChange}
+              placeholder="Email"
+              onChange={this.handleEmailChange}
             />
             <input
               name="password"
               type="password"
-              // fullWidth={true}
               placeholder="Senha"
-              onChange={this.handleChange}
+              onChange={this.handlePasswordChange}
             />
-            <Error>{this.props.msg}</Error>
+            <Error className="loginMsg">{this.props.msg}</Error>
             <hr />
-            <Button type="submit">Login</Button>
+            <Button type="submit" className="loginButton">
+              Login
+            </Button>
+            <div style={{marginTop: "5px"}}>Server status: {this.state.serverStatus}<Status style={{backgroundColor: this.state.bgStatus}} /></div>
           </Form>
         </Grid>
       </div>
@@ -73,9 +88,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  success: state.loginReducer.success,
-  error: state.loginReducer.error,
-  msg: state.loginReducer.text
+  success: state.userReducer.success,
+  error: state.userReducer.error,
+  msg: state.userReducer.text
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

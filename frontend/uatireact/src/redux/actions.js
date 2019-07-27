@@ -17,8 +17,15 @@ export const ActionTypes = {
   SIGN: createActionTypes("SIGN_USER"),
   NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
   IMPORT: createActionTypes("IMPORT"),
-  FILE: createActionTypes("FILE")
+  FILE: createActionTypes("FILE"),
+  CHART: createActionTypes("CHART"),
 };
+
+export function loadCharts() {
+  return {
+    type: ActionTypes.CHART.REQUEST
+  }
+}
 
 export function getUsers() {
   return {

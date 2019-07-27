@@ -6,7 +6,7 @@ import { ActionTypes } from "../actions";
 function* attemptToLogin(action) {
   try {
     const obj = JSON.stringify({
-      email: action.payload.credentials.username,
+      email: action.payload.credentials.email,
       password: action.payload.credentials.password
     });
     const response = yield call(ServiceLogin.tryLogin, obj);
@@ -17,7 +17,7 @@ function* attemptToLogin(action) {
     
     const loggedUser = {
       // name: obj.name,
-      name: action.payload.credentials.username,
+      name: action.payload.credentials.email,
       username: action.payload.credentials.username,
       token: response.token
     };

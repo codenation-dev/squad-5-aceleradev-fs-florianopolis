@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 // prettier-ignore
-import { Login, ImportPage, Dashboard, Admin, Notifications, User, routes} from './pages'
+import { Login, ImportPage, Dashboard, Admin, Notifications, User} from './pages'
 import { Switch } from "react-router-dom";
 
 import Layout from "./pages/Layout";

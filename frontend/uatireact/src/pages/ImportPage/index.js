@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { Form, NomeFile, SuccessWarn } from "./styles";
+import { Form, NomeFile, SuccessWarn, ErrorWarn } from "./styles";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
@@ -12,14 +12,15 @@ class ImportPage extends React.Component {
     this.state = {
       file: null,
       nomeFile: "",
-      success: false
+      success: false,
+      error: false
     };
     this.input = React.createRef();
   }
   onFormSubmit() {
     this.props.importClients(this.state.file);
-    this.input.current.value = "";
-    this.props.resetFile();
+    this.timeoutWarn();
+    this.limpaFile();
   }
 
   limpaFile(){
@@ -36,14 +37,27 @@ class ImportPage extends React.Component {
   }
 
   handleFile = (file) =>{
-    this.setState({success: false});
-    if(file){
-      this.setState({
-        file: file,
-        nomeFile: file.name
-      });
-      this.props.selectFile(file)
+    let splitName = file.name.split(".");
+
+    if(splitName[1] === "csv"){      
+      this.setState({success: false, error: false});
+      if(file){
+        this.setState({
+          file: file,
+          nomeFile: file.name
+        });
+        this.props.selectFile(file)
+      }
+    }else{
+      this.setState({success: false, error: true})
+      this.timeoutWarn();
     }
+  }
+  
+  timeoutWarn(){
+    setTimeout(() => {
+      this.setState({success: false, error: false});
+    }, 7000);
   }
 
   componentWillReceiveProps(newProps) {
@@ -60,6 +74,7 @@ class ImportPage extends React.Component {
     return (
       <Form>
         <h1>File Upload</h1>
+        {this.state.error && <ErrorWarn>O arquivo selecionado não é um CSV</ErrorWarn>}
         {this.state.success && <SuccessWarn>Arquivo enviado com sucesso</SuccessWarn>}
         <div>
           <DragAndDrop handleDrop={this.handleDrop}>
