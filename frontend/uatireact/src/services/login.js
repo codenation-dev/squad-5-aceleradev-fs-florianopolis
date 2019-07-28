@@ -8,9 +8,16 @@ class ServiceLogin {
     if (isBackendRunning) {
       return post("login", payload);
     } else {
-      return { message: "fakeLogin failed" };
+      if (
+        payload.credentials.username === "1" &&
+        payload.credentials.password === "1"
+      ) {
+        return { token: "fakeToken" };
+      } else {
+        return { message: "fakeLogin failed" };
+      }
     }
   }
-};
+}
 
 export default ServiceLogin;
