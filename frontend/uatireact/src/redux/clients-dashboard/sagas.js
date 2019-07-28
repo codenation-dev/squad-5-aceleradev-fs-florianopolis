@@ -6,18 +6,18 @@ import ServicesClients from "../../services/clients";
 function* loadClients(action) {
   try {
     const response = yield call(
-      ServicesClients.loadClientsDashboard,
-      action.payload.query,
-      action.payload.pageNumber
+      ServicesClients.loadClientsDashboard
     );
+
+    const filteredClients = ServicesClients.filterClients(action.payload.query, action.payload.pageNumber, response.Clients);
 
     yield put({
       type: ActionTypes.CLIENTS.SUCCESS,
       payload: {
-        clients: response.clients,
-        pageNumber: response.pageNumber,
-        totalClients: response.totalClients,
-        query: response.query
+        clients: filteredClients,
+        pageNumber: action.payload.pageNumber,
+        total: response.Clients.length,
+        query: action.payload.query
       }
     });
   } catch (err) {

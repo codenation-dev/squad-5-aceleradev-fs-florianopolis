@@ -15,7 +15,7 @@ function ClientsDashboard(state = INITIAL_STATE, action) {
         ...state,
         clients: action.payload.clients,
         pageNumber: action.payload.pageNumber,
-        totalClients: action.payload.totalClients,
+        total: action.payload.total,
         query: action.payload.query,
         err: ""
       };
@@ -24,7 +24,7 @@ function ClientsDashboard(state = INITIAL_STATE, action) {
         ...state,
         clients: [],
         pageNumber: 1,
-        totalClients: 0,
+        total: 0,
         query: "",
         err: action.payload.err
       };

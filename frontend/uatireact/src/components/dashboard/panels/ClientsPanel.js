@@ -6,26 +6,24 @@ import { loadClients } from "../../../redux/actions";
 import "./searchForm.css";
 
 class ClientsPanel extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      clients: [],
-      pageNumber: 1,
-      totalClients: 0,
-      query: "",
-      err: ""
-    };
-  }
+  handleSearch = e => {
+    console.log(e);
+    this.props.loadClients(e.target.value, this.props.pageNumber);
+  };
 
-  handleSearch = e => {};
+  handlePreviousPage = () => {
+    const newPageNumber = this.props.pageNumber > 1? this.props.pageNumber - 1 : 1;
+    this.props.loadClients(this.props.query, newPageNumber);
+  };
 
-  handlePreviousPage = e => {};
-
-  handleNextPage = e => {};
+  handleNextPage = () => {
+    const newPageNumber = this.props.clients.length === 10? this.props.pageNumber + 1 : this.props.pageNumber;
+    this.props.loadClients(this.props.query, newPageNumber);
+  };
 
   componentDidMount() {
-    this.props.loadClients(this.state.query, this.state.pageNumber);
+    this.props.loadClients("", 1);
   }
 
   render() {
@@ -51,7 +49,7 @@ class ClientsPanel extends Component {
             type="text"
             value={query}
             placeholder="Pesquisar..."
-            onChange={this.handleSearch}
+            onChange={e => this.handleSearch(e)}
           />
         </div>
 
@@ -63,7 +61,7 @@ class ClientsPanel extends Component {
 
         <div className="search-data">
           {clients.map(d => (
-            <div className="search-data-item">{d}</div>
+            <div className="search-data-item" key={d.name}>{d.name}</div>
           ))}
         </div>
 
@@ -72,13 +70,13 @@ class ClientsPanel extends Component {
             name="previous"
             type="button"
             value="Anterior"
-            onChange={this.handlePreviousPage}
+            onClick={this.handlePreviousPage}
           />
           <input
             name="next"
             type="button"
             value="Próxima"
-            onChange={this.handleNextPage}
+            onClick={this.handleNextPage}
           />
         </div>
         
@@ -94,11 +92,11 @@ class ClientsPanel extends Component {
 
 const mapStateToProps = state => {
   return {
-    clients: state.clientsDashboardReducer.clients,
-    pageNumber: state.clientsDashboardReducer.pageNumber,
-    total: state.clientsDashboardReducer.totalClients,
-    query: state.clientsDashboardReducer.query,
-    err: state.clientsDashboardReducer.err
+    clients: state.clientsReducer.clients,
+    pageNumber: state.clientsReducer.pageNumber,
+    total: state.clientsReducer.total,
+    query: state.clientsReducer.query,
+    err: state.clientsReducer.err
   };
 };
 
