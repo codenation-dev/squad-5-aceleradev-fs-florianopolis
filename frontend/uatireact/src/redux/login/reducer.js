@@ -35,7 +35,7 @@ function Login(state = INITIAL_STATE, action) {
         loading: false,
         isLogged: true,
         success: true,
-        text: "Sucesso"
+        text: ""
       };
     case ActionTypes.LOGIN.FAILURE:
       return {
