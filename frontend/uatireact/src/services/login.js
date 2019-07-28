@@ -1,4 +1,5 @@
 import { post } from "../utils/api";
+import { isServerUp } from "./server";
 
 class ServiceLogin {
   static tryLogin(payload) {
@@ -7,16 +8,9 @@ class ServiceLogin {
     if (isBackendRunning) {
       return post("login", payload);
     } else {
-      if (
-        payload.credentials.username === "1" &&
-        payload.credentials.password === "1"
-      ) {
-        return { token: "fakeToken" };
-      } else {
-        return { message: "fakeLogin failed" };
-      }
+      return { message: "fakeLogin failed" };
     }
   }
-}
+};
 
 export default ServiceLogin;

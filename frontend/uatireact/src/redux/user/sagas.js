@@ -9,13 +9,16 @@ function* signUser(action) {
       ServiceUser.signUser,
       action.payload.credentials
     );
+
     console.log(response);
+
     yield put({
       type: ActionTypes.SIGN.SUCCESS
     });
   } catch (err) {
     console.log("FAILURE ON sign USERS");
     console.log(err);
+
     yield put({
       type: ActionTypes.SIGN.FAILURE,
       payload: { text: err.message }
@@ -25,7 +28,9 @@ function* signUser(action) {
 function* getUserList(action) {
   try {
     const response = yield call(ServiceUser.getUsers, action.payload);
+    
     console.log(response);
+
     yield put({
       type: ActionTypes.USER.SUCCESS,
       payload: { userList: response.users }
@@ -33,6 +38,7 @@ function* getUserList(action) {
   } catch (err) {
     console.log("FAILURE ON ATTEMPTING USERS");
     console.log(err);
+
     yield put({
       type: ActionTypes.USER.FAILURE,
       payload: { text: err.message }

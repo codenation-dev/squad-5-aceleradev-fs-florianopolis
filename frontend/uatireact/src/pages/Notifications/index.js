@@ -40,7 +40,7 @@ class Notifications extends Component {
   }
 
 
-  paginationFunct(currentPage, data){
+  paginationFunct(currentPage, data = []){
     const { alertsPerPage } = this.state;
     const indexOfLastTodo = currentPage * alertsPerPage;
     const indexOfFirstTodo = indexOfLastTodo - alertsPerPage;

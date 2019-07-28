@@ -64,7 +64,6 @@ func SendAlerts() {
 	wg.Wait()
 
 	fmt.Println("Sendig alerts...")
-
 	go sendClientsEmails(specialClients, emails)
 	go sendNonClientsEmails(newSpecials, nonClientSpecials, emails)
 
@@ -145,6 +144,7 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 	queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, name) VALUES  %s;", stringValues)
 
 	_, err = db.Exec(queryString)
+
 	if err != nil {
 		log.Println(err)
 	}

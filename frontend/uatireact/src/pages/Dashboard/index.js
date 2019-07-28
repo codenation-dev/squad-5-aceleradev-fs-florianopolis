@@ -2,6 +2,7 @@ import React from "react";
 import ChartsPanel from "../../components/charts/chartsPanel";
 import { get } from "../../utils/api";
 
+
 const clients = [
   {
     id: 1,
@@ -15,6 +16,7 @@ const clients = [
 
 const Dashboard = () => {
   (async () => console.log(await get("clients", true)))();
+
   return (
     <div className="dashboard-div">
       <h1>Welcome to the Dashboard</h1>

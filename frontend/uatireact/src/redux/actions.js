@@ -35,8 +35,8 @@ export function getUsers() {
 
 export function getNotifications() {
   return {
-    type: ActionTypes.NOTIFICATION.REQUEST
-  };
+    type: ActionTypes.NOTIFICATION.REQUEST 
+  }
 }
 
 export function login(credentials) {
