@@ -14,6 +14,7 @@ export const ActionTypes = {
   LOGIN: createActionTypes("ATTEMPT_LOGIN"),
   LOGOUT: createActionTypes("LOGOUT"),
   USER: createActionTypes("ATTEMPT_USER"),
+  UPDATE_USER: createActionTypes("UPDATE_USER"),
   SIGN: createActionTypes("SIGN_USER"),
   NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
   IMPORT: createActionTypes("IMPORT"),
@@ -30,6 +31,15 @@ export function loadCharts() {
 export function getUsers() {
   return {
     type: ActionTypes.USER.REQUEST
+  };
+}
+
+export function updateUser(credentials) {
+  return {
+    type: ActionTypes.UPDATE_USER.REQUEST,
+    payload: {
+      credentials
+    }
   };
 }
 

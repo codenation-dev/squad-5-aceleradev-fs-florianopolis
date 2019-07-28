@@ -36,7 +36,13 @@ class Notifications extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.paginationFunct(1, nextProps.notificationList);
+    const newData = nextProps.notificationList.filter(item => {
+      return (
+        item.clients != null
+      );
+    });
+    
+    this.paginationFunct(1, newData);
   }
 
 
@@ -83,17 +89,12 @@ class Notifications extends Component {
         ) : (
         <React.Fragment>
           {this.state.notificationList.map((item, index) => {
-            let splitName = item.name.split(",");
-            let data = splitName.map(name => {
-              return {
-                name: name
-              };
-            });
+            
             return (
               <React.Fragment key={index}>
-                {item.isClientEmail ? (
+                {item.isClient ? (
                   <FakeExpand>
-                    <Typography>O cliente {data[0].name} se tornou um funcionário publico</Typography>
+                    <Typography>O cliente {item.clients[0].name} se tornou um funcionário publico</Typography>
                   </FakeExpand>
                 ) : (
                 <ExpansionPanelStyled>
@@ -103,12 +104,12 @@ class Notifications extends Component {
                     id="panel1a-header"
                   >
                     <Typography>
-                      Existem {splitName.length} clientes em potencial na atualização de {item.sentAt}
+                      Existem {item.clients.length} clientes em potencial na atualização de {item.sentAt}
                     </Typography>
                   </ExpansionPanelSummary>
                     <ExpansionPanelDetailsStyled>
                       <div style={{ width: "100%" }}>
-                        <EnhancedTable dataAtualizacao={item.sentAt} dados={data} />
+                        <EnhancedTable dataAtualizacao={item.sentAt} dados={item.clients} />
                       </div>
                     </ExpansionPanelDetailsStyled>
                   </ExpansionPanelStyled>

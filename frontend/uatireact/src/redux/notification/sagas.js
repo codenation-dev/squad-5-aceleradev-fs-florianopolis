@@ -5,7 +5,12 @@ import { ActionTypes } from "../actions";
 
 function* getNotificationList() {
   try {
-    const response = yield call(ServiceNotification.getNotifications);
+
+    const obj = JSON.stringify({
+      email: localStorage.getItem("userEmail")
+    });
+
+    const response = yield call(ServiceNotification.getNotifications, obj);
     
     yield put({
       type: ActionTypes.NOTIFICATION.SUCCESS,

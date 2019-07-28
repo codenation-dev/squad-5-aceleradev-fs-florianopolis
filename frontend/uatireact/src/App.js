@@ -7,6 +7,7 @@ import { Switch } from "react-router-dom";
 import Layout from "./pages/Layout";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
+import SuperRoute from "./components/SuperRoute";
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
           <PrivateRoute exact path="/notifications" component={Notifications} />
           <PrivateRoute exact path="/import" component={ImportPage} />
           <PrivateRoute exact path="/admin" component={Admin} />
-          <PrivateRoute exact path="/user" component={User} />
+          <SuperRoute exact path="/user" component={User} />
         </Switch>
       </Layout>
     </div>

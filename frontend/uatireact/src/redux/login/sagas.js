@@ -10,26 +10,35 @@ function* attemptToLogin(action) {
       password: action.payload.credentials.password
     });
     const response = yield call(ServiceLogin.tryLogin, obj);
-
+    console.log(response);
     if (!response["token"]) {
       throw new Error(response.message);
     }
     
     const loggedUser = {
       // name: obj.name,
-      name: action.payload.credentials.email,
-      username: action.payload.credentials.username,
+      name: response.name,
+      email: action.payload.credentials.email,
+      super: response.super_user,
       token: response.token
     };
-    
+
+    loggedUser.email !== ""
+    ? localStorage.setItem("userEmail", loggedUser.email)
+    : localStorage.removeItem("userEmail");
+
     loggedUser.token !== ""
     ? localStorage.setItem("userToken", loggedUser.token)
-    : localStorage.setItem("userToken", "");
+    : localStorage.removeItem("userToken");
     
     loggedUser.name !== ""
     ? localStorage.setItem("userName", loggedUser.name)
-    : localStorage.setItem("userName", "");
-    console.log(loggedUser);
+    : localStorage.removeItem("userName");
+
+    loggedUser.super === true
+    ? localStorage.setItem("userSuper", loggedUser.super)
+    : localStorage.removeItem("userSuper");
+    
 
     yield put({
       type: ActionTypes.LOGIN.SUCCESS,

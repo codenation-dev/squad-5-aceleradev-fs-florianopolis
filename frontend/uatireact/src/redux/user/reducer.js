@@ -29,6 +29,8 @@ function User(state = INITIAL_STATE, action) {
         error: true
       };
 
+
+      
     case ActionTypes.SIGN.REQUEST:
       return {
         ...state,
@@ -38,9 +40,31 @@ function User(state = INITIAL_STATE, action) {
     case ActionTypes.SIGN.SUCCESS:
       return {
         ...state,
+        loading: false,
         success: true
       };
     case ActionTypes.SIGN.FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: true
+      };
+
+
+
+    case ActionTypes.UPDATE_USER.REQUEST:
+      return {
+        ...state,
+        credentials: action.payload.credentials,
+        loading: true
+      };
+    case ActionTypes.UPDATE_USER.SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: true
+      };
+    case ActionTypes.UPDATE_USER.FAILURE:
       return {
         ...state,
         loading: false,

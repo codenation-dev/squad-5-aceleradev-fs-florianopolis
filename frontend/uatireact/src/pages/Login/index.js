@@ -88,9 +88,9 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  success: state.userReducer.success,
-  error: state.userReducer.error,
-  msg: state.userReducer.text
+  success: state.loginReducer.success,
+  error: state.loginReducer.error,
+  msg: state.loginReducer.text
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);
