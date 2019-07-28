@@ -19,6 +19,8 @@ export const ActionTypes = {
   IMPORT: createActionTypes("IMPORT"),
   FILE: createActionTypes("FILE"),
   CHART: createActionTypes("CHART"),
+  CANDIDATES: createActionTypes("CANDIDATES"),
+  CLIENTS: createActionTypes("CLIENTS")
 };
 
 export function loadCharts() {
@@ -78,6 +80,24 @@ export function cadastraUser(credentials) {
       credentials
     }
   };
+}
+
+export function loadClients(query, pageNumber) {
+  return {
+    type: ActionTypes.CLIENTS.REQUEST,
+    payload: {
+      query, pageNumber
+    }
+  }
+}
+
+export function loadCandidates(query, pageNumber) {
+  return {
+    type: ActionTypes.CANDIDATES.REQUEST,
+    payload: {
+      query, pageNumber
+    }
+  }
 }
 
 export function logout() {

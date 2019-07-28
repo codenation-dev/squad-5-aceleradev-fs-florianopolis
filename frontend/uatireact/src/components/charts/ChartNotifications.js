@@ -10,7 +10,9 @@ import {
   Legend
 } from "recharts";
 
-class ChartNewClients extends Component {
+import './chart.css'
+
+class ChartNotifications extends Component {
 
   renderChart = (data) => {
     return (
@@ -30,8 +32,7 @@ class ChartNewClients extends Component {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="current" name="Quant. de Clientes Atuais" stackId="a" fill="#347382" />
-        <Bar dataKey="newClients" name="Novos Clientes" stackId="a" fill="#6688aa" />
+        <Bar dataKey="quantity" name="Quantidade de Notificações" stackId="a" fill="#8884d8" />
       </BarChart>
     )
   }
@@ -39,13 +40,14 @@ class ChartNewClients extends Component {
   render() {  
     return (
       <div>
-        <h1>Quantidade de novos clientes por dia</h1>
-        <div>
+        <h1>Notificações enviadas por dia</h1>
+        <div className="chart">
           {this.renderChart(this.props.data)}
         </div>
       </div>
     );
   }
+
 }
 
-export default ChartNewClients;
+export default ChartNotifications;

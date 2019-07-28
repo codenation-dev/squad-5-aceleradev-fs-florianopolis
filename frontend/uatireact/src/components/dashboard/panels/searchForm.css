@@ -1,0 +1,90 @@
+.search-form {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    flex-direction: column;
+}
+
+.search-form > div {
+    padding-bottom: 10px;
+}
+
+.title {
+    padding-top: 0px;
+}
+
+.search-field {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.search-field > input {
+    flex: 1;
+
+    margin-bottom: 15px;
+    padding: 12px 20px;
+    color: #777;
+    font-size: 15px;
+    width: 100%;
+    border: 1px solid #ddd;
+    &::placeholder {
+      color: #999;
+    }
+}
+
+.search-data {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.search-data-header {
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.header-nome-candidato, .nome-candidato {
+    width: 60%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.header-funcionario, .funcionario {
+    width: 20%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.header-salario, .salario {
+    width: 20%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.search-data-item {
+    margin: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+}
+
+.paginator {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: row;
+}
+
+.paginator > input {
+    margin-left: 10px;
+}
+
+.pageNumber {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: row;
+}
