@@ -95,6 +95,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	jwt.Token, err = GenerateToken(user)
+	jwt.Name = user.Name
 
 	if err != nil {
 		log.Fatal(err)

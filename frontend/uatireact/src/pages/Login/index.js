@@ -7,15 +7,17 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
 
-import { Form, Error } from "./styles";
+import { Form, Error, Status } from "./styles";
 import { isServerUp } from "../../services/server";
+
 
 class Login extends Component {
   state = {
     email: "",
     password: "",
     msg: "",
-    serverStatus: "checking..."
+    serverStatus: "Checando conexao...",
+    bgStatus: ""
   };
 
   //handleChange splitted so it can work with enzyme testing
@@ -33,8 +35,9 @@ class Login extends Component {
 
   componentDidMount() {
     const asyncFunc = async () => {
-      const status = (await isServerUp()) ? "online" : "offline";
-      this.setState({ serverStatus: status });
+      const serverStatus = (await isServerUp()) ? "online" : "offline";
+      const bgStatus = (serverStatus === "online") ? "#517043" : "#ff3333";
+      this.setState({ serverStatus, bgStatus });
     };
 
     asyncFunc();
@@ -62,14 +65,12 @@ class Login extends Component {
             <input
               name="email"
               type="text"
-              // fullWidth={true}
               placeholder="Email"
               onChange={this.handleEmailChange}
             />
             <input
               name="password"
               type="password"
-              // fullWidth={true}
               placeholder="Senha"
               onChange={this.handlePasswordChange}
             />
@@ -78,7 +79,7 @@ class Login extends Component {
             <Button type="submit" className="loginButton">
               Login
             </Button>
-            Server status: {this.state.serverStatus}
+            <div style={{marginTop: "5px"}}>Server status: {this.state.serverStatus}<Status style={{backgroundColor: this.state.bgStatus}} /></div>
           </Form>
         </Grid>
       </div>

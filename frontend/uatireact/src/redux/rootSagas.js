@@ -1,7 +1,8 @@
 import { all } from "redux-saga/effects";
-
+import loginRoot from "./login/sagas";
 import userRoot from "./user/sagas";
-import clientsRoot from "./clients/sagas";
+import notificationRoot from "./notification/sagas";
+import importRoot from "./import/sagas";
 import chartRoot from "./charts/sagas";
 import clientsDashboardRoot from "./clients-dashboard/sagas";
 import candidatesRoot from "./candidates/sagas";
@@ -9,5 +10,5 @@ import candidatesRoot from "./candidates/sagas";
 
 export default function* rootSagas() {
   // here we initialize all the sagas from different files
-  yield all([userRoot(), clientsRoot(), chartRoot(), clientsDashboardRoot(), candidatesRoot()]);
+  yield all([loginRoot(), userRoot(), notificationRoot(), importRoot(), chartRoot(), clientsDashboardRoot(), candidatesRoot()]);
 }

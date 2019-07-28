@@ -1,49 +1,50 @@
 import { ActionTypes } from "../actions";
 
 const INITIAL_STATE = {
-  credentials: [],
-  loggedUser: [],
+  userList: [],
   loading: false,
-  isLogged: false,
   success: false,
-  error: false,
-  errorText: ""
+  error: false
 };
 
 function User(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.REQUEST_ATTEMPT_LOGIN:
+    case ActionTypes.USER.REQUEST:
+      return {
+        ...state,
+        loading: true
+      };
+    case ActionTypes.USER.SUCCESS:
+      return {
+        ...state,
+        userList: action.payload.userList,
+        loading: false,
+        error: false
+      };
+    case ActionTypes.USER.FAILURE:
+      return {
+        ...state,
+        userList: [],
+        loading: false,
+        error: true
+      };
+
+    case ActionTypes.SIGN.REQUEST:
       return {
         ...state,
         credentials: action.payload.credentials,
-        loading: true,
-        text: "carregando.."
+        loading: true
       };
-    case ActionTypes.SUCCESS_ATTEMPT_LOGIN:
+    case ActionTypes.SIGN.SUCCESS:
       return {
         ...state,
-        loggedUser: action.payload.loggedUser,
-        credentials: [],
-        loading: false,
-        isLogged: true,
-        success: true,
-        error: false,
-        text: "sucesso"
+        success: true
       };
-    case ActionTypes.FAILURE_ATTEMPT_LOGIN:
+    case ActionTypes.SIGN.FAILURE:
       return {
         ...state,
-        loggedUser: [],
-        credentials: [],
         loading: false,
-        isLogged: false,
-        success: false,
-        error: true,
-        text: action.payload.text
-      };
-    case ActionTypes.REQUEST_LOGOUT:
-      return {
-        state: INITIAL_STATE
+        error: true
       };
     default:
       return state;

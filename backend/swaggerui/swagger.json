@@ -1,0 +1,448 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "API developed by squad 5",
+    "version": "1.0.0",
+    "title": "Uati-API"
+  },
+  "host": "ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080",
+  "tags": [
+    {
+      "name": "clients",
+      "description": "Clients related endpoints"
+    },
+    {
+      "name": "user",
+      "description": "User related endpoints"
+    },
+    {
+      "name": "alerts",
+      "description": "Alerts endpoint"
+    },
+    {
+      "name": "interest",
+      "description": "Interest related endpoints"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/clients": {
+      "get": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Returns the clients list",
+        "operationId": "findPetsByStatus",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Client"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/clients/upload": {
+      "post": {
+        "tags": [
+          "clients"
+        ],
+        "summary": "Upload an new clients list",
+        "description": "",
+        "operationId": "upload",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "clients",
+            "in": "formData",
+            "description": "csv file to upload",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!!",
+            "schema": {
+              "$ref": "#/definitions/SuccessResponse"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/signup": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "required body fields",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RegisterUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/login": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "required body fields",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "$ref": "#/definitions/JWT"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Returns the users list",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/alerts": {
+      "get": {
+        "tags": [
+          "alerts"
+        ],
+        "summary": "Returns the alerts list",
+        "operationId": "getAlerts",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Alert"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/specials/clients": {
+      "get": {
+        "tags": [
+          "interest"
+        ],
+        "summary": "Returns the special clients list",
+        "operationId": "getSpecialClients",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Special"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/specials/top": {
+      "get": {
+        "tags": [
+          "interest"
+        ],
+        "summary": "Returns the top 20 nonClient employees",
+        "operationId": "getNonClientSpecials",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Special"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Client": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Client"
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "Message": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Error"
+      }
+    },
+    "SuccessResponse": {
+      "type": "object",
+      "properties": {
+        "Message": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "SuccessResponse"
+      }
+    },
+    "RegisterUser": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "RegisterUser"
+      }
+    },
+    "JWT": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "JWT"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "LoginUser": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "LoginUser"
+      }
+    },
+    "Alert": {
+      "type": "object",
+      "properties": {
+        "sentTo": {
+          "type": "string"
+        },
+        "isClient": {
+          "type": "boolean"
+        },
+        "about": {
+          "type": "string"
+        },
+        "sentAt": {
+          "type": "string"
+        }
+      }
+    },
+    "Special": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "isClient": {
+          "type": "boolean"
+        },
+        "alertSent": {
+          "type": "boolean"
+        },
+        "salary": {
+          "type": "integer",
+          "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "Alert"
+      }
+    }
+  }
+}

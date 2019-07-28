@@ -1,49 +1,90 @@
-export const ActionTypes = {
-  REQUEST_ATTEMPT_LOGIN: "REQUEST_ATTEMPT_LOGIN",
-  SUCCESS_ATTEMPT_LOGIN: "SUCCESS_ATTEMPT_LOGIN",
-  FAILURE_ATTEMPT_LOGIN: "FAILURE_ATTEMPT_LOGIN",
-  REQUEST_LOGOUT: "REQUEST_LOGOUT",
-  REQUEST_LOAD_CHARTS: "REQUEST_LOAD_CHARTS",
-  FAILURE_LOAD_CHARTS: "FAILURE_LOAD_CHARTS",
-  SUCCESS_LOAD_CHARTS: "SUCCESS_LOAD_CHARTS",
-  REQUEST_SUBMIT_FILE: "REQUEST_SUBMIT_FILE",
-  SUCCESS_SUBMIT_FILE: "SUCCESS_SUBMIT_FILE",
-  FAILURE_SUBMIT_FILE: "FAILURE_SUBMIT_FILE",
-  REQUEST_LOAD_CLIENTS: "REQUEST_LOAD_CLIENTS",
-  FAILURE_LOAD_CLIENTS: "FAILURE_LOAD_CLIENTS",
-  SUCCESS_LOAD_CLIENTS: "SUCCESS_LOAD_CLIENTS",
-  REQUEST_LOAD_CANDIDATES: "REQUEST_LOAD_CANDIDATES",
-  FAILURE_LOAD_CANDIDATES: "FAILURE_LOAD_CANDIDATES",
-  SUCCESS_LOAD_CANDIDATES: "SUCCESS_LOAD_CANDIDATES"
+const TYPES = ["REQUEST", "SUCCESS", "FAILURE", "CANCEL", "RESET"];
+
+const createActionTypes = base => {
+  const ref = {};
+
+  TYPES.forEach(type => {
+    ref[type] = `${type}_${base}`;
+  });
+
+  return ref;
 };
 
-export function uploadClients(file) {
+export const ActionTypes = {
+  LOGIN: createActionTypes("ATTEMPT_LOGIN"),
+  LOGOUT: createActionTypes("LOGOUT"),
+  USER: createActionTypes("ATTEMPT_USER"),
+  SIGN: createActionTypes("SIGN_USER"),
+  NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
+  IMPORT: createActionTypes("IMPORT"),
+  FILE: createActionTypes("FILE"),
+  CHART: createActionTypes("CHART"),
+  CANDIDATES: createActionTypes("CANDIDATES"),
+  CLIENTS: createActionTypes("CLIENTS")
+};
+
+export function loadCharts() {
   return {
-    type: ActionTypes.REQUEST_SUBMIT_FILE,
-    payload: {
-      file
-    }
+    type: ActionTypes.CHART.REQUEST
+  }
+}
+
+export function getUsers() {
+  return {
+    type: ActionTypes.USER.REQUEST
+  };
+}
+
+export function getNotifications() {
+  return {
+    type: ActionTypes.NOTIFICATION.REQUEST 
   };
 }
 
 export function login(credentials) {
   return {
-    type: ActionTypes.REQUEST_ATTEMPT_LOGIN,
+    type: ActionTypes.LOGIN.REQUEST,
     payload: {
       credentials
     }
   };
 }
 
-export function loadCharts() {
+export function importClients(file) {
   return {
-    type: ActionTypes.REQUEST_LOAD_CHARTS
-  }
+    type: ActionTypes.IMPORT.REQUEST,
+    payload: {
+      file
+    }
+  };
+}
+export function selectFile(file) {
+  
+  return {
+    type: ActionTypes.FILE.REQUEST,
+    payload: {
+      file
+    }
+  };
+}
+export function resetFile(file) {
+  return {
+    type: ActionTypes.FILE.RESET
+  };
+}
+
+export function cadastraUser(credentials) {
+  return {
+    type: ActionTypes.SIGN.REQUEST,
+    payload: {
+      credentials
+    }
+  };
 }
 
 export function loadClients(query, pageNumber) {
   return {
-    type: ActionTypes.REQUEST_LOAD_CLIENTS,
+    type: ActionTypes.CLIENTS.REQUEST,
     payload: {
       query, pageNumber
     }
@@ -52,7 +93,7 @@ export function loadClients(query, pageNumber) {
 
 export function loadCandidates(query, pageNumber) {
   return {
-    type: ActionTypes.REQUEST_LOAD_CANDIDATES,
+    type: ActionTypes.CANDIDATES.REQUEST,
     payload: {
       query, pageNumber
     }
@@ -61,6 +102,6 @@ export function loadCandidates(query, pageNumber) {
 
 export function logout() {
   return {
-    type: ActionTypes.REQUEST_LOGOUT
+    type: ActionTypes.LOGOUT.REQUEST
   };
 }

@@ -1,37 +1,34 @@
-const BASE_URL = "http://localhost:8080/api";
+const BASE_URL =
+  "http://ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080/api/";
 
-export const post = async (uri, body) => {
-  const response = await fetch(`${BASE_URL}${uri}`, {
-    method: "POST",
-    body: JSON.stringify(body)
-  });
-  return response.json();
-};
-
-export const get = async uri => {
-  const response = await fetch(`${BASE_URL}${uri}`, {
-    method: "GET"
-  });
-  console.log(response);
-  return response.json();
-};
-
-//This autGet gets denied by cors while the above works,
-//but it doesn't send the auth token, so it gets denied as well
-export const authGet = async uri => {
-  const response = await fetch(`${BASE_URL}${uri}`, {
+export const get = async (uri = "", auth = false) => {
+  const data = {
     method: "GET",
-    headers: { Authorization: `Bearer ${localStorage.getItem("userToken")}` }
-  });
-  console.log(response);
-  return response.json();
+    headers: new Headers({
+      Authorization: "Bearer " + localStorage.getItem("userToken")
+    })
+  }
+
+  !auth && delete data.headers;
+  const response = await fetch(BASE_URL + uri, data);
+  
+  return await uri === "" ? response : response.json();
 };
 
-export const upload = async (uri, file) => {
-  const response = await fetch(`${BASE_URL}${uri}`, {
+export const post = async (uri = "", obj, auth = false) => {
+  let data = "";
+  
+  data = {
     method: "POST",
-    headers: { Authorization: localStorage.getItem("token") },
-    body: file
-  });
-  return response.json();
+    body: obj,
+    headers: auth ? new Headers({
+      Authorization: "Bearer " + localStorage.getItem("userToken")
+    }) : ""
+  }
+
+  !auth && delete data.headers;
+
+  const response = await fetch(BASE_URL + uri, data);
+  
+  return await response.json();
 };
