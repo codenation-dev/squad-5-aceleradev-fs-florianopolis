@@ -3,8 +3,8 @@ import React from "react";
 import ChartsPanel from "../../components/charts/ChartsPanel";
 import { authGet } from "../../utils/api";
 import Card from "../../components/dashboard/Card";
-import ClientsPanel from "../../components/dashboard/ClientsPanel";
-import CandidatePanel from "../../components/dashboard/CandidatePanel";
+import ClientsPanel from "../../components/dashboard/panels/ClientsPanel";
+import CandidatePanel from "../../components/dashboard/panels/CandidatePanel";
 
 import "./dashboard.css";
 
@@ -20,7 +20,7 @@ const Dashboard = () => {
         <ClientsPanel />
       </Card>
 
-      <Card title="Candidatos a clientes">
+      <Card title="Candidatos a Clientes">
         <CandidatePanel />
       </Card>
 

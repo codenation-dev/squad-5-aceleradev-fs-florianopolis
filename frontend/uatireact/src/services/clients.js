@@ -1,5 +1,5 @@
 class ServiceClients {
-  static async loadClientsDashboard(query, pageNumber) {
+  static async loadClientsDashboard(query = "", pageNumber = 0) {
     return {
       clients: ["José", "Maria", "João"],
       totalClients: 3,

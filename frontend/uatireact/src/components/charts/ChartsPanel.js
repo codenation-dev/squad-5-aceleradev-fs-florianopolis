@@ -25,7 +25,7 @@ class ChartsPanel extends Component {
     }
 
     return (
-      <div style={{alignItems: 'center'}}>
+      <div className='charts'>
         <BarChartClients data={clientsRelation} />
         <ChartNotifications data={notificationsSentPerDay} />
         <ChartNewClients data={newClientsPerDay} />

@@ -11,7 +11,10 @@ export const ActionTypes = {
   FAILURE_SUBMIT_FILE: "FAILURE_SUBMIT_FILE",
   REQUEST_LOAD_CLIENTS: "REQUEST_LOAD_CLIENTS",
   FAILURE_LOAD_CLIENTS: "FAILURE_LOAD_CLIENTS",
-  SUCCESS_LOAD_CLIENTS: "SUCCESS_LOAD_CLIENTS"
+  SUCCESS_LOAD_CLIENTS: "SUCCESS_LOAD_CLIENTS",
+  REQUEST_LOAD_CANDIDATES: "REQUEST_LOAD_CANDIDATES",
+  FAILURE_LOAD_CANDIDATES: "FAILURE_LOAD_CANDIDATES",
+  SUCCESS_LOAD_CANDIDATES: "SUCCESS_LOAD_CANDIDATES"
 };
 
 export function uploadClients(file) {
@@ -41,6 +44,15 @@ export function loadCharts() {
 export function loadClients(query, pageNumber) {
   return {
     type: ActionTypes.REQUEST_LOAD_CLIENTS,
+    payload: {
+      query, pageNumber
+    }
+  }
+}
+
+export function loadCandidates(query, pageNumber) {
+  return {
+    type: ActionTypes.REQUEST_LOAD_CANDIDATES,
     payload: {
       query, pageNumber
     }

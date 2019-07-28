@@ -10,6 +10,8 @@ import {
   Legend
 } from "recharts";
 
+import './chart.css'
+
 class ChartNotifications extends Component {
 
   renderChart = (data) => {
@@ -39,7 +41,7 @@ class ChartNotifications extends Component {
     return (
       <div>
         <h1>Notificações enviadas por dia</h1>
-        <div>
+        <div className="chart">
           {this.renderChart(this.props.data)}
         </div>
       </div>
