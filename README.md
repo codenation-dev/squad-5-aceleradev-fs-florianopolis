@@ -10,24 +10,24 @@ O Banco Uati gostaria de monitorar de forma contínua e automatizada caso um de 
 
 A lista de clientes do banco Uati encontra-se no arquivo `clientes.csv` contido neste projeto.
 
-## Como usar
+# Como usar
 
-# Backend
+## Backend
 
-O backend do projeto está sendo servido em um Amazon Web Service:
-(ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080)[ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080]
+O backend do projeto está sendo servido em um Amazon Web Service:  
+http://ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080  
 
-O servidor também pode ser subido atrás vezes dos comandos na pasta "backend"
-`docker build . -t uati-api`
-`docker-compose up`
-E então disponível no http://localhost:8080/api/
+O servidor também pode ser subido atrás vezes dos comandos na pasta "backend"  
+`docker build . -t uati-api`  
+`docker-compose up`  
+E então disponível no http://localhost:8080/api/  
 
-# Endpoints
+### Endpoints  
 
-Os endpoints estão documentados pelo SwaggerUI disponível em:
-(ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080/api/)[ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080/api/]
+Os endpoints estão documentados pelo SwaggerUI disponível em:  
+http://ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080/api/  
 
-# Frontend
+## Frontend  
 
-O frontend do projeto pode ser acessado pelo `yarn start` na pasta `frontend/uatiproject`
-O login padrão é **squad5codenation@gmail.com** com senha **1234**
+O frontend do projeto pode ser acessado pelo `yarn start` na pasta `frontend/uatiproject`  
+O login padrão é **squad5codenation@gmail.com** com senha **1234**  
