@@ -1,5 +1,3 @@
-// import axios from "axios";
-
 const BASE_URL =
   "http://ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080/api/";
 
@@ -12,7 +10,6 @@ export const get = async (uri = "", auth = false) => {
   }
 
   !auth && delete data.headers;
-
   const response = await fetch(BASE_URL + uri, data);
   
   return await uri === "" ? response : response.json();

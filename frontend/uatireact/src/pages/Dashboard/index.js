@@ -15,6 +15,7 @@ const clients = [
 
 const Dashboard = () => {
   (async () => console.log(await get("clients", true)))();
+
   return (
     <div className="dashboard-div">
       <h1>Welcome to the Dashboard</h1>

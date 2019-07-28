@@ -145,6 +145,7 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 	queryString = fmt.Sprintf("INSERT INTO alerts (sent_to, name) VALUES  %s;", stringValues)
 
 	_, err = db.Exec(queryString)
+
 	if err != nil {
 		log.Println(err)
 	}
