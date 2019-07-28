@@ -212,9 +212,7 @@ func GetAlerts(w http.ResponseWriter, r *http.Request) {
 		utils.RespondWithError(w, http.StatusBadRequest, error)
 		return
 	}
-	rows, err := db.Query("Select alerts2.id, TO_CHAR(sent_at,'dd/mm/yyyy HH:ss') as sent_at FROM alerts2 where exists(select ar.id from alerts_responsavel ar where ar.id_alert = alerts2.id and id_user = (select id from users2 where email = $1))", user.Email)
-fmt.Println("Select alerts2.id, TO_CHAR(sent_at,'dd/mm/yyyy HH:ss') as sent_at FROM alerts2 where exists(select ar.id from alerts_responsavel ar where ar.id_alert = alerts2.id and id_user = (select id from users2 where email = $1))")
-fmt.Println(user.Email)
+	rows, err := db.Query("Select alerts2.client, alerts2.id, TO_CHAR(sent_at,'dd/mm/yyyy HH:ss') as sent_at FROM alerts2 where exists(select ar.id from alerts_responsavel ar where ar.id_alert = alerts2.id and id_user = (select id from users2 where email = $1))", user.Email)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -223,7 +221,7 @@ fmt.Println(user.Email)
 	for rows.Next() {
 		a := new(models.Alert2)
 
-		rows.Scan(&a.ID, &a.SentAt)
+		rows.Scan(&a.Client, &a.ID, &a.SentAt)
 
 		rowPublic, err := db.Query("select pe.name, pe.salary from alerts_client ac left join publicemployees2 pe on (pe.id = ac.id) where ac.id_alert = $1", a.ID)
 

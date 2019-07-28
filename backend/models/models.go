@@ -66,6 +66,7 @@ type AlertsResponse struct {
 type Alert2 struct {
 	ID   		string `json:"id"`
 	SentAt   	string `json:"sentAt"`
+	Client  	bool    `json:"isClient"`
 	Employees []Employee `json:"clients"`
 }
 
