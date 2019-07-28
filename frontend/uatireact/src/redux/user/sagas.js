@@ -38,7 +38,7 @@ function* getUserList(action) {
   } catch (err) {
     console.log("FAILURE ON ATTEMPTING USERS");
     console.log(err);
-
+    
     yield put({
       type: ActionTypes.USER.FAILURE,
       payload: { text: err.message }

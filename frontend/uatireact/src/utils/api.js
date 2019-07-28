@@ -10,7 +10,6 @@ export const get = async (uri = "", auth = false) => {
   }
 
   !auth && delete data.headers;
-
   const response = await fetch(BASE_URL + uri, data);
   
   return await uri === "" ? response : response.json();

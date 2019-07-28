@@ -1,5 +1,4 @@
 import { post } from "../utils/api";
-import { isServerUp } from "./server";
 
 class ServiceLogin {
   static tryLogin(payload) {

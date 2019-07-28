@@ -2,7 +2,6 @@ import React from "react";
 import ChartsPanel from "../../components/charts/chartsPanel";
 import { get } from "../../utils/api";
 
-
 const clients = [
   {
     id: 1,

@@ -3,7 +3,6 @@ import loginRoot from "./login/sagas";
 import userRoot from "./user/sagas";
 import notificationRoot from "./notification/sagas";
 import importRoot from "./import/sagas";
-
 import chartRoot from "./charts/sagas";
 
 export default function* rootSagas() {

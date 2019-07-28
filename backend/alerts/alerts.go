@@ -64,6 +64,7 @@ func SendAlerts() {
 	wg.Wait()
 
 	fmt.Println("Sendig alerts...")
+
 	go sendClientsEmails(specialClients, emails)
 	go sendNonClientsEmails(newSpecials, nonClientSpecials, emails)
 

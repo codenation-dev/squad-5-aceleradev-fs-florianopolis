@@ -10,6 +10,7 @@ import * as allActions from "../../redux/actions";
 import { Form, Error, Status } from "./styles";
 import { isServerUp } from "../../services/server";
 
+
 class Login extends Component {
   state = {
     email: "",
