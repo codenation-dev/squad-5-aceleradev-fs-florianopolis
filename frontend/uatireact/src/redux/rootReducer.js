@@ -4,6 +4,7 @@ import notificationReducer from "./notification/reducer";
 import importReducer from "./import/reducer";
 import chartReducer from "./charts/reducer";
 import candidatesReducer from "./candidates/reducer";
+import clientsDashboardReducer from "./clients-dashboard/reducer"
 import { combineReducers } from "redux";
 
 const rootReducers = combineReducers({
@@ -12,7 +13,7 @@ const rootReducers = combineReducers({
   notificationReducer,
   importReducer,
   chartReducer,
-  clientsReducer,
+  candidatesReducer,
   clientsDashboardReducer
 });
 

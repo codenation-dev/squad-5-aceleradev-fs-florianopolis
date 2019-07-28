@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 
 function ClientsDashboard(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.SUCCESS_LOAD_CLIENTS:
+    case ActionTypes.CLIENTS.SUCCESS:
       return {
         ...state,
         clients: action.payload.clients,
@@ -19,7 +19,7 @@ function ClientsDashboard(state = INITIAL_STATE, action) {
         query: action.payload.query,
         err: ""
       };
-    case ActionTypes.FAILURE_LOAD_CLIENTS:
+    case ActionTypes.CLIENTS.FAILURE:
       return {
         ...state,
         clients: [],

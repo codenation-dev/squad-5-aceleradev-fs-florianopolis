@@ -12,7 +12,7 @@ function* loadCandidates(action) {
     );
 
     yield put({
-        type: ActionTypes.SUCCESS_LOAD_CANDIDATES,
+        type: ActionTypes.CANDIDATES.SUCCESS,
         payload: {
           candidates: response.candidates,
           pageNumber: response.pageNumber,
@@ -22,14 +22,14 @@ function* loadCandidates(action) {
       });
   } catch (err) {
     yield put({
-      type: ActionTypes.FAILURE_LOAD_CANDIDATES,
+      type: ActionTypes.CANDIDATES.FAILURE,
       payload: { err: err.message }
     });
   }
 }
 
 function* watchLoadClients() {
-  yield takeLatest(ActionTypes.REQUEST_LOAD_CANDIDATES, loadCandidates);
+  yield takeLatest(ActionTypes.CANDIDATES.REQUEST, loadCandidates);
 }
 
 export default function* clientsRoot() {

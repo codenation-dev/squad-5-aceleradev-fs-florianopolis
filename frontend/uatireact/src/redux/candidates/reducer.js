@@ -10,7 +10,7 @@ const INITIAL_STATE = {
 
 function Candidates(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ActionTypes.SUCCESS_LOAD_CANDIDATES:
+    case ActionTypes.CANDIDATES.SUCCESS:
       return {
         ...state,
         candidates: action.payload.candidates,
@@ -19,7 +19,7 @@ function Candidates(state = INITIAL_STATE, action) {
         query: action.payload.query,
         err: ""
       };
-    case ActionTypes.FAILURE_LOAD_CLIENTS:
+    case ActionTypes.CLIENTS.FAILURE:
       return {
         ...state,
         candidates: [],
