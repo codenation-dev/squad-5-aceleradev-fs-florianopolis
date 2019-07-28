@@ -3,21 +3,17 @@ import { put, all, call, takeLatest } from "redux-saga/effects";
 import { ActionTypes } from "../actions";
 import ServiceCandidates from "../../services/candidates";
 
-function* loadCandidates(action) {
+function* loadCandidates() {
   try {
+
     const response = yield call(
-      ServiceCandidates.loadCandidates,
-      action.payload.query,
-      action.payload.pageNumber
+      ServiceCandidates.loadCandidates
     );
 
     yield put({
         type: ActionTypes.CANDIDATES.SUCCESS,
         payload: {
-          candidates: response.candidates,
-          pageNumber: response.pageNumber,
-          total: response.total,
-          query: response.query
+          candidates: response.specials
         }
       });
   } catch (err) {

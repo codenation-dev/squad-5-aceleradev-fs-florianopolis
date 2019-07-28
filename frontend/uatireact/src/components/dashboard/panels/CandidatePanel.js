@@ -11,9 +11,6 @@ class CandidatePanel extends Component {
 
     this.state = {
       clients: [],
-      pageNumber: 1,
-      totalClients: 0,
-      query: "",
       err: ""
     };
   }
@@ -25,11 +22,11 @@ class CandidatePanel extends Component {
   handleNextPage = e => {};
 
   componentDidMount() {
-    this.props.loadCandidates(this.state.query, this.state.pageNumber);
+    this.props.loadCandidates();
   }
 
   render() {
-    const { candidates, pageNumber, total, query, err } = this.props;
+    const { candidates, err } = this.props;
 
     if (err) {
       return <div>{err}</div>;
@@ -41,29 +38,15 @@ class CandidatePanel extends Component {
 
     return (
       <div className="search-form">
-        <div className="title">
-          Total de Candidatos: {total}
-        </div>
-
-        <div className="search-field">
-          <input
-            name="search"
-            type="text"
-            value={query}
-            placeholder="Pesquisar..."
-            onChange={this.handleSearch}
-          />
-        </div>
-
         <div className="search-data-header">
           <div className="header-nome-candidato">
             <b>Nome do candidato</b>
           </div>
-          <div className="header-funcionario">
-            <b>Funcionário Público</b>
+          <div className="header-is-cliente">
+            <b>Cliente</b>
           </div>
           <div className="header-salario">
-            <b>Salário</b>
+            <b>Salário (R$)</b>
           </div>
         </div>
 
@@ -71,31 +54,10 @@ class CandidatePanel extends Component {
           {candidates.map(d => (
             <div className="search-data-item">
               <div className="nome-candidato">{d.name}</div>
-              <div className="funcionario">{d.publico}</div>
-              <div className="salario">{d.salary}</div>
+              <div className="is-cliente">{d.isClient? 'Sim' : 'Não'}</div>
+              <div className="salario">{parseFloat(Math.round(d.salary * 100) / 100).toFixed(2)}</div>
             </div>
           ))}
-        </div>
-
-        <div className="paginator">
-          <input
-            name="previous"
-            type="button"
-            value="Anterior"
-            onChange={this.handlePreviousPage}
-          />
-          <input
-            name="next"
-            type="button"
-            value="Próxima"
-            onChange={this.handleNextPage}
-          />
-        </div>
-
-        <div className="pageNumber">
-          <div>
-            {pageNumber * 10 - 10} - {pageNumber * 10}
-          </div>
         </div>
       </div>
     );
@@ -105,9 +67,6 @@ class CandidatePanel extends Component {
 const mapStateToProps = state => {
   return {
     candidates: state.candidatesReducer.candidates,
-    pageNumber: state.candidatesReducer.pageNumber,
-    total: state.candidatesReducer.total,
-    query: state.candidatesReducer.query,
     err: state.candidatesReducer.err
   };
 };

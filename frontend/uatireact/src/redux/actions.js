@@ -91,12 +91,9 @@ export function loadClients(query, pageNumber) {
   }
 }
 
-export function loadCandidates(query, pageNumber) {
+export function loadCandidates() {
   return {
-    type: ActionTypes.CANDIDATES.REQUEST,
-    payload: {
-      query, pageNumber
-    }
+    type: ActionTypes.CANDIDATES.REQUEST
   }
 }
 
