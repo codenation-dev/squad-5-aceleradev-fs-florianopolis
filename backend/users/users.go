@@ -72,8 +72,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	password := user.Password
 
-	row := db.QueryRow("SELECT * FROM users where email=$1", user.Email)
-	err := row.Scan(&user.ID, &user.Email, &user.Name, &user.Password)
+	row := db.QueryRow("SELECT * FROM users2 where email=$1", user.Email)
+	err := row.Scan(&user.ID, &user.Email, &user.Name, &user.Password, &user.Super)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			error.Message = "The user does not exists"
@@ -96,6 +96,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	jwt.Token, err = GenerateToken(user)
 	jwt.Name = user.Name
+	jwt.Super = user.Super
 
 	if err != nil {
 		log.Fatal(err)
@@ -122,7 +123,7 @@ func GenerateToken(user *models.User) (string, error) {
 }
 
 func GetUsers(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("Select id,name,email FROM users;")
+	rows, err := db.Query("Select id,name,email FROM users2;")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -143,4 +144,29 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(response)
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	var error models.Error
+	user := new(models.User)
+
+	json.NewDecoder(r.Body).Decode(user)
+	if user.Email == "" && user.Password == "" && user.Name == "" {
+		error.Message = "Nothing to update"
+		utils.RespondWithError(w, http.StatusBadRequest, error)
+		return
+	}
+
+	_, err := database.UpdateUser(*user)
+
+	if err != nil {
+		error.Message = "Server Error"
+		utils.RespondWithError(w, http.StatusInternalServerError, error)
+		return
+	}
+	user.Password = ""
+
+	w.Header().Set("Content-Type", "application/json")
+	utils.ResponseJSON(w, user)
+
 }

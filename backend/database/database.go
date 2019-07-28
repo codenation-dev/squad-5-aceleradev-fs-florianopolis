@@ -25,8 +25,8 @@ func GetDB() *sql.DB {
 	}
 	gotenv.Load()
 
-	connectionString := fmt.Sprintf("host=uati-db user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("PG_USER"), os.Getenv("PG_PASS"), os.Getenv("PG_DB"))
+	connectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s sslmode=disable",
+		os.Getenv("PG_HOST"), os.Getenv("PG_USER"), os.Getenv("PG_PASS"), os.Getenv("PG_DB"))
 
 	db, err = sql.Open("postgres", connectionString)
 
@@ -115,6 +115,31 @@ func CreateUser(user models.User) (int, error) {
 	db.QueryRow(stmt, user.Email, user.Name, user.Password).Scan(&user.ID)
 
 	return user.ID, nil
+}
+
+func UpdateUser(user models.User) (bool, error) {
+	if user.Password != "" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+
+	        if err != nil {
+			return false, err
+		}
+	        user.Password = string(hash)
+
+		 stmt := "UPDATE users2 SET password = $1 WHERE id = $2"
+		 db.QueryRow(stmt, user.Password, user.ID)
+	}
+	if user.Name != "" {
+		stmt := "UPDATE users2 SET name = $1 WHERE id = $2"
+		db.QueryRow(stmt, user.Name, user.ID)
+	}
+
+	if user.Email != "" {
+		stmt := "UPDATE users2 SET email = $1 WHERE id = $2"
+                db.QueryRow(stmt, user.Email, user.ID)
+        }
+
+	return true, nil
 }
 
 func checkClientsTable() {
