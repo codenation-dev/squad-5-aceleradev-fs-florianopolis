@@ -5,11 +5,26 @@ import { connect } from "react-redux";
 import { loadClients } from "../../../redux/actions";
 import "./searchForm.css";
 
+const WAIT_INTERVAL = 1000;
+
 class ClientsPanel extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchText: ""
+    }
+  }
 
   handleSearch = e => {
-    console.log(e);
-    this.props.loadClients(e.target.value, this.props.pageNumber);
+    clearTimeout(this.timer);
+    this.setState({searchText: e.target.value});
+
+    this.timer = setTimeout(this.triggerChange, WAIT_INTERVAL);
+  };
+
+  triggerChange = () => {
+    this.props.loadClients(this.state.searchText, this.props.pageNumber);
   };
 
   handlePreviousPage = () => {
@@ -26,8 +41,12 @@ class ClientsPanel extends Component {
     this.props.loadClients("", 1);
   }
 
+  componentWillMount() {
+    this.timer = null;
+  }
+
   render() {
-    const { clients, pageNumber, total, query, err } = this.props;
+    const { clients, pageNumber, total, err } = this.props;
 
     if (err) {
       return <div>{err}</div>;
@@ -47,7 +66,7 @@ class ClientsPanel extends Component {
           <input
             name="search"
             type="text"
-            value={query}
+            value={this.state.query}
             placeholder="Pesquisar..."
             onChange={e => this.handleSearch(e)}
           />
