@@ -1,7 +1,7 @@
-import { put, all, call, takeLatest } from "redux-saga/effects";
-import ServiceCharts from "../../services/charts";
+import { put, all, call, takeLatest } from 'redux-saga/effects';
+import ServiceCharts from '../../services/charts';
 
-import { ActionTypes } from "../actions";
+import { ActionTypes } from '../actions';
 
 function* loadCharts() {
     try {
@@ -9,6 +9,7 @@ function* loadCharts() {
         const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
         const responseAlerts = yield call(ServiceCharts.loadAlerts);
         const averageWage = yield call(ServiceCharts.loadAverageWage);
+        const response = yield call(ServiceCharts.getAvgSalaries);
 
         const notificationsSentPerDay = ServiceCharts.buildChartNotificationsSentPerDay(responseAlerts.alerts);
 
@@ -21,19 +22,33 @@ function* loadCharts() {
                 averageWage
             }
         });
-    } catch (err) {
-        yield put({
-            type: ActionTypes.CHART.FAILURE,
-            payload: { text: err.message }
-        });
-    }
 
+        yield put({
+          type: ActionTypes.CHART.SUCCESS,
+          payload: {
+            clientsRelation,
+            notificationsSentPerDay,
+            newClientsPerDay
+          }
+        });
+
+        yield put({
+          type: ActionTypes.SALARIES_AVG.SUCCESS,
+          payload: { ...response }
+        });
+  } catch (err) {
+    yield put({
+      type: ActionTypes.CHART.FAILURE,
+      payload: { text: err.message }
+    });
+  }
 }
 
 function* watchLoadCharts(action) {
-    yield takeLatest(ActionTypes.CHART.REQUEST, loadCharts);
+  yield takeLatest(ActionTypes.CHART.REQUEST, loadCharts);
+  yield takeLatest(ActionTypes.SALARIES_AVG.REQUEST, loadCharts);
 }
 
 export default function* chartsRoot() {
-    yield all([watchLoadCharts()]);
+  yield all([watchLoadCharts()]);
 }

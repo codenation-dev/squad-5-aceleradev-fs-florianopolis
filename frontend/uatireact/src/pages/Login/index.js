@@ -10,7 +10,6 @@ import * as allActions from "../../redux/actions";
 import { Form, Error, Status } from "./styles";
 import { isServerUp } from "../../services/server";
 
-
 class Login extends Component {
   state = {
     email: "",
@@ -20,7 +19,6 @@ class Login extends Component {
     bgStatus: ""
   };
 
-  //handleChange splitted so it can work with enzyme testing
   handleEmailChange = event => {
     this.setState({ email: event.target.value });
   };
@@ -34,13 +32,12 @@ class Login extends Component {
   };
 
   componentDidMount() {
-    const asyncFunc = async () => {
+    const checkServer = async () => {
       const serverStatus = (await isServerUp()) ? "online" : "offline";
-      const bgStatus = (serverStatus === "online") ? "#517043" : "#ff3333";
+      const bgStatus = serverStatus === "online" ? "#517043" : "#ff3333";
       this.setState({ serverStatus, bgStatus });
     };
-
-    asyncFunc();
+    checkServer();
   }
 
   componentWillUpdate(nextProps) {
@@ -79,7 +76,10 @@ class Login extends Component {
             <Button type="submit" className="loginButton">
               Login
             </Button>
-            <div style={{marginTop: "5px"}}>Server status: {this.state.serverStatus}<Status style={{backgroundColor: this.state.bgStatus}} /></div>
+            <div style={{ marginTop: "5px" }}>
+              Server status: {this.state.serverStatus}
+              <Status style={{ backgroundColor: this.state.bgStatus }} />
+            </div>
           </Form>
         </Grid>
       </div>
@@ -90,7 +90,7 @@ class Login extends Component {
 const mapStateToProps = state => ({
   success: state.userReducer.success,
   error: state.userReducer.error,
-  msg: state.userReducer.text
+  msg: state.loginReducer.text
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

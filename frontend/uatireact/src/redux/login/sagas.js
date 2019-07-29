@@ -10,34 +10,38 @@ function* attemptToLogin(action) {
       password: action.payload.credentials.password
     });
     const response = yield call(ServiceLogin.tryLogin, obj);
-
     if (!response["token"]) {
       throw new Error(response.message);
     }
-    
+
     const loggedUser = {
-      // name: obj.name,
-      name: action.payload.credentials.email,
-      username: action.payload.credentials.username,
+      name: response.name,
+      email: action.payload.credentials.email,
+      super: response.super_user,
       token: response.token
     };
-    
+
+    loggedUser.email !== ""
+      ? localStorage.setItem("userEmail", loggedUser.email)
+      : localStorage.removeItem("userEmail");
+
     loggedUser.token !== ""
-    ? localStorage.setItem("userToken", loggedUser.token)
-    : localStorage.setItem("userToken", "");
-    
+      ? localStorage.setItem("userToken", loggedUser.token)
+      : localStorage.removeItem("userToken");
+
     loggedUser.name !== ""
-    ? localStorage.setItem("userName", loggedUser.name)
-    : localStorage.setItem("userName", "");
-    console.log(loggedUser);
+      ? localStorage.setItem("userName", loggedUser.name)
+      : localStorage.removeItem("userName");
+
+    loggedUser.super === true
+      ? localStorage.setItem("userSuper", loggedUser.super)
+      : localStorage.removeItem("userSuper");
 
     yield put({
       type: ActionTypes.LOGIN.SUCCESS,
       payload: { loggedUser }
     });
   } catch (err) {
-    console.log("FAILURE ON ATTEMPTING LOGIN");
-    console.log(err);
     yield put({
       type: ActionTypes.LOGIN.FAILURE,
       payload: { text: err.message }

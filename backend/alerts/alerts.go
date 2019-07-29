@@ -147,11 +147,11 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 	_, err = db.Exec(queryString)
 
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 	_, err = db.Exec("UPDATE specials SET alertsent=true WHERE isclient IS NOT TRUE;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 }
 
@@ -225,7 +225,7 @@ func getUsersEmails() ([]string, error) {
 }
 
 func GetAlerts(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("Select sent_to,client,name, TO_CHAR(sent_at,'dd/mm/yyyy')as sent_at FROM alerts ORDER BY sent_at DESC;")
+	rows, err := db.Query("Select sent_to,client,name, TO_CHAR(sent_at,'dd/mm/yyyy HH:mm')as sent_at FROM alerts ORDER BY sent_at DESC;")
 	if err != nil {
 		log.Fatal(err)
 	}

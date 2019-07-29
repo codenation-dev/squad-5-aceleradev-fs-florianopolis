@@ -22,6 +22,10 @@
     {
       "name": "interest",
       "description": "Interest related endpoints"
+    },
+    {
+      "name": "dbinfo",
+      "description": "Data information endpoints"
     }
   ],
   "schemes": [
@@ -197,6 +201,51 @@
             "schema": {
               "type": "array",
               "items": {
+                "$ref": "#/definitions/UserResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/:user": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "updates user object",
+        "operationId": "updateUsers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "required body fields",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
                 "$ref": "#/definitions/User"
               }
             }
@@ -304,6 +353,37 @@
           }
         ]
       }
+    },
+    "/api/dbinfo/avgSalaries": {
+      "get": {
+        "tags": [
+          "dbinfo"
+        ],
+        "summary": "Returns the avarage salaries of clients,specials and special clients",
+        "operationId": "getGraphicsInfo",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "$ref": "#/definitions/dbInfoResponse"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -369,6 +449,12 @@
       "properties": {
         "token": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "super_user": {
+          "type": "boolean"
         }
       },
       "xml": {
@@ -379,7 +465,32 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer"
+          "type": "integer",
+          "format": "integer"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "super_user": {
+          "type": "boolean"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "integer"
         },
         "email": {
           "type": "string"
@@ -442,6 +553,48 @@
       },
       "xml": {
         "name": "Alert"
+      }
+    },
+    "dbInfoResponse": {
+      "type": "object",
+      "properties": {
+        "clientsSalary": {
+          "type": "object",
+          "properties": {
+            "sub5": {
+              "type": "integer"
+            },
+            "sub10": {
+              "type": "integer"
+            },
+            "sub15": {
+              "type": "integer"
+            },
+            "sub20": {
+              "type": "integer"
+            },
+            "over20": {
+              "type": "integer"
+            }
+          }
+        },
+        "avgSalaries": {
+          "type": "object",
+          "properties": {
+            "avgClientsSalary": {
+              "type": "number"
+            },
+            "avgSpecialsSalary": {
+              "type": "number"
+            },
+            "avgSpecialClientsSalary": {
+              "type": "number"
+            },
+            "OverClientsAvgSpecials": {
+              "type": "integer"
+            }
+          }
+        }
       }
     }
   }

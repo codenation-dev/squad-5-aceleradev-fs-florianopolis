@@ -25,7 +25,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
-import logo from "../../logo.svg";
+import logo from "../../logo2.png";
 
 const drawerWidth = 240;
 
@@ -79,6 +79,7 @@ function Layout(props) {
     container,
     children,
     isLogged,
+    isSuper,
     name,
     logout,
     location: { pathname }
@@ -115,6 +116,7 @@ function Layout(props) {
       name: "Administração",
       path: "/admin",
       icon: <Build style={{ color: defaultColor }} />,
+      showSuper: true,
       showLogged: true
     },
     {
@@ -126,21 +128,31 @@ function Layout(props) {
     }
   ];
 
-  const renderLinks = (isLogged, menuItems) => {
+  const renderLinks = (isLogged, isSuper, menuItems) => {
     return menuItems
-      .filter(({ showLogged }) => showLogged === isLogged)
-      .map(({ name, path, icon, onClick }) => (
-        <MenuItem
-          key={name}
-          component={Link}
-          to={path}
-          selected={path === pathname}
-          onClick={onClick}
-        >
-          <ListItemIcon>{icon}</ListItemIcon>
-          <Typography variant="inherit">{name}</Typography>
-        </MenuItem>
-      ));
+      .filter(({ showLogged, showSuper }) => showLogged === isLogged)
+      .map(({ name, path, icon, onClick, showSuper }) => {
+        const menu = (
+          <MenuItem
+            key={name}
+            component={Link}
+            to={path}
+            selected={path === pathname}
+            onClick={onClick}
+          >
+            <ListItemIcon>{icon}</ListItemIcon>
+            <Typography variant="inherit">{name}</Typography>
+          </MenuItem>
+        );
+
+        if (showSuper) {
+          if (isSuper) {
+            return menu;
+          }
+        } else {
+          return menu;
+        }
+      });
   };
 
   const sideMenu = (
@@ -152,7 +164,7 @@ function Layout(props) {
         <div className={classes.toolbar} />
       </Hidden>
       <Divider />
-      <MenuList>{renderLinks(isLogged, menuItems)}</MenuList>
+      <MenuList>{renderLinks(isLogged, isSuper, menuItems)}</MenuList>
     </div>
   );
 
@@ -180,7 +192,7 @@ function Layout(props) {
         >
           <MenuIcon />
         </IconButton>
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} width="50" alt="logo" />
         <Typography variant="h6" align="left" style={{ flexGrow: 1 }}>
           Uati Bank
         </Typography>
@@ -226,7 +238,7 @@ function Layout(props) {
   );
 
   return (
-    <div className={classes.root} style={{height: '100%'}} >
+    <div className={classes.root}>
       <CssBaseline />
       {isLogged && (
         <Fragment>
@@ -259,9 +271,8 @@ function Layout(props) {
 
 const mapStateToProps = state => ({
   isLogged: state.loginReducer.isLogged,
-  name: state.loginReducer.loggedUser
-    ? state.loginReducer.loggedUser.name
-    : ""
+  isSuper: state.loginReducer.isSuper,
+  name: state.loginReducer.loggedUser ? state.loginReducer.loggedUser.name : ""
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

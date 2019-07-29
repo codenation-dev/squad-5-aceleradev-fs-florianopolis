@@ -39,9 +39,10 @@ export const UlStyled = styled.ul`
 `;
 
 export const FakeExpand = styled.div`
-    display: flex;
-    flex-grow: 1;
-    padding: 0 24px 0 24px;
+    /* display: flex;
+    flex-grow: 1; */
+    text-align: left;
+    padding: 5px 24px 0 24px;
     min-height: 48px;
     box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12);
     margin-bottom: 15px;

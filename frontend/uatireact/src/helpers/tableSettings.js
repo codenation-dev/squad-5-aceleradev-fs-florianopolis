@@ -12,7 +12,9 @@ export const localizationSettings = {
     searchPlaceholder: "Buscar",
     searchTooltip: "Buscar"
   },
-  header: {},
+  header: {
+      actions: "Ações"
+  },
   body: {
     filterRow: {},
     editRow: {
