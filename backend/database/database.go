@@ -117,6 +117,27 @@ func CreateUser(user models.User) (int, error) {
 	return user.ID, nil
 }
 
+func UpdateUser(user models.User) (bool, error) {
+	if user.Password != "" {
+		hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+		if err != nil {
+			return false, err
+		}
+		user.Password = string(hash)
+		stmt := "UPDATE users2 SET password = $1 WHERE id = $2"
+		db.QueryRow(stmt, user.Password, user.ID)
+	}
+	if user.Name != "" {
+		stmt := "UPDATE users2 SET name = $1 WHERE id = $2"
+		db.QueryRow(stmt, user.Name, user.ID)
+	}
+	if user.Email != "" {
+		stmt := "UPDATE users2 SET email = $1 WHERE id = $2"
+		db.QueryRow(stmt, user.Email, user.ID)
+	}
+	return true, nil
+}
+
 func checkClientsTable() {
 	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true);")
 	if err != nil {
