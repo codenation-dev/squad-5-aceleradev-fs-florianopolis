@@ -22,6 +22,10 @@
     {
       "name": "interest",
       "description": "Interest related endpoints"
+    },
+    {
+      "name": "dbinfo",
+      "description": "Data information endpoints"
     }
   ],
   "schemes": [
@@ -349,6 +353,40 @@
           }
         ]
       }
+    },
+    "/api/dbinfo/avgSalaries": {
+      "get": {
+        "tags": [
+          "dbinfo"
+        ],
+        "summary": "Returns the avarage salaries of clients,specials and special clients",
+        "operationId": "getGraphicsInfo",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GraphicsInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -514,6 +552,26 @@
         "salary": {
           "type": "integer",
           "format": "int64"
+        }
+      },
+      "xml": {
+        "name": "Alert"
+      }
+    },
+    "GraphicsInfo": {
+      "type": "object",
+      "properties": {
+        "avgClientsSalary": {
+          "type": "number"
+        },
+        "avgSpecialsSalary": {
+          "type": "number"
+        },
+        "avgSpecialClientsSalary": {
+          "type": "number"
+        },
+        "OverClientsAvgSpecials": {
+          "type": "integer"
         }
       },
       "xml": {
