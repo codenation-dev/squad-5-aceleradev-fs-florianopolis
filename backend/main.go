@@ -38,6 +38,8 @@ func main() {
 			database.GetPublicEmps()
 			database.SetSpecials()
 			alerts.SendAlerts()
+			database.RepopulateClientsTable()
+			database.UpdateInfo()
 		}()
 		fmt.Println("DB set, starting server")
 	}
@@ -48,7 +50,8 @@ func main() {
 			database.GetPublicEmps()
 			database.SetSpecials()
 			alerts.SendAlerts()
-			database.RepopulateTable()
+			database.RepopulateClientsTable()
+			database.UpdateInfo()
 		}
 
 	}()
