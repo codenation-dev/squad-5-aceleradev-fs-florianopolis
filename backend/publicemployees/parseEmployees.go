@@ -99,7 +99,6 @@ func checkEmployees(employees []models.Employee, db *sql.DB) {
 	stringValues := strings.Join(statementValues[:], ",\n")
 
 	sqlStatement := fmt.Sprintf("INSERT INTO publicemployees (name, salary) VALUES %s;", stringValues)
-	// fmt.Println(sqlStatement)
 	_, err := db.Exec(sqlStatement)
 	if err != nil {
 		log.Println(err)

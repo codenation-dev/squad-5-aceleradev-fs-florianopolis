@@ -56,7 +56,7 @@ func SetDB() {
 
 	checkClientsTable()
 
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique,name text not null ,password text not null);")
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique,name text not null ,password text not null,super_user boolean default false);")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -88,7 +88,7 @@ func GetPublicEmps() {
 }
 
 func SetSpecials() {
-	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name AS name , salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE salary > 19999) s WHERE NOT EXISTS(SELECT  name FROM specials WHERE name = s.name);")
+	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name AS name , p.salary as salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE p.salary > 19999) s WHERE NOT EXISTS(SELECT  name FROM specials WHERE name = s.name);")
 	if err != nil {
 		log.Println("Error updating specials.", err)
 		return
@@ -139,7 +139,7 @@ func UpdateUser(user models.User) (bool, error) {
 }
 
 func checkClientsTable() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true);")
+	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true,salary float8 default 0);")
 	if err != nil {
 		log.Println(err)
 		return
@@ -173,6 +173,7 @@ func RepopulateTable() {
 		log.Println(err)
 		return
 	}
+
 	csvFile, err := os.Open("clientes.csv")
 	reader := csv.NewReader(csvFile)
 	if err != nil {
@@ -200,6 +201,11 @@ func RepopulateTable() {
 	sqlStatement := fmt.Sprintf("INSERT INTO clients (name)\nVALUES\n%s;", stringFiles)
 
 	_, err = db.Exec(sqlStatement)
+	if err != nil {
+		log.Println(err)
+	}
+
+	_, err = db.Exec("update  clients set salary=p.salary from publicemployees p where p.name=clients.name;")
 	if err != nil {
 		log.Println(err)
 	}

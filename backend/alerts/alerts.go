@@ -225,7 +225,7 @@ func getUsersEmails() ([]string, error) {
 }
 
 func GetAlerts(w http.ResponseWriter, r *http.Request) {
-	rows, err := db.Query("Select sent_to,client,name, TO_CHAR(sent_at,'dd/mm/yyyy')as sent_at FROM alerts ORDER BY sent_at DESC;")
+	rows, err := db.Query("Select sent_to,client,name, TO_CHAR(sent_at,'dd/mm/yyyy HH:ii')as sent_at FROM alerts ORDER BY sent_at DESC;")
 	if err != nil {
 		log.Fatal(err)
 	}

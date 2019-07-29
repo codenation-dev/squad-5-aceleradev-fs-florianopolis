@@ -15,6 +15,7 @@ type UsersResponse struct {
 type JWT struct {
 	Token string `json:"token"`
 	Name  string `json:"name"`
+	Super bool   `json:"super_user"`
 }
 
 type Error struct {
@@ -59,4 +60,11 @@ type Alert struct {
 
 type AlertsResponse struct {
 	Alerts []Alert `json:"alerts"`
+}
+
+type GraphicsInfo struct {
+	AvgClientsSalary        float64 `json:"avgClientsSalary"`
+	AvgSpecialsSalary       float64 `json:"avgSpecialsSalary"`
+	AvgSpecialClientsSalary float64 `json:"avgSpecialClientsSalary"`
+	OverClientsAvgSpecials  int     `json:"OverClientsAvgSpecials"`
 }
