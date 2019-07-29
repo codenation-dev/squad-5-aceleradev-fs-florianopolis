@@ -10,7 +10,6 @@ function* attemptToLogin(action) {
       password: action.payload.credentials.password
     });
     const response = yield call(ServiceLogin.tryLogin, obj);
-    console.log(response);
     if (!response["token"]) {
       throw new Error(response.message);
     }

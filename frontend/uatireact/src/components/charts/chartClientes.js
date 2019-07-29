@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
+  PieChart,
+  Pie,
   Tooltip,
-  Legend
+  Cell
 } from "recharts";
+
+import './chart.css'
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 class BarChartClients extends Component {
 
   renderChart = (data) => {
     return (
-      <BarChart
+      <PieChart
         width={1000}
         height={300}
-        data={data}
         margin={{
           top: 20,
           right: 30,
@@ -25,13 +25,13 @@ class BarChartClients extends Component {
           bottom: 5
         }}
       >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
+        <Pie dataKey="quantity" nameKey="name" name="Quantidade" data={data} fill="#416849" legendType="square" labelLine>
+        {
+          data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+        }
+        </Pie>
         <Tooltip />
-        <Legend />
-        <Bar dataKey="quantity" name="Quantidade" stackId="a" fill="#82ca9d" />
-      </BarChart>
+      </PieChart>
     )
   }
 
@@ -39,7 +39,7 @@ class BarChartClients extends Component {
     return (
       <div>
         <h1>Relação entre clientes e potenciais candidatos</h1>
-        <div>
+        <div className="chart">
           {this.renderChart(this.props.data)}
         </div>
       </div>

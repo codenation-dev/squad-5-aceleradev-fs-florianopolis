@@ -6,10 +6,6 @@ class ServiceCharts {
         quantity: 86
       },
       {
-        name: "Candidatos",
-        quantity: 52
-      },
-      {
         name: "Servidores públicos",
         quantity: 38
       },

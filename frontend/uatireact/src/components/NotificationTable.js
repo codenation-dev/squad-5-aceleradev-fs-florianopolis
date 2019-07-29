@@ -47,8 +47,8 @@ const headRows = [
     numeric: false,
     disablePadding: false,
     label: "Nome"
-  },
-  { id: "salary", numeric: false, disablePadding: false, label: "Salário" }
+  }
+  // { id: "salary", numeric: false, disablePadding: false, label: "Salário" }
 ];
 
 function EnhancedTableHead(props) {
@@ -265,7 +265,7 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
     let filteredArr = arrFilter.map((row, index) => {
       return dados.filter(
         row2 => row2.name.toLowerCase().indexOf(row.toLowerCase()) >= 0
-         || row2.salary >= row
+        //  || row2.salary >= row
       );
     });
 
@@ -335,14 +335,14 @@ export function EnhancedTable({ dataAtualizacao, dados }) {
                       >
                         {row.name}
                       </TableCell>
-                      <TableCell
+                      {/* <TableCell
                         // style={{
                         //   color: row.read ? "rgba(0, 0, 0, 0.26)" : ""
                         // }}
                         align="middle"
                       >
-                        R${row.salary}
-                      </TableCell>
+                        {row.salary}
+                      </TableCell> */}
                     </TableRow>
                   );
                 })}

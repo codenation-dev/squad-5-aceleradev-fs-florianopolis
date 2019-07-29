@@ -1,31 +1,34 @@
 import React from "react";
-import ChartsPanel from "../../components/charts/chartsPanel";
+import ChartsPanel from "../../components/charts/ChartsPanel";
+import Card from "../../components/dashboard/Card";
+import ClientsPanel from "../../components/dashboard/panels/ClientsPanel";
+import CandidatePanel from "../../components/dashboard/panels/CandidatePanel";
 import { get } from "../../utils/api";
 
-const clients = [
-  {
-    id: 1,
-    name: "Cliente 1"
-  },
-  {
-    id: 2,
-    name: "Cliente 2"
-  }
-];
+import "./dashboard.css";
 
 const Dashboard = () => {
   (async () => console.log(await get("clients", true)))();
+
   return (
     <div className="dashboard-div">
-      <h1>Welcome to the Dashboard</h1>
-      <h2>Clientes:</h2>
-      <ul>
-        {clients.map(item => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
+      <h1>Dashboard</h1>
 
-      <ChartsPanel />
+      <hr />
+
+      <Card title="Clientes da Uati">
+        <ClientsPanel />
+      </Card>
+
+      <Card title="Candidatos a Clientes">
+        <CandidatePanel />
+      </Card>
+
+      <Card title="Gráficos">
+        <ChartsPanel />
+      </Card>
+
+      <div>&nbsp;</div>
     </div>
   );
 };

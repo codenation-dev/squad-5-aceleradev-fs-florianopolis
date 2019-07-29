@@ -1,7 +1,8 @@
-import { post } from "../utils/api";
+    
+import { get } from "../utils/api";
 class ServiceNotification {
-  static getNotifications(obj) {
-    return post("alerts", obj, true);
+  static getNotifications() {
+    return get("alerts", true);
   }
 }
 
