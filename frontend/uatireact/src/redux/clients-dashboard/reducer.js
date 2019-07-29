@@ -15,8 +15,8 @@ function ClientsDashboard(state = INITIAL_STATE, action) {
         ...state,
         clients: action.payload.clients,
         pageNumber: action.payload.pageNumber,
-        totalClients: action.payload.totalClients,
-        query: action.payload.query,
+        total: action.payload.total,
+        totalSearch: action.payload.totalSearch,
         err: ""
       };
     case ActionTypes.CLIENTS.FAILURE:
@@ -24,7 +24,7 @@ function ClientsDashboard(state = INITIAL_STATE, action) {
         ...state,
         clients: [],
         pageNumber: 1,
-        totalClients: 0,
+        total: 0,
         query: "",
         err: action.payload.err
       };

@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 import './chart.css'
-class ChartNewClients extends Component {
+class ChartAverageWage extends Component {
 
   renderChart = (data) => {
     return (
@@ -40,7 +40,7 @@ class ChartNewClients extends Component {
   render() {  
     return (
       <div>
-        <h1>Quantidade de novos clientes por dia</h1>
+        <h1>Média salarial entre diferentes perfis</h1>
         <div className="chart">
           {this.renderChart(this.props.data)}
         </div>
@@ -49,4 +49,4 @@ class ChartNewClients extends Component {
   }
 }
 
-export default ChartNewClients;
+export default ChartAverageWage;

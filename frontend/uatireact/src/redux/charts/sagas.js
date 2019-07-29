@@ -4,26 +4,38 @@ import ServiceCharts from '../../services/charts';
 import { ActionTypes } from '../actions';
 
 function* loadCharts() {
-  try {
-    const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
-    const notificationsSentPerDay = yield call(
-      ServiceCharts.loadNotificationsSentPerDay
-    );
-    const newClientsPerDay = yield call(ServiceCharts.loadNewClientsPerDay);
-    const response = yield call(ServiceCharts.getAvgSalaries);
+    try {
+      
+        const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
+        const responseAlerts = yield call(ServiceCharts.loadAlerts);
+        const averageWage = yield call(ServiceCharts.loadAverageWage);
+        const response = yield call(ServiceCharts.getAvgSalaries);
 
-    yield put({
-      type: ActionTypes.CHART.SUCCESS,
-      payload: {
-        clientsRelation,
-        notificationsSentPerDay,
-        newClientsPerDay
-      }
-    });
-    yield put({
-      type: ActionTypes.SALARIES_AVG.SUCCESS,
-      payload: { ...response }
-    });
+        const notificationsSentPerDay = ServiceCharts.buildChartNotificationsSentPerDay(responseAlerts.alerts);
+
+        yield put({
+            type: ActionTypes.CHART.SUCCESS,
+
+            payload: {
+                clientsRelation,
+                notificationsSentPerDay,
+                averageWage
+            }
+        });
+
+        yield put({
+          type: ActionTypes.CHART.SUCCESS,
+          payload: {
+            clientsRelation,
+            notificationsSentPerDay,
+            newClientsPerDay
+          }
+        });
+
+        yield put({
+          type: ActionTypes.SALARIES_AVG.SUCCESS,
+          payload: { ...response }
+        });
   } catch (err) {
     yield put({
       type: ActionTypes.CHART.FAILURE,

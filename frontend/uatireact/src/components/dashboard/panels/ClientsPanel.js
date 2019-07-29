@@ -5,31 +5,48 @@ import { connect } from "react-redux";
 import { loadClients } from "../../../redux/actions";
 import "./searchForm.css";
 
+const WAIT_INTERVAL = 1000;
+
 class ClientsPanel extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      clients: [],
-      pageNumber: 1,
-      totalClients: 0,
-      query: "",
-      err: ""
-    };
+      searchText: ""
+    }
   }
 
-  handleSearch = e => {};
+  handleSearch = e => {
+    clearTimeout(this.timer);
+    this.setState({searchText: e.target.value});
 
-  handlePreviousPage = e => {};
+    this.timer = setTimeout(this.triggerChange, WAIT_INTERVAL);
+  };
 
-  handleNextPage = e => {};
+  triggerChange = () => {
+    this.props.loadClients(this.state.searchText, 1);
+  };
+
+  handlePreviousPage = () => {
+    const newPageNumber = this.props.pageNumber > 1? this.props.pageNumber - 1 : 1;
+    this.props.loadClients(this.state.searchText, newPageNumber);
+  };
+
+  handleNextPage = () => {
+    const newPageNumber = this.props.clients.length === 10? this.props.pageNumber + 1 : this.props.pageNumber;
+    this.props.loadClients(this.state.searchText, newPageNumber);
+  };
 
   componentDidMount() {
-    this.props.loadClients(this.state.query, this.state.pageNumber);
+    this.props.loadClients("", 1);
+  }
+
+  componentWillMount() {
+    this.timer = null;
   }
 
   render() {
-    const { clients, pageNumber, total, query, err } = this.props;
+    const { clients, pageNumber, total, totalSearch, err } = this.props;
 
     if (err) {
       return <div>{err}</div>;
@@ -38,6 +55,9 @@ class ClientsPanel extends Component {
     if (clients.length === 0) {
       return <div>No data found</div>;
     }
+
+    const startingPage = pageNumber * 10 - 10;
+    const endPage = pageNumber * 10 > totalSearch? totalSearch : pageNumber * 10;
 
     return (
       <div className="search-form">
@@ -49,9 +69,9 @@ class ClientsPanel extends Component {
           <input
             name="search"
             type="text"
-            value={query}
+            value={this.state.query}
             placeholder="Pesquisar..."
-            onChange={this.handleSearch}
+            onChange={e => this.handleSearch(e)}
           />
         </div>
 
@@ -62,8 +82,8 @@ class ClientsPanel extends Component {
         </div>
 
         <div className="search-data">
-          {clients.map(d => (
-            <div className="search-data-item">{d}</div>
+          {clients.map((d, i) => (
+            <div className="search-data-item" key={i}> {d.name}</div>
           ))}
         </div>
 
@@ -72,19 +92,19 @@ class ClientsPanel extends Component {
             name="previous"
             type="button"
             value="Anterior"
-            onChange={this.handlePreviousPage}
+            onClick={this.handlePreviousPage}
           />
           <input
             name="next"
             type="button"
             value="Próxima"
-            onChange={this.handleNextPage}
+            onClick={this.handleNextPage}
           />
         </div>
         
         <div className="pageNumber">
           <div>
-            {pageNumber * 10 - 10} - {pageNumber * 10}
+            {startingPage} - {endPage} (Total: {totalSearch})
           </div>
         </div>
       </div>
@@ -94,11 +114,11 @@ class ClientsPanel extends Component {
 
 const mapStateToProps = state => {
   return {
-    clients: state.clientsDashboardReducer.clients,
-    pageNumber: state.clientsDashboardReducer.pageNumber,
-    total: state.clientsDashboardReducer.totalClients,
-    query: state.clientsDashboardReducer.query,
-    err: state.clientsDashboardReducer.err
+    clients: state.clientsReducer.clients,
+    pageNumber: state.clientsReducer.pageNumber,
+    total: state.clientsReducer.total,
+    totalSearch: state.clientsReducer.totalSearch,
+    err: state.clientsReducer.err
   };
 };
 

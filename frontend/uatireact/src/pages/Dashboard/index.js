@@ -88,7 +88,7 @@ class Dashboard extends Component {
           <ClientsPanel />
         </Card>
 
-        <Card title="Candidatos a Clientes">
+        <Card title="20 Candidatos com os maiores salários">
           <CandidatePanel />
         </Card>
 

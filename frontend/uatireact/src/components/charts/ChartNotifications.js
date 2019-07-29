@@ -15,6 +15,8 @@ import './chart.css'
 class ChartNotifications extends Component {
 
   renderChart = (data) => {
+    console.log(data);
+
     return (
       <BarChart
         width={1000}
