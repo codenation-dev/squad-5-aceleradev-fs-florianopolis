@@ -5,12 +5,16 @@ import ServicesClients from "../../services/clients";
 
 function* loadClients(action) {
   try {
-    const response = yield call(
-      ServicesClients.loadClientsDashboard
-    );
+    const response = yield call(ServicesClients.loadClientsDashboard);
 
-    const filteredClients = ServicesClients.filterClientsByQuery(action.payload.query, response.Clients);
-    const offsetClients = ServicesClients.filterClientsByOffset(action.payload.pageNumber, filteredClients);
+    const filteredClients = ServicesClients.filterClientsByQuery(
+      action.payload.query,
+      response.Clients
+    );
+    const offsetClients = ServicesClients.filterClientsByOffset(
+      action.payload.pageNumber,
+      filteredClients
+    );
 
     yield put({
       type: ActionTypes.CLIENTS.SUCCESS,

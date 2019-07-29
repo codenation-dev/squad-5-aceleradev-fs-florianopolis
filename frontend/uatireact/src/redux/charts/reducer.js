@@ -29,9 +29,7 @@ function Charts(state = INITIAL_STATE, action) {
         ...state,
         successful: true,
         loading: false,
-        clientsRelation: action.payload.clientsRelation,
-        notificationsSentPerDay: action.payload.notificationsSentPerDay,
-        averageWage: action.payload.averageWage
+        notificationsSentPerDay: action.payload.notificationsSentPerDay
       };
     case ActionTypes.LOGIN.FAILURE:
       return {
