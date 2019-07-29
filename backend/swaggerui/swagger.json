@@ -368,10 +368,7 @@
           "200": {
             "description": "Success!",
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/GraphicsInfo"
-              }
+              "$ref": "#/definitions/dbInfoResponse"
             }
           },
           "400": {
@@ -558,24 +555,46 @@
         "name": "Alert"
       }
     },
-    "GraphicsInfo": {
+    "dbInfoResponse": {
       "type": "object",
       "properties": {
-        "avgClientsSalary": {
-          "type": "number"
+        "clientsSalary": {
+          "type": "object",
+          "properties": {
+            "sub5": {
+              "type": "integer"
+            },
+            "sub10": {
+              "type": "integer"
+            },
+            "sub15": {
+              "type": "integer"
+            },
+            "sub20": {
+              "type": "integer"
+            },
+            "over20": {
+              "type": "integer"
+            }
+          }
         },
-        "avgSpecialsSalary": {
-          "type": "number"
-        },
-        "avgSpecialClientsSalary": {
-          "type": "number"
-        },
-        "OverClientsAvgSpecials": {
-          "type": "integer"
+        "avgSalaries": {
+          "type": "object",
+          "properties": {
+            "avgClientsSalary": {
+              "type": "number"
+            },
+            "avgSpecialsSalary": {
+              "type": "number"
+            },
+            "avgSpecialClientsSalary": {
+              "type": "number"
+            },
+            "OverClientsAvgSpecials": {
+              "type": "integer"
+            }
+          }
         }
-      },
-      "xml": {
-        "name": "Alert"
       }
     }
   }
