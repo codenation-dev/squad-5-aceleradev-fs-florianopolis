@@ -4,14 +4,12 @@ import { ActionTypes } from "../actions";
 import ServicesClients from "../../services/clients";
 
 function* loadClients(action) {
-  console.log(action);
   try {
     const response = yield call(
       ServicesClients.loadClientsDashboard,
       action.payload.query,
       action.payload.pageNumber
     );
-    console.log(response);
 
     yield put({
       type: ActionTypes.CLIENTS.SUCCESS,
