@@ -7,8 +7,10 @@ function* loadCharts() {
     try {
       
         const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
-        const notificationsSentPerDay = yield call(ServiceCharts.loadNotificationsSentPerDay);
+        const responseAlerts = yield call(ServiceCharts.loadAlerts);
         const newClientsPerDay = yield call(ServiceCharts.loadNewClientsPerDay);
+
+        const notificationsSentPerDay = ServiceCharts.buildChartNotificationsSentPerDay(responseAlerts.alerts);
 
         yield put({
             type: ActionTypes.CHART.SUCCESS,

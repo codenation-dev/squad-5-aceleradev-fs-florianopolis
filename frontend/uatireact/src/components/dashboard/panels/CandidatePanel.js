@@ -51,8 +51,8 @@ class CandidatePanel extends Component {
         </div>
 
         <div className="search-data">
-          {candidates.map(d => (
-            <div className="search-data-item">
+          {candidates.map((d, i) => (
+            <div className="search-data-item" key={i}>
               <div className="nome-candidato">{d.name}</div>
               <div className="is-cliente">{d.isClient? 'Sim' : 'Não'}</div>
               <div className="salario">{parseFloat(Math.round(d.salary * 100) / 100).toFixed(2)}</div>

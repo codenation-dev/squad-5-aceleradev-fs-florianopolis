@@ -1,6 +1,8 @@
+import { get } from "../utils/api";
+
 class ServiceCharts {
   static async loadClientsRelation() {
-    return [
+    const values = [
       {
         name: "Clientes",
         quantity: 86
@@ -18,31 +20,35 @@ class ServiceCharts {
         quantity: 218
       }
     ];
+
+    return values;
   }
 
-  static async loadNotificationsSentPerDay() {
-    return [
-      {
-        name: "23/07",
-        quantity: 20
-      },
-      {
-        name: "22/07",
-        quantity: 15
-      },
-      {
-        name: "21/07",
-        quantity: 16
-      },
-      {
-        name: "20/07",
-        quantity: 18
-      },
-      {
-        name: "19/07",
-        quantity: 19
-      }
-    ];
+  static async loadAlerts() {
+    return get("alerts", true);
+  }
+
+  static buildChartNotificationsSentPerDay(alerts) {
+    const map = {};
+
+    alerts.forEach(a => {
+      const quantity = map[a.sentAt];
+      map[a.sentAt] = !quantity? 1 : quantity + 1;
+    });
+
+    const formattedData = [];
+    const keys = Object.keys(map)
+
+    for (const key of keys) {
+      const value = map[key];
+
+      formattedData.push({
+        name: key,
+        quantity: value
+      });
+    }
+
+    return formattedData;
   }
 
   static async loadNewClientsPerDay() {

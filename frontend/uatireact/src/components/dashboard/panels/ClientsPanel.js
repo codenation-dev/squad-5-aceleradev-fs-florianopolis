@@ -60,8 +60,8 @@ class ClientsPanel extends Component {
         </div>
 
         <div className="search-data">
-          {clients.map(d => (
-            <div className="search-data-item" key={d.name}>{d.name}</div>
+          {clients.map((d, i) => (
+            <div className="search-data-item" key={i}> {d.name}</div>
           ))}
         </div>
 
