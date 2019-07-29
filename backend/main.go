@@ -65,7 +65,7 @@ func main() {
 
 	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	originsOk := handlers.AllowedOrigins([]string{"*"})
-	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT"})
 
 	sh := http.StripPrefix("/api/", http.FileServer(http.Dir("./swaggerui/")))
 	router.PathPrefix("/api/").Handler(sh)
