@@ -5,6 +5,7 @@ type User struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password,omitempty"`
+	Super    bool   `json:"super_user"`
 }
 
 type UsersResponse struct {
