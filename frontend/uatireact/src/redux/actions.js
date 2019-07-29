@@ -1,4 +1,4 @@
-const TYPES = ["REQUEST", "SUCCESS", "FAILURE", "CANCEL", "RESET"];
+const TYPES = ['REQUEST', 'SUCCESS', 'FAILURE', 'CANCEL', 'RESET'];
 
 const createActionTypes = base => {
   const ref = {};
@@ -11,24 +11,24 @@ const createActionTypes = base => {
 };
 
 export const ActionTypes = {
-  LOGIN: createActionTypes("ATTEMPT_LOGIN"),
-  LOGOUT: createActionTypes("LOGOUT"),
-  USER: createActionTypes("ATTEMPT_USER"),
-  UPDATE_USER: createActionTypes("UPDATE_USER"),
-  SIGN: createActionTypes("SIGN_USER"),
-  NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
-  IMPORT: createActionTypes("IMPORT"),
-  FILE: createActionTypes("FILE"),
-  CHART: createActionTypes("CHART"),
-  CANDIDATES: createActionTypes("CANDIDATES"),
-  CLIENTS: createActionTypes("CLIENTS")
+  LOGIN: createActionTypes('ATTEMPT_LOGIN'),
+  LOGOUT: createActionTypes('LOGOUT'),
+  USER: createActionTypes('ATTEMPT_USER'),
+  UPDATE_USER: createActionTypes('UPDATE_USER'),
+  SIGN: createActionTypes('SIGN_USER'),
+  NOTIFICATION: createActionTypes('ATTEMPT_NOTIFICATION'),
+  IMPORT: createActionTypes('IMPORT'),
+  FILE: createActionTypes('FILE'),
+  CHART: createActionTypes('CHART'),
+  CANDIDATES: createActionTypes('CANDIDATES'),
+  CLIENTS: createActionTypes('CLIENTS'),
+  SALARIES_AVG: createActionTypes('SALARIES_AVG')
 };
-
 
 export function loadCharts() {
   return {
     type: ActionTypes.CHART.REQUEST
-  }
+  };
 }
 
 export function getUsers() {
@@ -43,6 +43,12 @@ export function updateUser(credentials) {
     payload: {
       credentials
     }
+  };
+}
+
+export function getAvgSalaries() {
+  return {
+    type: ActionTypes.SALARIES_AVG.REQUEST
   };
 }
 
@@ -70,7 +76,6 @@ export function importClients(file) {
   };
 }
 export function selectFile(file) {
-  
   return {
     type: ActionTypes.FILE.REQUEST,
     payload: {
@@ -97,18 +102,20 @@ export function loadClients(query, pageNumber) {
   return {
     type: ActionTypes.CLIENTS.REQUEST,
     payload: {
-      query, pageNumber
+      query,
+      pageNumber
     }
-  }
+  };
 }
 
 export function loadCandidates(query, pageNumber) {
   return {
     type: ActionTypes.CANDIDATES.REQUEST,
     payload: {
-      query, pageNumber
+      query,
+      pageNumber
     }
-  }
+  };
 }
 
 export function logout() {

@@ -68,3 +68,16 @@ type GraphicsInfo struct {
 	AvgSpecialClientsSalary float64 `json:"avgSpecialClientsSalary"`
 	OverClientsAvgSpecials  int     `json:"OverClientsAvgSpecials"`
 }
+
+type SalariesPie struct {
+	Sub5   float64 `json:"sub5"`
+	Sub10  float64 `json:"sub10"`
+	Sub15  float64 `json:"sub15"`
+	Sub20  float64 `json:"sub20"`
+	Over20 float64 `json:"over20"`
+}
+
+type ResponseDbInfo struct {
+	ClientsSalary SalariesPie  `json:"clientsSalary"`
+	AvgSalaries   GraphicsInfo `json:"avgSalaries"`
+}

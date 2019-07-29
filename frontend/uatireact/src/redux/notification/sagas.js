@@ -1,7 +1,7 @@
-import { put, all, call, takeLatest } from "redux-saga/effects";
-import ServiceNotification from "../../services/notification";
+import { put, all, call, takeLatest } from 'redux-saga/effects';
+import ServiceNotification from '../../services/notification';
 
-import { ActionTypes } from "../actions";
+import { ActionTypes } from '../actions';
 
 function* getNotificationList() {
   try {
