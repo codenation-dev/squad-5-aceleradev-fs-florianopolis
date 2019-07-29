@@ -24,7 +24,7 @@ class ClientsPanel extends Component {
   };
 
   triggerChange = () => {
-    this.props.loadClients(this.state.searchText, this.props.pageNumber);
+    this.props.loadClients(this.state.searchText, 1);
   };
 
   handlePreviousPage = () => {
