@@ -56,7 +56,7 @@ func SetDB() {
 
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true,salary float8 default 0);")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		return
 	}
 
@@ -72,7 +72,7 @@ func SetDB() {
 
 	_, err = db.Exec("	create table if not exists  salariesavg (clients_avg float8,specials_avg float8, special_clients_avg float8 ,overTheAvg integer);")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		return
 	}
 
@@ -82,16 +82,16 @@ func SetDB() {
 func GetPublicEmps() {
 	err := publicemployees.DownloadSpEmployees()
 	if err != nil {
-		log.Println("Error downloading employees, stoping employees update", err)
+		fmt.Println("Error downloading employees, stoping employees update", err)
 		return
 	}
 	_, err = db.Exec("DELETE FROM publicEmployees WHERE true;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 	err = publicemployees.GetEmployeesFromCSV(db)
 	if err != nil {
-		log.Println("Error downloading employees, stoping employees update", err)
+		fmt.Println("Error downloading employees, stoping employees update", err)
 		return
 	}
 	fmt.Println("done")
@@ -100,12 +100,12 @@ func GetPublicEmps() {
 func SetSpecials() {
 	_, err := db.Exec("INSERT INTO specials SELECT  * FROM (SELECT p.name AS name , p.salary as salary, isClient FROM publicEmployees p LEFT JOIN clients c ON c.name=p.name WHERE p.salary > 19999) s WHERE NOT EXISTS(SELECT  name FROM specials WHERE name = s.name);")
 	if err != nil {
-		log.Println("Error updating specials.", err)
+		fmt.Println("Error updating specials.", err)
 		return
 	}
 	_, err = db.Exec("UPDATE specials SET  isClient=c.isClient,alertsent=false FROM clients c WHERE specials.name=c.name AND specials.isClient IS NOT TRUE;")
 	if err != nil {
-		log.Println("Error updating specials.", err)
+		fmt.Println("Error updating specials.", err)
 		return
 	}
 
@@ -150,6 +150,7 @@ func UpdateUser(user models.User) (bool, error) {
 
 func tablePopulated() bool {
 	var count int
+	fmt.Println("Repopulating clients table")
 
 	row := db.QueryRow("SELECT COUNT(name) FROM clients;")
 	err := row.Scan(&count)
@@ -167,14 +168,14 @@ func RepopulateClientsTable() {
 	statementValues := []string{}
 	_, err := db.Exec("DELETE FROM clients WHERE TRUE;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 		return
 	}
 
 	csvFile, err := os.Open("clientes.csv")
 	reader := csv.NewReader(csvFile)
 	if err != nil {
-		log.Println("Error reading clients csv.", err)
+		fmt.Println("Error reading clients csv.", err)
 		return
 	}
 	defer csvFile.Close()
@@ -185,7 +186,7 @@ func RepopulateClientsTable() {
 		if err == io.EOF {
 			break
 		} else if err != nil {
-			log.Println("Error reading clients csv.", err)
+			fmt.Println("Error reading clients csv.", err)
 			return
 		}
 		value := fmt.Sprintf("('%s')", line[0])
@@ -199,27 +200,30 @@ func RepopulateClientsTable() {
 
 	_, err = db.Exec(sqlStatement)
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 
-	_, err = db.Exec("update clients set salary=p.salary from publicemployees p where p.name=clients.name;")
+	_, err = db.Exec("UPDATE clients SET salary = p.salary from publicemployees p where clients.name=p.name;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 }
 
 func UpdateInfo() {
+
+	fmt.Println("updating salaries table")
+
 	_, err := db.Exec("DELETE FROM salariesavg where true;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 	_, err = db.Exec("insert into salariesavg (select avg(c.salary) as clients_avg ,avg(s.salary) as specials_avg, avg(sc.salary) as special_clients_avg from specials s,clients c, (SELECT * from specials where isclient=true) sc);")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 
 	_, err = db.Exec("update salariesavg set overTheAvg=(select count(s.name) as total from specials s where s.salary>(SELECT avg(salary) from specials where isclient=true) and isclient is not true) where true;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 }

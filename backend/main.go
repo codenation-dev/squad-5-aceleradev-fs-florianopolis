@@ -40,8 +40,8 @@ func main() {
 			alerts.SendAlerts()
 			database.RepopulateClientsTable()
 			database.UpdateInfo()
+			fmt.Println("DB set")
 		}()
-		fmt.Println("DB set, starting server")
 	}
 
 	go func() {
@@ -55,7 +55,7 @@ func main() {
 		}
 
 	}()
-
+	fmt.Println("starting server")
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/login", users.Login).Methods("POST")
@@ -76,5 +76,5 @@ func main() {
 	sh := http.StripPrefix("/api/", http.FileServer(http.Dir("./swaggerui/")))
 	router.PathPrefix("/api/").Handler(sh)
 
-	log.Fatal(http.ListenAndServe(":8080", handlers.CORS(originsOk, headersOk, methodsOk)(router)))
+	log.Fatal(http.ListenAndServe(":8081", handlers.CORS(originsOk, headersOk, methodsOk)(router)))
 }
