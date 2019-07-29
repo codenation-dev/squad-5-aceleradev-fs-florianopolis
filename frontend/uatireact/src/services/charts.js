@@ -32,8 +32,9 @@ class ServiceCharts {
     const map = {};
 
     alerts.forEach(a => {
-      const quantity = map[a.sentAt];
-      map[a.sentAt] = !quantity? 1 : quantity + 1;
+      const sentAtDate = a.sentAt.slice(0, 10);
+      const quantity = map[sentAtDate];
+      map[sentAtDate] = !quantity? 1 : quantity + 1;
     });
 
     const formattedData = [];
