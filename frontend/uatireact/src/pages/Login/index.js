@@ -19,7 +19,6 @@ class Login extends Component {
     bgStatus: ""
   };
 
-  //handleChange splitted so it can work with enzyme testing
   handleEmailChange = event => {
     this.setState({ email: event.target.value });
   };
@@ -42,7 +41,6 @@ class Login extends Component {
   }
 
   componentWillUpdate(nextProps) {
-    console.log(nextProps);
     if (nextProps.sucess) {
       this.props.history.push("/dashboard");
     }

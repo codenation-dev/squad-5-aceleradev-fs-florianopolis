@@ -37,7 +37,7 @@ function Login(state = INITIAL_STATE, action) {
         isLogged: true,
         isSuper: isSuper(),
         success: true,
-        text: "Sucesso"
+        text: ""
       };
     case ActionTypes.LOGIN.FAILURE:
       return {

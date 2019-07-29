@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import createSagaMiddleware from "redux-saga"; // SAGA
+import createSagaMiddleware from "redux-saga";
 import rootReducers from "./redux/rootReducer";
 import rootSagas from "./redux/rootSagas";
 

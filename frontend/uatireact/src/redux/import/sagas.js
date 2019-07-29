@@ -13,8 +13,6 @@ function* uploadClients(action) {
       type: ActionTypes.IMPORT.SUCCESS
     });
   } catch (err) {
-    console.log("FAILURE ON ATTEMPTING IMPORT");
-    console.log(err);
     yield put({
       type: ActionTypes.IMPORT.FAILURE,
       payload: { text: err.message }

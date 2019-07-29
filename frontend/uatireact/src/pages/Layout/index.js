@@ -25,7 +25,7 @@ import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as allActions from "../../redux/actions";
-import logo from "../../logo.svg";
+import logo from "../../logo2.png";
 
 const drawerWidth = 240;
 
@@ -145,14 +145,13 @@ function Layout(props) {
           </MenuItem>
         );
 
-        if(showSuper){
-          if(isSuper){
+        if (showSuper) {
+          if (isSuper) {
             return menu;
           }
-        }else{
-          return menu
+        } else {
+          return menu;
         }
-
       });
   };
 
@@ -193,7 +192,7 @@ function Layout(props) {
         >
           <MenuIcon />
         </IconButton>
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} width="50" alt="logo" />
         <Typography variant="h6" align="left" style={{ flexGrow: 1 }}>
           Uati Bank
         </Typography>
@@ -273,9 +272,7 @@ function Layout(props) {
 const mapStateToProps = state => ({
   isLogged: state.loginReducer.isLogged,
   isSuper: state.loginReducer.isSuper,
-  name: state.loginReducer.loggedUser
-    ? state.loginReducer.loggedUser.name
-    : ""
+  name: state.loginReducer.loggedUser ? state.loginReducer.loggedUser.name : ""
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

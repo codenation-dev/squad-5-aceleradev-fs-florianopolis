@@ -7,8 +7,14 @@ import chartRoot from "./charts/sagas";
 import clientsDashboardRoot from "./clients-dashboard/sagas";
 import candidatesRoot from "./candidates/sagas";
 
-
 export default function* rootSagas() {
-  // here we initialize all the sagas from different files
-  yield all([loginRoot(), userRoot(), notificationRoot(), importRoot(), chartRoot(), clientsDashboardRoot(), candidatesRoot()]);
+  yield all([
+    loginRoot(),
+    userRoot(),
+    notificationRoot(),
+    importRoot(),
+    chartRoot(),
+    clientsDashboardRoot(),
+    candidatesRoot()
+  ]);
 }

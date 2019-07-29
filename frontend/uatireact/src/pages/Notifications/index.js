@@ -15,7 +15,6 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Paper from "@material-ui/core/Paper";
 
 class Notifications extends Component {
   constructor() {
@@ -34,11 +33,10 @@ class Notifications extends Component {
   }
 
   componentDidMount() {
-    const asyncFunc = async () => {
+    const asyncGetNotifications = async () => {
       await this.props.getNotifications();
     };
-    asyncFunc();
-    // let names = this.props.notificationList.name.split(",");
+    asyncGetNotifications();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,9 +78,6 @@ class Notifications extends Component {
   }
 
   render() {
-    // let names = this.props.notificationList.name.split(",");
-    // console.log(names);
-
     return (
       <div style={{ padding: "15px" }}>
         <h1>Notificações</h1>
@@ -103,14 +98,13 @@ class Notifications extends Component {
                 <React.Fragment key={index}>
                   {item.isClientEmail ? (
                     <FakeExpand>
-                        <div>
-                          O cliente {data[0].name} se tornou um funcionário
-                          publico
-                        </div>
-                        <div>
-                          Notificação enviada para {item.sentTo} em{" "}
-                          {item.sentAt}
-                        </div>
+                      <div>
+                        O cliente {data[0].name} se tornou um funcionário
+                        publico
+                      </div>
+                      <div>
+                        Notificação enviada para {item.sentTo} em {item.sentAt}
+                      </div>
                     </FakeExpand>
                   ) : (
                     <ExpansionPanelStyled>

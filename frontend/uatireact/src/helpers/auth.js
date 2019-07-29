@@ -20,7 +20,6 @@ export function isLogged() {
 
 export function isSuper() {
   let superUser = localStorage.getItem("userSuper");
-  console.log(superUser);
   if (superUser) {
     return true;
   } else {
