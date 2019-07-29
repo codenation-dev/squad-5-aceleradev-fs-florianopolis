@@ -51,7 +51,7 @@ class ServiceCharts {
     return formattedData;
   }
 
-  static async loadNewClientsPerDay() {
+  static async loadAverageWage() {
     return [
       {
         name: "19/07",

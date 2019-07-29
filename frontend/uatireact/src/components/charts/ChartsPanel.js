@@ -6,7 +6,7 @@ import { loadCharts } from "../../redux/actions";
 
 import BarChartClients from "./ChartClientes";
 import ChartNotifications from "./ChartNotifications";
-import ChartNewClients from "./ChartNewClientsPerDay"
+import ChartAverageWage from "./ChartAverageWage"
 
 class ChartsPanel extends Component {
   componentDidMount() {
@@ -14,7 +14,7 @@ class ChartsPanel extends Component {
   }
 
   render() {
-    const { clientsRelation, notificationsSentPerDay, newClientsPerDay } = this.props;
+    const { clientsRelation, notificationsSentPerDay, averageWage } = this.props;
 
     if (!clientsRelation) {
       return (
@@ -28,7 +28,7 @@ class ChartsPanel extends Component {
       <div className='charts'>
         <BarChartClients data={clientsRelation} />
         <ChartNotifications data={notificationsSentPerDay} />
-        <ChartNewClients data={newClientsPerDay} />
+        <ChartAverageWage data={averageWage} />
       </div>
     );
   }
@@ -38,7 +38,7 @@ const mapStateToProps = state => {
   return {
     clientsRelation: state.chartReducer.clientsRelation,
     notificationsSentPerDay: state.chartReducer.notificationsSentPerDay,
-    newClientsPerDay: state.chartReducer.newClientsPerDay
+    averageWage: state.chartReducer.averageWage
   };
 };
 

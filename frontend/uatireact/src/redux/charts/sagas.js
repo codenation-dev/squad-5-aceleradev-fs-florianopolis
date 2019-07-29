@@ -8,7 +8,7 @@ function* loadCharts() {
       
         const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
         const responseAlerts = yield call(ServiceCharts.loadAlerts);
-        const newClientsPerDay = yield call(ServiceCharts.loadNewClientsPerDay);
+        const averageWage = yield call(ServiceCharts.loadAverageWage);
 
         const notificationsSentPerDay = ServiceCharts.buildChartNotificationsSentPerDay(responseAlerts.alerts);
 
@@ -18,7 +18,7 @@ function* loadCharts() {
             payload: {
                 clientsRelation,
                 notificationsSentPerDay,
-                newClientsPerDay
+                averageWage
             }
         });
     } catch (err) {
