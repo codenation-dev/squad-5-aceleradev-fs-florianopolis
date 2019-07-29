@@ -22,7 +22,7 @@ Pela plataforma em React, é possível conferir dados estatísticos sobre o serv
 O backend do projeto está sendo servido em um Amazon Web Service:  
 http://ec2-18-223-122-18.us-east-2.compute.amazonaws.com:8080  
 
-O servidor também pode ser subido atrás vezes dos comandos na pasta "backend"  
+O servidor também pode ser subido através dos comandos na pasta "backend"  
 `docker build . -t uati-api`  
 `docker-compose up`  
 E então disponível no http://localhost:8080/api/  
