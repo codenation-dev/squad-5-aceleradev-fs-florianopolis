@@ -24,8 +24,8 @@ func GetDB() *sql.DB {
 		return db
 	}
 	gotenv.Load()
-	//host=uati-db
-	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable",
+
+	connectionString := fmt.Sprintf("host=uati-db user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("PG_USER"), os.Getenv("PG_PASS"), os.Getenv("PG_DB"))
 
 	db, err = sql.Open("postgres", connectionString)

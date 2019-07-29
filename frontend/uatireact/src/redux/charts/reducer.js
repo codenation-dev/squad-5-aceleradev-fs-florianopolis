@@ -6,7 +6,8 @@ const INITIAL_STATE = {
   error: false,
   clientsRelation: [],
   notificationsSentPerDay: [],
-  salariesAvg: {}
+  avgSalaries: {},
+  clientsSalary: {}
 };
 
 function Charts(state = INITIAL_STATE, action) {
@@ -19,7 +20,7 @@ function Charts(state = INITIAL_STATE, action) {
     case ActionTypes.SALARIES_AVG.SUCCESS:
       return {
         ...state,
-        salariesAvg: action.payload.salariesAvg,
+        ...action.payload,
         loading: false,
         successful: true
       };

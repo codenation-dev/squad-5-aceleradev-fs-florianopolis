@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ChartsPanel from '../../components/charts/ChartsPanel';
 import SalariesChart from '../../components/charts/AvgSalaries';
+import ClientsSalariesChart from '../../components/charts/ClientsSalaries';
+
 import Card from '../../components/dashboard/Card';
 import ClientsPanel from '../../components/dashboard/panels/ClientsPanel';
 import CandidatePanel from '../../components/dashboard/panels/CandidatePanel';
@@ -38,6 +40,37 @@ class Dashboard extends Component {
     return salariesArray;
   };
 
+  getClientsSalaryArray = () => {
+    const { clientsSalary } = this.props;
+    const salariesArray = [];
+    const sub5 = {
+      name: 'Até 5 mil reais',
+      salary: clientsSalary.sub5
+    };
+    salariesArray.push(sub5);
+    const sub10 = {
+      name: 'Até 10 mil reais',
+      salary: clientsSalary.sub10
+    };
+    salariesArray.push(sub10);
+    const sub15 = {
+      name: 'Até 15 mil reais',
+      salary: clientsSalary.sub15
+    };
+    salariesArray.push(sub15);
+    const sub20 = {
+      name: 'Até 20 mil reais',
+      salary: clientsSalary.sub20
+    };
+    salariesArray.push(sub20);
+    const over20 = {
+      name: 'Mais de 20 mil reais',
+      salary: clientsSalary.over20
+    };
+    salariesArray.push(over20);
+    return salariesArray;
+  };
+
   render() {
     (async () => console.log(await get('clients', true)))();
     return (
@@ -47,6 +80,9 @@ class Dashboard extends Component {
         <hr />
         {this.props.avgSalaries.OverClientsAvgSpecials && (
           <SalariesChart avgSalaries={this.getSalariesChartArray()} />
+        )}
+        {this.props.clientsSalary.sub5 && (
+          <ClientsSalariesChart salaries={this.getClientsSalaryArray()} />
         )}
         <Card title="Clientes da Uati">
           <ClientsPanel />
@@ -67,7 +103,8 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  avgSalaries: state.chartReducer.salariesAvg
+  avgSalaries: state.chartReducer.avgSalaries,
+  clientsSalary: state.chartReducer.clientsSalary
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators(allActions, dispatch);

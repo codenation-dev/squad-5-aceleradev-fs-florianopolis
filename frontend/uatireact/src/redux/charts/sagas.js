@@ -22,7 +22,7 @@ function* loadCharts() {
     });
     yield put({
       type: ActionTypes.SALARIES_AVG.SUCCESS,
-      payload: { salariesAvg: response }
+      payload: { ...response }
     });
   } catch (err) {
     yield put({
