@@ -54,7 +54,11 @@ func SetDB() {
 		log.Fatal(err)
 	}
 
-	checkClientsTable()
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true,salary float8 default 0);")
+	if err != nil {
+		log.Println(err)
+		return
+	}
 
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id serial primary key ,email text not null  unique,name text not null ,password text not null,super_user boolean default false);")
 	if err != nil {
@@ -64,6 +68,12 @@ func SetDB() {
 	_, err = db.Exec("CREATE TABLE IF NOT EXISTS alerts (sent_to text NOT NULL,client boolean DEFAULT false,name text NOT NULL,sent_at TIMESTAMP DEFAULT NOW());")
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	_, err = db.Exec("	create table if not exists  salariesavg (clients_avg float8,specials_avg float8, special_clients_avg float8 ,overTheAvg integer);")
+	if err != nil {
+		log.Println(err)
+		return
 	}
 
 	CreateUser(models.User{Email: "squad5codenation@gmail.com", Name: "admin", Password: "1234"})
@@ -138,19 +148,6 @@ func UpdateUser(user models.User) (bool, error) {
 	return true, nil
 }
 
-func checkClientsTable() {
-	_, err := db.Exec("CREATE TABLE IF NOT EXISTS clients (name text not null, isClient boolean default true,salary float8 default 0);")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	if !tablePopulated() {
-		RepopulateTable()
-	}
-
-}
-
 func tablePopulated() bool {
 	var count int
 
@@ -166,7 +163,7 @@ func tablePopulated() bool {
 	return true
 }
 
-func RepopulateTable() {
+func RepopulateClientsTable() {
 	statementValues := []string{}
 	_, err := db.Exec("DELETE FROM clients WHERE TRUE;")
 	if err != nil {
@@ -205,7 +202,23 @@ func RepopulateTable() {
 		log.Println(err)
 	}
 
-	_, err = db.Exec("update  clients set salary=p.salary from publicemployees p where p.name=clients.name;")
+	_, err = db.Exec("update clients set salary=p.salary from publicemployees p where p.name=clients.name;")
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func UpdateInfo() {
+	_, err := db.Exec("DELETE FROM salariesavg where true;")
+	if err != nil {
+		log.Println(err)
+	}
+	_, err = db.Exec("insert into salariesavg (select avg(c.salary) as clients_avg ,avg(s.salary) as specials_avg, avg(sc.salary) as special_clients_avg from specials s,clients c, (SELECT * from specials where isclient=true) sc);")
+	if err != nil {
+		log.Println(err)
+	}
+
+	_, err = db.Exec("update salariesavg set overTheAvg=(select count(s.name) as total from specials s where s.salary>(SELECT avg(salary) from specials where isclient=true) and isclient is not true) where true;")
 	if err != nil {
 		log.Println(err)
 	}

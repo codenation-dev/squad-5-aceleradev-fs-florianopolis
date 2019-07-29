@@ -58,7 +58,7 @@ func UploadClients(w http.ResponseWriter, req *http.Request) {
 	io.Copy(f, file)
 
 	go func() {
-		database.RepopulateTable()
+		database.RepopulateClientsTable()
 		database.SetSpecials()
 		alerts.SendAlerts()
 	}()
