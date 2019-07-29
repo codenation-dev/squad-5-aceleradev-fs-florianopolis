@@ -15,6 +15,7 @@ type UsersResponse struct {
 type JWT struct {
 	Token string `json:"token"`
 	Name  string `json:"name"`
+	Super bool   `json:"super_user"`
 }
 
 type Error struct {
