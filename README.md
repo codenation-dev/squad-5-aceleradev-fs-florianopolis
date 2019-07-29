@@ -12,7 +12,7 @@ A lista de clientes do banco Uati encontra-se no arquivo `clientes.csv` contido 
 
 # Como funciona
 
-De 12 em 12 horas, o backend do serviço irá baixar e inserir uma lista de funcionários públicos de São Paulo na base de dados. Neste processo, irá enviar notificações por email para usuários da plataforma com clientes em potencial.  
+A cada 24h o backend do serviço irá baixar e inserir uma lista de funcionários públicos de São Paulo na base de dados. Neste processo, irá enviar notificações por email para usuários da plataforma com clientes em potencial.  
 Pela plataforma em React, é possível conferir dados estatísticos sobre o serviço, bem como adicionar novos usuários, atualizar a lista de clientes do banco e acompanhar as notificações do sistema.  
 
 # Como usar
