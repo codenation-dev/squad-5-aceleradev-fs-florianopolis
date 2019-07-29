@@ -1,5 +1,5 @@
 import { ActionTypes } from "../actions";
-import { isLogged } from "../../helpers/auth";
+import { isLogged, isSuper } from "../../helpers/auth";
 
 const INITIAL_STATE = {
   credentials: [],
@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   },
   loading: false,
   isLogged: isLogged(),
+  isSuper: isSuper(),
   success: false,
   error: false,
   errorText: ""
@@ -34,8 +35,9 @@ function Login(state = INITIAL_STATE, action) {
         credentials: [],
         loading: false,
         isLogged: true,
+        isSuper: isSuper(),
         success: true,
-        text: ""
+        text: "Sucesso"
       };
     case ActionTypes.LOGIN.FAILURE:
       return {

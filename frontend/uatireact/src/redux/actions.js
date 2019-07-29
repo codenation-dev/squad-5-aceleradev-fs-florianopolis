@@ -14,6 +14,7 @@ export const ActionTypes = {
   LOGIN: createActionTypes("ATTEMPT_LOGIN"),
   LOGOUT: createActionTypes("LOGOUT"),
   USER: createActionTypes("ATTEMPT_USER"),
+  UPDATE_USER: createActionTypes("UPDATE_USER"),
   SIGN: createActionTypes("SIGN_USER"),
   NOTIFICATION: createActionTypes("ATTEMPT_NOTIFICATION"),
   IMPORT: createActionTypes("IMPORT"),
@@ -22,6 +23,7 @@ export const ActionTypes = {
   CANDIDATES: createActionTypes("CANDIDATES"),
   CLIENTS: createActionTypes("CLIENTS")
 };
+
 
 export function loadCharts() {
   return {
@@ -35,9 +37,18 @@ export function getUsers() {
   };
 }
 
+export function updateUser(credentials) {
+  return {
+    type: ActionTypes.UPDATE_USER.REQUEST,
+    payload: {
+      credentials
+    }
+  };
+}
+
 export function getNotifications() {
   return {
-    type: ActionTypes.NOTIFICATION.REQUEST 
+    type: ActionTypes.NOTIFICATION.REQUEST
   };
 }
 

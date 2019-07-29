@@ -47,19 +47,28 @@ class User extends Component {
                     this.setState({ ...this.state, data });
                   }, 600);
                 }),
-              // onRowUpdate: (newData, oldData) =>
-              //   new Promise(resolve => {
-              //     setTimeout(() => {
-              //       resolve();
-              //       const data = [...this.props.userList];
-              //       data[data.indexOf(oldData)] = newData;
-              //       this.setState({ ...this.state, data });
-              //     }, 600);
-              //   }),
+              onRowUpdate: (newData, oldData) =>
+                new Promise(resolve => {
+                  setTimeout(() => {
+                    resolve();
+                    this.props.updateUser(newData);
+                    const data = [...this.props.userList];
+                    newData.tableData = oldData.tableData
+
+                    var index = data.indexOf(oldData);
+                    
+                    if (index < 0) {
+                      index = index * -1;
+                    }                    
+                    data[index] = newData;
+                    this.setState({ ...this.state, data });
+                  }, 600);
+                }),
               // onRowDelete: oldData =>
               //   new Promise(resolve => {
               //     setTimeout(() => {
               //       resolve();
+              //       this.props.updateUser(newData);
               //       const data = [...this.props.userList];
               //       data.splice(data.indexOf(oldData), 1);
               //       this.setState({ ...this.state, data });

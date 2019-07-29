@@ -8,7 +8,8 @@ import { EnhancedTable } from "../../components/NotificationTable";
 import {
   ExpansionPanelStyled,
   ExpansionPanelDetailsStyled,
-  UlStyled
+  UlStyled,
+  FakeExpand
 } from "./styles";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
@@ -101,19 +102,16 @@ class Notifications extends Component {
               return (
                 <React.Fragment key={index}>
                   {item.isClientEmail ? (
-                    <>
-                      <Paper elevation="5">
-                        <Typography component="h4">
+                    <FakeExpand>
+                        <div>
                           O cliente {data[0].name} se tornou um funcionário
                           publico
-                        </Typography>
-                        <Typography component="p">
+                        </div>
+                        <div>
                           Notificação enviada para {item.sentTo} em{" "}
                           {item.sentAt}
-                        </Typography>
-                      </Paper>
-                      <br />
-                    </>
+                        </div>
+                    </FakeExpand>
                   ) : (
                     <ExpansionPanelStyled>
                       <ExpansionPanelSummary

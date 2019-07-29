@@ -17,3 +17,13 @@ export function isLogged() {
     return false;
   }
 }
+
+export function isSuper() {
+  let superUser = localStorage.getItem("userSuper");
+  console.log(superUser);
+  if (superUser) {
+    return true;
+  } else {
+    return false;
+  }
+}

@@ -15,7 +15,6 @@ function Charts(state = INITIAL_STATE, action) {
         ...state,
         loading: true
       };
-      
     case ActionTypes.CHART.SUCCESS:
       return {
         ...state,
@@ -25,7 +24,6 @@ function Charts(state = INITIAL_STATE, action) {
         notificationsSentPerDay: action.payload.notificationsSentPerDay,
         newClientsPerDay: action.payload.newClientsPerDay
       };
-
     case ActionTypes.LOGIN.FAILURE:
       return {
         ...state,
@@ -33,7 +31,6 @@ function Charts(state = INITIAL_STATE, action) {
         error: true,
         text: action.payload.text
       };
-
     default:
       return state;
   }
