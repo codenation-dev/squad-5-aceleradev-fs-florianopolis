@@ -9,15 +9,16 @@ function* loadClients(action) {
       ServicesClients.loadClientsDashboard
     );
 
-    const filteredClients = ServicesClients.filterClients(action.payload.query, action.payload.pageNumber, response.Clients);
+    const filteredClients = ServicesClients.filterClientsByQuery(action.payload.query, response.Clients);
+    const offsetClients = ServicesClients.filterClientsByOffset(action.payload.pageNumber, filteredClients);
 
     yield put({
       type: ActionTypes.CLIENTS.SUCCESS,
       payload: {
-        clients: filteredClients,
+        clients: offsetClients,
         pageNumber: action.payload.pageNumber,
         total: response.Clients.length,
-        query: action.payload.query
+        totalSearch: filteredClients.length
       }
     });
   } catch (err) {

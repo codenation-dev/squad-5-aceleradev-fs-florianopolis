@@ -29,12 +29,12 @@ class ClientsPanel extends Component {
 
   handlePreviousPage = () => {
     const newPageNumber = this.props.pageNumber > 1? this.props.pageNumber - 1 : 1;
-    this.props.loadClients(this.props.query, newPageNumber);
+    this.props.loadClients(this.state.searchText, newPageNumber);
   };
 
   handleNextPage = () => {
     const newPageNumber = this.props.clients.length === 10? this.props.pageNumber + 1 : this.props.pageNumber;
-    this.props.loadClients(this.props.query, newPageNumber);
+    this.props.loadClients(this.state.searchText, newPageNumber);
   };
 
   componentDidMount() {
@@ -46,7 +46,7 @@ class ClientsPanel extends Component {
   }
 
   render() {
-    const { clients, pageNumber, total, err } = this.props;
+    const { clients, pageNumber, total, totalSearch, err } = this.props;
 
     if (err) {
       return <div>{err}</div>;
@@ -55,6 +55,9 @@ class ClientsPanel extends Component {
     if (clients.length === 0) {
       return <div>No data found</div>;
     }
+
+    const startingPage = pageNumber * 10 - 10;
+    const endPage = pageNumber * 10 > totalSearch? totalSearch : pageNumber * 10;
 
     return (
       <div className="search-form">
@@ -101,7 +104,7 @@ class ClientsPanel extends Component {
         
         <div className="pageNumber">
           <div>
-            {pageNumber * 10 - 10} - {pageNumber * 10}
+            {startingPage} - {endPage} (Total: {totalSearch})
           </div>
         </div>
       </div>
@@ -114,7 +117,7 @@ const mapStateToProps = state => {
     clients: state.clientsReducer.clients,
     pageNumber: state.clientsReducer.pageNumber,
     total: state.clientsReducer.total,
-    query: state.clientsReducer.query,
+    totalSearch: state.clientsReducer.totalSearch,
     err: state.clientsReducer.err
   };
 };
