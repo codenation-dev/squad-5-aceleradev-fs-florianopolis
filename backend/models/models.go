@@ -5,7 +5,7 @@ type User struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password,omitempty"`
-	Super	 bool	`json:"super_user"`
+	Super    bool   `json:"super_user"`
 }
 
 type UsersResponse struct {
@@ -16,7 +16,6 @@ type JWT struct {
 	Token string `json:"token"`
 	Name  string `json:"name"`
 	Super bool   `json:"super_user"`
-
 }
 
 type Error struct {
@@ -33,8 +32,8 @@ type ClientsResponse struct {
 
 //Employee holds an public employee name and salary
 type Employee struct {
-	Name      string  `json:"name"`
-	Salary    float64 `json:"salary"`
+	Name   string
+	Salary float64
 }
 
 type Special struct {
@@ -61,15 +60,4 @@ type Alert struct {
 
 type AlertsResponse struct {
 	Alerts []Alert `json:"alerts"`
-}
-
-type Alert2 struct {
-	ID   		string `json:"id"`
-	SentAt   	string `json:"sentAt"`
-	Client  	bool    `json:"isClient"`
-	Employees []Employee `json:"clients"`
-}
-
-type AlertsResponse2 struct {
-	Alerts []Alert2 `json:"alerts"`
 }

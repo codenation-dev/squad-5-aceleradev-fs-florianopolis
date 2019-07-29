@@ -197,6 +197,51 @@
             "schema": {
               "type": "array",
               "items": {
+                "$ref": "#/definitions/UserResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [
+          {
+            "Bearer": []
+          }
+        ]
+      }
+    },
+    "/api/users/:user": {
+      "put": {
+        "tags": [
+          "user"
+        ],
+        "summary": "updates user object",
+        "operationId": "updateUsers",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "required body fields",
+            "required": false,
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success!",
+            "schema": {
+              "type": "array",
+              "items": {
                 "$ref": "#/definitions/User"
               }
             }
@@ -369,6 +414,12 @@
       "properties": {
         "token": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "super_user": {
+          "type": "boolean"
         }
       },
       "xml": {
@@ -379,7 +430,32 @@
       "type": "object",
       "properties": {
         "id": {
-          "type": "integer"
+          "type": "integer",
+          "format": "integer"
+        },
+        "email": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "super_user": {
+          "type": "boolean"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "integer"
         },
         "email": {
           "type": "string"
