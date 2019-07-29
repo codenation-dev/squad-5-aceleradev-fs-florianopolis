@@ -147,11 +147,11 @@ func sendNonClientsEmails(total int, specials []models.Special, emails []string)
 	_, err = db.Exec(queryString)
 
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 	_, err = db.Exec("UPDATE specials SET alertsent=true WHERE isclient IS NOT TRUE;")
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 }
 

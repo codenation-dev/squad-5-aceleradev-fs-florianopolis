@@ -5,7 +5,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -101,6 +100,6 @@ func checkEmployees(employees []models.Employee, db *sql.DB) {
 	sqlStatement := fmt.Sprintf("INSERT INTO publicemployees (name, salary) VALUES %s;", stringValues)
 	_, err := db.Exec(sqlStatement)
 	if err != nil {
-		log.Println(err)
+		fmt.Println(err)
 	}
 }
