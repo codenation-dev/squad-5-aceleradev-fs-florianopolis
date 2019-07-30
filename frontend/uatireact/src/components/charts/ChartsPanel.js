@@ -77,7 +77,7 @@ class ChartsPanel extends Component {
   }
 
   render() {
-    const { notificationsSentPerDay, clientsSalary } = this.props;
+    const { notificationsSentPerDay } = this.props;
 
     if (!notificationsSentPerDay) {
       return (
