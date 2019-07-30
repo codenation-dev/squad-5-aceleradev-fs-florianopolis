@@ -33,9 +33,9 @@ class ChartNotifications extends Component {
         <Legend />
         <Bar
           dataKey="salary"
-          name="Média de Salario R$"
+          name="Média de Salário R$"
           stackId="a"
-          fill="#8884d8"
+          fill="#00C49F"
         />
       </BarChart>
     );
@@ -44,7 +44,7 @@ class ChartNotifications extends Component {
   render() {
     return (
       <div>
-        <h1>Medias de Salario</h1>
+        <h1>Médias de Salário por Perfil</h1>
         <div className="chart">{this.renderChart(this.props.avgSalaries)}</div>
       </div>
     );

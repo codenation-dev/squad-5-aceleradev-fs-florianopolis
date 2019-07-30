@@ -6,7 +6,7 @@ class Card extends Component {
     super(props);
 
     this.state = {
-      expanded: false,
+      expanded: true,
       title: props.title,
       content: props.children
     };
@@ -25,7 +25,7 @@ class Card extends Component {
       </div>
     ) : null;
 
-    const hr = this.state.expanded ? <hr /> : null; 
+    const hr = this.state.expanded ? <hr className="card-division" /> : null; 
 
     const icon = this.state.expanded ? '-' : '+';
 

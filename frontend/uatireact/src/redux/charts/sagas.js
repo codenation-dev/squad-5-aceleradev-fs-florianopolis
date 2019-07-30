@@ -1,38 +1,28 @@
-import { put, all, call, takeLatest } from 'redux-saga/effects';
-import ServiceCharts from '../../services/charts';
+import { put, all, call, takeLatest } from "redux-saga/effects";
+import ServiceCharts from "../../services/charts";
 
-import { ActionTypes } from '../actions';
+import { ActionTypes } from "../actions";
 
 function* loadCharts() {
-    try {
-      
-        const clientsRelation = yield call(ServiceCharts.loadClientsRelation);
-        const responseAlerts = yield call(ServiceCharts.loadAlerts);
-        const response = yield call(ServiceCharts.getAvgSalaries);
+  try {
+    const responseAlerts = yield call(ServiceCharts.loadAlerts);
+    const response = yield call(ServiceCharts.getAvgSalaries);
+    const notificationsSentPerDay = ServiceCharts.buildChartNotificationsSentPerDay(
+      responseAlerts.alerts
+    );
 
-        const notificationsSentPerDay = ServiceCharts.buildChartNotificationsSentPerDay(responseAlerts.alerts);
+    yield put({
+      type: ActionTypes.CHART.SUCCESS,
 
-        yield put({
-            type: ActionTypes.CHART.SUCCESS,
+      payload: {
+        notificationsSentPerDay
+      }
+    });
 
-            payload: {
-                clientsRelation,
-                notificationsSentPerDay
-            }
-        });
-
-        yield put({
-          type: ActionTypes.CHART.SUCCESS,
-          payload: {
-            clientsRelation,
-            notificationsSentPerDay
-          }
-        });
-
-        yield put({
-          type: ActionTypes.SALARIES_AVG.SUCCESS,
-          payload: { ...response }
-        });
+    yield put({
+      type: ActionTypes.SALARIES_AVG.SUCCESS,
+      payload: { ...response }
+    });
   } catch (err) {
     yield put({
       type: ActionTypes.CHART.FAILURE,

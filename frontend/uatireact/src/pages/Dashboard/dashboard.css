@@ -1,3 +1,11 @@
 .dashboard-div {
     margin-bottom: 20px;
 }
+
+.hr-dashboard {
+    border: 1px dashed #dddddd
+}
+
+.title-dashboard {
+    padding-top: 20px;
+}

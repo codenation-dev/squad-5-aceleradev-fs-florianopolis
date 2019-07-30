@@ -4,28 +4,6 @@ class ServiceCharts {
   static getAvgSalaries() {
     return get('dbinfo/avgSalaries', true);
   }
-  static async loadClientsRelation() {
-    const values = [
-      {
-        name: 'Clientes',
-        quantity: 86
-      },
-      {
-        name: 'Servidores públicos',
-        quantity: 38
-      },
-      {
-        name: 'Salários acima de R$ 20000',
-        quantity: 14
-      },
-      {
-        name: 'Total de Cidadões',
-        quantity: 218
-      }
-    ];
-
-    return values;
-  }
 
   static async loadAlerts() {
     return get("alerts", true);

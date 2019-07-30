@@ -29,7 +29,7 @@ function Charts(state = INITIAL_STATE, action) {
         ...state,
         successful: true,
         loading: false,
-        notificationsSentPerDay: action.payload.notificationsSentPerDay
+        notificationsSentPerDay: action.payload.notificationsSentPerDay,
       };
     case ActionTypes.LOGIN.FAILURE:
       return {

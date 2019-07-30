@@ -25,9 +25,9 @@
     align-items: center;
 }
 
-hr {
+.card-division {
     border: 1px dashed #dddddd;
-    margin-top: -20;
+    margin-top: -20px;
     margin-left: 20px;
     margin-right: 20px;
 }
