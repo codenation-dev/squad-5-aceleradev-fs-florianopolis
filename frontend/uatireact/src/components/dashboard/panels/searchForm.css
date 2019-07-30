@@ -78,8 +78,9 @@
     flex-direction: row;
 }
 
-.paginator > input {
-    margin-left: 10px;
+.paginator > div {
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .pageNumber {

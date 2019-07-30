@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { bindActionCreators } from "redux";
+import Button from "@material-ui/core/Button";
 
 import { connect } from "react-redux";
 import { loadClients } from "../../../redux/actions";
@@ -13,12 +14,12 @@ class ClientsPanel extends Component {
 
     this.state = {
       searchText: ""
-    }
+    };
   }
 
   handleSearch = e => {
     clearTimeout(this.timer);
-    this.setState({searchText: e.target.value});
+    this.setState({ searchText: e.target.value });
 
     this.timer = setTimeout(this.triggerChange, WAIT_INTERVAL);
   };
@@ -28,12 +29,16 @@ class ClientsPanel extends Component {
   };
 
   handlePreviousPage = () => {
-    const newPageNumber = this.props.pageNumber > 1? this.props.pageNumber - 1 : 1;
+    const newPageNumber =
+      this.props.pageNumber > 1 ? this.props.pageNumber - 1 : 1;
     this.props.loadClients(this.state.searchText, newPageNumber);
   };
 
   handleNextPage = () => {
-    const newPageNumber = this.props.clients.length === 10? this.props.pageNumber + 1 : this.props.pageNumber;
+    const newPageNumber =
+      this.props.clients.length === 10
+        ? this.props.pageNumber + 1
+        : this.props.pageNumber;
     this.props.loadClients(this.state.searchText, newPageNumber);
   };
 
@@ -57,13 +62,12 @@ class ClientsPanel extends Component {
     }
 
     const startingPage = pageNumber * 10 - 10;
-    const endPage = pageNumber * 10 > totalSearch? totalSearch : pageNumber * 10;
+    const endPage =
+      pageNumber * 10 > totalSearch ? totalSearch : pageNumber * 10;
 
     return (
       <div className="search-form">
-        <div className="title">
-          Total de Clientes: {total}
-        </div>
+        <div className="title">Total de Clientes: {total}</div>
 
         <div className="search-field">
           <input
@@ -83,25 +87,33 @@ class ClientsPanel extends Component {
 
         <div className="search-data">
           {clients.map((d, i) => (
-            <div className="search-data-item" key={i}> {d.name}</div>
+            <div className="search-data-item" key={i}>
+              {" "}
+              {d.name}
+            </div>
           ))}
         </div>
-
         <div className="paginator">
-          <input
-            name="previous"
-            type="button"
-            value="Anterior"
-            onClick={this.handlePreviousPage}
-          />
-          <input
-            name="next"
-            type="button"
-            value="Próxima"
-            onClick={this.handleNextPage}
-          />
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handlePreviousPage}
+            >
+              Anterior
+            </Button>
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.handleNextPage}
+            >
+              Próximo
+            </Button>
+          </div>
         </div>
-        
+
         <div className="pageNumber">
           <div>
             {startingPage} - {endPage} (Total: {totalSearch})
